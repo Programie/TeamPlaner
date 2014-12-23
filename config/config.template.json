@@ -1,0 +1,49 @@
+{
+	"userAuth" :
+	{
+		"defaultValue" : "None"
+	},
+	"database.dsn" :
+	{
+		"defaultValue" : "mysql:host=127.0.0.1;dbname=codcalendar"
+	},
+	"database.username" :
+	{
+		"defaultValue" : "root"
+	},
+	"database.password" :
+	{
+		"defaultValue" : ""
+	},
+	"types" :
+	{
+		"defaultValue" :
+		[
+			{
+				"name" : "none",
+				"title" : "None",
+				"color" : "white",
+				"save" : false
+			},
+			{
+				"name" : "day",
+				"title" : "Day",
+				"color" : "lightgreen"
+			},
+			{
+				"name" : "night",
+				"title" : "Night",
+				"color" : "indianred"
+			},
+			{
+				"name" : "holiday",
+				"title" : "Holiday",
+				"color" : "orange"
+			}
+		]
+	},
+	"colors.weekend" :
+	{
+		"defaultValue" : "lightskyblue"
+	}
+}

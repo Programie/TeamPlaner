@@ -1,0 +1,11 @@
+# JetBrains IDE's (e.g. PhpStorm)
+.idea
+
+# Composer
+composer.phar
+vendor
+
+# Bower
+bower_components
+
+config.json
