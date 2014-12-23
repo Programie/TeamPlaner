@@ -6,6 +6,9 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
 
    * Clone this repository: **git clone https://github.com/Programie/TeamPlaner**
    * Create a **config.json** file inside of the **config** folder (See section **Configuguration** for details)
+   * Configure your webserver
+      * Point your document root to the frontend folder
+      * Create an alias **service** pointing to the service folder
    * Use it
 
 ## Configuration
