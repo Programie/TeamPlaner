@@ -23,7 +23,7 @@
 				"name" : "none",
 				"title" : "None",
 				"color" : "white",
-				"save" : false
+				"noSave" : true
 			},
 			{
 				"name" : "day",

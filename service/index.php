@@ -160,7 +160,7 @@ switch ($_GET["type"])
 		foreach ($entries as $entry)
 		{
 			// Type does not exist or should not be saved
-			if (!isset($types[$entry->type]) or !$types[$entry->type]->save)
+			if (!isset($types[$entry->type]) or $types[$entry->type]->noSave)
 			{
 				if ($entry->id)
 				{
