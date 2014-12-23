@@ -14,6 +14,8 @@ The configuration is done in a simple JSON file **config.json** which is located
 
 ### Structure
 
+Here you can the default configuration:
+
 ```json
 {
 	"userAuth" : "None",
