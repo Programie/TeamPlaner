@@ -8,4 +8,8 @@ vendor
 # Bower
 bower_components
 
+# Mac OS X
+._DS_Store
+.AppleDouble
+
 config.json
