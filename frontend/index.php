@@ -107,9 +107,9 @@ if (!$userAuth->checkPermissions())
 				</div>
 
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="#" id="previous-year-link">&lt;&lt;</a></li>
+					<li><a href="#" id="previous-year-link"><i class="glyphicon glyphicon-chevron-left"></i></a></li>
 					<li><span class="navbar-text" id="current-year"></span></li>
-					<li><a href="#" id="next-year-link">&gt;&gt;</a></li>
+					<li><a href="#" id="next-year-link"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
