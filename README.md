@@ -46,12 +46,14 @@ Here you can the default configuration:
 		{
 			"name" : "day",
 			"title" : "Day",
-			"color" : "lightgreen"
+			"color" : "lightgreen",
+			"showInReport" : true
 		},
 		{
 			"name" : "night",
 			"title" : "Night",
-			"color" : "indianred"
+			"color" : "indianred",
+			"showInReport" : true
 		},
 		{
 			"name" : "holiday",
