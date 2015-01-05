@@ -8,7 +8,16 @@ if (count($argv) < 3)
 
 $weekdays = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
-$pdo = DBConnection::getConnection();
+$config = new Config();
+
+$typeTitles = array();
+
+foreach ($config->getValue("types") as $type)
+{
+	$typeTitles[$type->name] = $type->title;
+}
+
+$pdo = DBConnection::getConnection($config);
 
 $year = $argv[1];
 $month = $argv[2];
@@ -75,7 +84,7 @@ while ($row = $query->fetch())
 
 		if (!$types or count($types) > 1)
 		{
-			$fields[] = $type;
+			$fields[] = $typeTitles[$type];
 		}
 
 		fputcsv($file, $fields, ";");
