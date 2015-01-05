@@ -90,6 +90,18 @@ switch ($_GET["type"])
 			$users[] = $row;
 		}
 
+		$holidays = array();
+
+		if (file_exists(__DIR__ . "/../includes/getHolidays.php"))
+		{
+			require_once __DIR__ . "/../includes/getHolidays.php";
+
+			if (function_exists("getHolidays"))
+			{
+				$holidays = getHolidays($year);
+			}
+		}
+
 		header("Content-Type: application/json");
 
 		echo json_encode(array
@@ -101,8 +113,10 @@ switch ($_GET["type"])
 			"types" => $config->getValue("types"),
 			"colors" => array
 			(
-				"weekend" => $config->getValue("colors.weekend")
-			)
+				"weekend" => $config->getValue("colors.weekend"),
+				"holiday" => $config->getValue("colors.holiday")
+			),
+			"holidays" => $holidays
 		));
 		exit;
 	case "setData":

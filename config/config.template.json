@@ -42,6 +42,10 @@
 			}
 		]
 	},
+	"colors.holiday" :
+	{
+		"defaultValue" : "dodgerblue"
+	},
 	"colors.weekend" :
 	{
 		"defaultValue" : "lightskyblue"

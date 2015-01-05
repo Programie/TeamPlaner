@@ -175,10 +175,28 @@ function readData(data)
 
 			var dateDay = date.getDay();
 			var isWeekend = dateDay == 6 || dateDay == 0;
+			var isoDate = moment(date).format("YYYY-MM-DD");
+
+			var color = "white";
+
+			if (isWeekend)
+			{
+				color = data.colors.weekend;
+			}
+
+			for (var holidayIndex in data.holidays)
+			{
+				if (data.holidays[holidayIndex] == isoDate)
+				{
+					color = data.colors.holiday;
+					break;
+				}
+			}
 
 			columns.push(
 			{
-				text : valid ? moment(date).format("dd, L") : ""
+				text : valid ? moment(date).format("dd, L") : "",
+				color : valid ? color : "white"
 			});
 
 			var dayEntries = valid ? data.entries[moment(date).format("YYYY-MM-DD")] : null;
@@ -190,12 +208,7 @@ function readData(data)
 
 			for (var userIndex in data.users)
 			{
-				var color = "white";
-
-				if (isWeekend)
-				{
-					color = data.colors.weekend;
-				}
+				var userColor = color;
 
 				var entryId = 0;
 
@@ -203,7 +216,7 @@ function readData(data)
 				{
 					if (dayEntries[entryIndex].userId == data.users[userIndex].id)
 					{
-						color = types[dayEntries[entryIndex].type].color;
+						userColor = types[dayEntries[entryIndex].type].color;
 						entryId = dayEntries[entryIndex].id;
 						break;
 					}
@@ -212,7 +225,7 @@ function readData(data)
 				columns.push(
 				{
 					selectable : valid,
-					color : color,
+					color : valid ? userColor : "white",
 					date : date,
 					userId : data.users[userIndex].id,
 					entryId : entryId
