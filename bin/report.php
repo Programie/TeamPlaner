@@ -60,11 +60,25 @@ while ($row = $query->fetch())
 {
 	fputcsv($file, array("User", $row->username), ";");
 
-	fputcsv($file, array("Date", "Week day"), ";");
+	$fields = array("Date", "Week day");
+
+	if (!$types or count($types) > 1)
+	{
+		$fields[] = "Type";
+	}
+
+	fputcsv($file, $fields, ";");
 
 	foreach ($data[$row->id] as $date => $type)
 	{
-		fputcsv($file, array($date, $weekdays[date("w", strtotime($date))], $type), ";");
+		$fields = array($date, $weekdays[date("w", strtotime($date))]);
+
+		if (!$types or count($types) > 1)
+		{
+			$fields[] = $type;
+		}
+
+		fputcsv($file, $fields, ";");
 	}
 }
 
