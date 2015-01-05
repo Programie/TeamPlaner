@@ -2,10 +2,17 @@
 
 A simple calendar allowing to plan recurring events in teams (e.g. shift planing).
 
+## Requirements
+
+   * Webserver (e.g. Apache)
+   * PHP 5.3 or newer
+   * MySQL
+
 ## Installation
 
    * Clone this repository: **git clone https://github.com/Programie/TeamPlaner.git**
-   * Create a **config.json** file inside of the **config** folder (See section **Configuguration** for details)
+   * Create a **config.json** file inside of the **config** folder (See section **Configuration** for details)
+   * Import **database.sql** into your MySQL database
    * Configure your webserver
       * Point your document root to the frontend folder
       * Create an alias **service** pointing to the service folder
@@ -54,6 +61,7 @@ Here you can the default configuration:
 	],
 	"colors" :
 	{
+		"holiday" : "dodgerblue",
 		"weekend" : "lightskyblue"
 	}
 }
