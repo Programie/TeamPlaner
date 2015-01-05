@@ -74,7 +74,7 @@ if (!$userAuth->checkPermissions())
 				<thead>
 					<tr>
 						{{#months}}
-							<th colspan="{{columnsPerMonth}}">{{.}}</th>
+							<th class="month-header" colspan="{{columnsPerMonth}}" data-month="{{number}}" title="Click to show a report for this month">{{name}}</th>
 						{{/months}}
 					</tr>
 					<tr>
@@ -96,6 +96,42 @@ if (!$userAuth->checkPermissions())
 					{{/rows}}
 				</tbody>
 			</table>
+		</script>
+
+		<script type="text/html" id="report-content-template">
+			{{#.}}
+				<div class="panel panel-default">
+					<div class="panel-heading">{{username}}</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Week day</th>
+								<th>Type</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#entries}}
+								<tr>
+									<td>{{date}}</td>
+									<td>{{weekday}}</td>
+									<td>{{type}}</td>
+								</tr>
+							{{/entries}}
+						</tbody>
+						<tfoot>
+							<tr>
+								<th colspan="3">{{entries.length}} entries</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			{{/.}}
+			{{^.}}
+			<div class="alert alert-danger">
+				<i class="glyphicon glyphicon-exclamation-sign"></i> <strong>No report available!</strong>
+			</div>
+			{{/.}}
 		</script>
 	</head>
 
@@ -146,6 +182,22 @@ if (!$userAuth->checkPermissions())
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary" id="selection-modal-save">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="report-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title">Report for <span id="report-month"></span> <span id="report-year"></span></h4>
+					</div>
+					<div class="modal-body" id="report-content">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>

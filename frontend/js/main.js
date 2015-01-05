@@ -47,6 +47,23 @@ $(function()
 		});
 	});
 
+	tableContainer.on("click", ".month-header", function()
+	{
+		$.ajax(
+		{
+			cache : false,
+			contentType : "application/json",
+			context : this,
+			success : function(data)
+			{
+				readReportData(data);
+
+				$("#report-modal").modal("show");
+			},
+			url : "../service/?type=getReportData&year=" + $("#current-year").text() + "&month=" + $(this).data("month")
+		});
+	});
+
 	var selectionStart = null;
 
 	tableContainer.on("mousedown", "td.selectable", function()
@@ -150,9 +167,20 @@ function readData(data)
 		types[type.name] = type;
 	}
 
+	var months = moment.months();
+
+	for (var index in months)
+	{
+		months[index] =
+		{
+			number : parseInt(index) + 1,
+			name : months[index]
+		};
+	}
+
 	var tableData =
 	{
-		months : moment.months(),
+		months : months,
 		users : data.users,
 		rows : []
 	};
@@ -254,6 +282,39 @@ function readData(data)
 
 		typeSelection.append($("<option>").val(type.name).text(type.title));
 	}
+}
+
+function readReportData(data)
+{
+	$("#report-month").text(moment.months()[data.month - 1]);
+	$("#report-year").text(data.year);
+
+	var reportData = [];
+
+	for (var username in data.data)
+	{
+		var entries = [];
+
+		for (var date in data.data[username])
+		{
+			var momentDate = moment(date);
+
+			entries.push(
+			{
+				date : momentDate.format("L"),
+				weekday : momentDate.format("dddd"),
+				type : data.types[data.data[username][date]]
+			});
+		}
+
+		reportData.push(
+		{
+			username : username,
+			entries : entries
+		});
+	}
+
+	$("#report-content").html(Mustache.render($("#report-content-template").html(), reportData));
 }
 
 function updateSelection(userId, startDate, endDate)

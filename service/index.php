@@ -119,6 +119,73 @@ switch ($_GET["type"])
 			"holidays" => $holidays
 		));
 		exit;
+	case "getReportData":
+		if (isset($_GET["year"]))
+		{
+			$year = $_GET["year"];
+		}
+		else
+		{
+			$year = date("Y");
+		}
+
+		if (isset($_GET["month"]))
+		{
+			$month = $_GET["month"];
+		}
+		else
+		{
+			$month = date("m");
+		}
+
+		$types = array();
+
+		foreach ($config->getValue("types") as $type)
+		{
+			if (!isset($type->showInReport) or !$type->showInReport)
+			{
+				continue;
+			}
+
+			$types[$type->name] = $type->title;
+		}
+
+		$data = array();
+
+		$query = $pdo->prepare("
+			SELECT `date`, `type`, `username`
+			FROM `entries`
+			LEFT JOIN `users` ON `users`.`id` = `userId`
+			WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
+			ORDER BY `date` ASC
+		");
+
+		$query->execute(array
+		(
+			":year" => $year,
+			":month" => $month
+		));
+
+		while ($row = $query->fetch())
+		{
+			if (!isset($types[$row->type]))
+			{
+				continue;
+			}
+
+			$data[$row->username][$row->date] = $row->type;
+		}
+
+		header("Content-Type: application/json");
+
+		echo json_encode(array
+		(
+			"month" => $month,
+			"year" => $year,
+			"data" => $data,
+			"types" => $types
+		));
+		exit;
 	case "setData":
 		if ($_SERVER["REQUEST_METHOD"] != "POST")
 		{
