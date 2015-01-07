@@ -7,8 +7,10 @@ CREATE TABLE `users` (
 CREATE TABLE `entries` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
-  `type` enum('day','night','holiday') DEFAULT NULL,
+  `type` varchar(100) NOT NULL DEFAULT '',
   `userId` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `date_userId` (`date`,`userId`)
+  UNIQUE KEY `date_userId` (`date`,`userId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `entries_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
