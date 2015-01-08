@@ -4,124 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f597559346d70b3dc4f90097132a6456",
+    "hash": "d3caef5996536102a8900f518982fde3",
     "packages": [
-        {
-            "name": "altorouter/altorouter",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dannyvankooten/AltoRouter.git",
-                "reference": "09d9d946c546bae6d22a7654cdb3b825ffda54b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dannyvankooten/AltoRouter/zipball/09d9d946c546bae6d22a7654cdb3b825ffda54b4",
-                "reference": "09d9d946c546bae6d22a7654cdb3b825ffda54b4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "AltoRouter.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Danny van Kooten",
-                    "email": "dannyvankooten@gmail.com",
-                    "homepage": "http://dannyvankooten.com/"
-                },
-                {
-                    "name": "Koen Punt",
-                    "homepage": "https://github.com/koenpunt"
-                },
-                {
-                    "name": "niahoo",
-                    "homepage": "https://github.com/niahoo"
-                }
-            ],
-            "description": "A lightning fast router for PHP",
-            "homepage": "https://github.com/dannyvankooten/AltoRouter",
-            "keywords": [
-                "lightweight",
-                "router",
-                "routing"
-            ],
-            "time": "2014-04-16 09:44:40"
-        },
-        {
-            "name": "jasig/phpcas",
-            "version": "1.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Jasig/phpCAS.git",
-                "reference": "b6f5d484735d3b0e80b068a87bd1eabac04b2cbe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Jasig/phpCAS/zipball/b6f5d484735d3b0e80b068a87bd1eabac04b2cbe",
-                "reference": "b6f5d484735d3b0e80b068a87bd1eabac04b2cbe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.7.10"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "source/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Joachim Fritschi",
-                    "homepage": "https://wiki.jasig.org/display/~fritschi"
-                },
-                {
-                    "name": "Adam Franco",
-                    "homepage": "https://wiki.jasig.org/display/~adamfranco"
-                }
-            ],
-            "description": "Provides a simple API for authenticating users against a CAS server",
-            "homepage": "https://wiki.jasig.org/display/CASC/phpCAS",
-            "keywords": [
-                "cas",
-                "jasig"
-            ],
-            "time": "2014-07-24 20:29:29"
-        },
         {
             "name": "programie/jsonconfig",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Programie/JsonConfig.git",
-                "reference": "3c65d1c7c1eedd7ea0e60dfae48178ed4d223307"
+                "reference": "6f6a5830fda63d9de702fe9ff28172722a6ca041"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Programie/JsonConfig/zipball/3c65d1c7c1eedd7ea0e60dfae48178ed4d223307",
-                "reference": "3c65d1c7c1eedd7ea0e60dfae48178ed4d223307",
+                "url": "https://api.github.com/repos/Programie/JsonConfig/zipball/6f6a5830fda63d9de702fe9ff28172722a6ca041",
+                "reference": "6f6a5830fda63d9de702fe9ff28172722a6ca041",
                 "shasum": ""
             },
             "require-dev": {
@@ -144,7 +40,7 @@
                 }
             ],
             "description": "A simple PHP class for reading configuration values from JSON files",
-            "time": "2014-12-19 14:08:31"
+            "time": "2014-12-22 16:18:09"
         }
     ],
     "packages-dev": [],
