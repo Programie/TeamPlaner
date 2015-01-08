@@ -28,7 +28,8 @@ Here you can the default configuration:
 
 ```json
 {
-	"userAuth" : "None",
+	"userAuth" : "",
+	"holidaysMethod" : null,
 	"database" :
 	{
 		"dsn" : "mysql:host=127.0.0.1;dbname=calendar",
