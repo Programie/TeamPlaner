@@ -43,7 +43,7 @@ $(function()
 				$("#selection-modal").modal("hide");
 			},
 			type : "POST",
-			url : "../service/?type=setData"
+			url : "service/?type=setData"
 		});
 	});
 
@@ -60,7 +60,7 @@ $(function()
 
 				$("#report-modal").modal("show");
 			},
-			url : "../service/?type=getReportData&year=" + $("#current-year").text() + "&month=" + $(this).data("month")
+			url : "service/?type=getReportData&year=" + $("#current-year").text() + "&month=" + $(this).data("month")
 		});
 	});
 
@@ -140,7 +140,7 @@ function updateData()
 			Accept : "application/json"
 		},
 		success : readData,
-		url : "../service/?type=getData&year=" + year
+		url : "service/?type=getData&year=" + year
 	});
 }
 
