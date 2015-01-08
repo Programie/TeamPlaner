@@ -1,6 +1,4 @@
 <?php
-namespace userauth;
-
 interface iUserAuth
 {
 	/**

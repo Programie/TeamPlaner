@@ -2,35 +2,26 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../includes/Config.php";
 require_once __DIR__ . "/../includes/DBConnection.php";
+require_once __DIR__ . "/../includes/UserAuthFactory.php";
 
 $config = new Config();
 
-$userAuthClassName = basename($config->getValue("userAuth"));
-
-if (!file_exists(__DIR__ . "/../includes/userauth/" . $userAuthClassName . ".php"))
+$userAuthInstance = UserAuthFactory::getProvider($config->getValue("userAuth"));
+if (!$userAuthInstance)
 {
 	header("HTTP/1.1 500 Internal Server Error");
 	echo "Unable to load User Auth provider!";
 	exit;
 }
 
-require_once __DIR__ . "/../includes/userauth/" . $userAuthClassName . ".php";
-
-$userAuthClassName = "userauth\\" . $userAuthClassName;
-
-/**
- * @var $userAuth userauth\iUserAuth
- */
-$userAuth = new $userAuthClassName;
-
-if (!$userAuth->checkAuth())
+if (!$userAuthInstance->checkAuth())
 {
 	header("HTTP/1.1 401 Unauthorized");
-	echo "You have to authenticate against CAS first!";
+	echo "You have to authenticate first!";
 	exit;
 }
 
-if (!$userAuth->checkPermissions())
+if (!$userAuthInstance->checkPermissions())
 {
 	header("HTTP/1.1 403 Forbidden");
 	echo "You are not allowed to access this service!";
@@ -107,7 +98,7 @@ switch ($_GET["type"])
 		echo json_encode(array
 		(
 			"year" => $year,
-			"username" => $userAuth->getUsername(),
+			"username" => $userAuthInstance->getUsername(),
 			"entries" => $entries,
 			"users" => $users,
 			"types" => $config->getValue("types"),

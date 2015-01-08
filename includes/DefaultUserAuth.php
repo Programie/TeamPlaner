@@ -1,9 +1,7 @@
 <?php
-namespace userauth;
-
 require_once __DIR__ . "/iUserAuth.php";
 
-class None implements iUserAuth
+class DefaultUserAuth implements iUserAuth
 {
 	/**
 	 * Check whether the user is logged in.

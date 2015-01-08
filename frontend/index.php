@@ -1,35 +1,26 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../includes/Config.php";
+require_once __DIR__ . "/../includes/UserAuthFactory.php";
 
 $config = new Config();
 
-$userAuthClassName = basename($config->getValue("userAuth"));
-
-if (!file_exists(__DIR__ . "/../includes/userauth/" . $userAuthClassName . ".php"))
+$userAuthInstance = UserAuthFactory::getProvider($config->getValue("userAuth"));
+if (!$userAuthInstance)
 {
 	header("HTTP/1.1 500 Internal Server Error");
 	echo "Unable to load User Auth provider!";
 	exit;
 }
 
-require_once __DIR__ . "/../includes/userauth/" . $userAuthClassName . ".php";
-
-$userAuthClassName = "userauth\\" . $userAuthClassName;
-
-/**
- * @var $userAuth userauth\iUserAuth
- */
-$userAuth = new $userAuthClassName;
-
 if (isset($_GET["logout"]))
 {
-	$userAuth->logout();
+	$userAuthInstance->logout();
 }
 
-$userAuth->forceAuth();
+$userAuthInstance->forceAuth();
 
-if (!$userAuth->checkPermissions())
+if (!$userAuthInstance->checkPermissions())
 {
 	header("HTTP/1.1 403 Forbidden");
 	?>
@@ -41,7 +32,7 @@ if (!$userAuth->checkPermissions())
 		<body>
 			<h1>Forbidden</h1>
 
-			<p>You are currently logged in as <?php echo $userAuth->getUsername();?>.</p>
+			<p>You are currently logged in as <?php echo $userAuthInstance->getUsername();?>.</p>
 
 			<p>This user is not allowed to access this page!</p>
 

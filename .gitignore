@@ -12,4 +12,5 @@ bower_components
 ._DS_Store
 .AppleDouble
 
+extensions/*
 includes/getHolidays.php
