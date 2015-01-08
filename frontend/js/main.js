@@ -289,32 +289,23 @@ function readReportData(data)
 	$("#report-month").text(moment.months()[data.month - 1]);
 	$("#report-year").text(data.year);
 
-	var reportData = [];
-
-	for (var username in data.data)
+	for (var userIndex in data.data)
 	{
-		var entries = [];
+		var userData = data.data[userIndex];
 
-		for (var date in data.data[username])
+		for (var entryIndex in userData.entries)
 		{
-			var momentDate = moment(date);
+			var entryData = userData.entries[entryIndex];
 
-			entries.push(
-			{
-				date : momentDate.format("L"),
-				weekday : momentDate.format("dddd"),
-				type : data.types[data.data[username][date]]
-			});
+			var momentDate = moment(entryData.date);
+
+			entryData.weekday = momentDate.format("dddd");
+			entryData.type = data.types[entryData.type];
+			entryData.date = momentDate.format("L");
 		}
-
-		reportData.push(
-		{
-			username : username,
-			entries : entries
-		});
 	}
 
-	$("#report-content").html(Mustache.render($("#report-content-template").html(), reportData));
+	$("#report-content").html(Mustache.render($("#report-content-template").html(), data.data));
 }
 
 function updateSelection(userId, startDate, endDate)

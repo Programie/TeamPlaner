@@ -150,7 +150,6 @@ switch ($_GET["type"])
 			FROM `entries`
 			LEFT JOIN `users` ON `users`.`id` = `userId`
 			WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
-			ORDER BY `date` ASC
 		");
 
 		$query->execute(array
@@ -169,13 +168,68 @@ switch ($_GET["type"])
 			$data[$row->username][$row->date] = $row->type;
 		}
 
+		$sortedData = array();
+
+		foreach ($data as $username => $dates)
+		{
+			$sortedUserData = array();
+
+			foreach ($dates as $date => $type)
+			{
+				$sortedUserData[] = array
+				(
+					"date" => $date,
+					"type" => $type
+				);
+			}
+
+			usort($sortedUserData, function($item1, $item2)
+			{
+				$time1 = strtotime($item1["date"]);
+				$time2 = strtotime($item2["date"]);
+
+				if ($time1 < $time2)
+				{
+					return -1;
+				}
+
+				if ($time1 > $time2)
+				{
+					return 1;
+				}
+
+				return 0;
+			});
+
+			$sortedData[] = array
+			(
+				"username" => $username,
+				"entries" => $sortedUserData
+			);
+		}
+
+		usort($sortedData, function($item1, $item2)
+		{
+			if ($item1["username"] < $item2["username"])
+			{
+				return -1;
+			}
+
+			if ($item1["username"] > $item2["username"])
+			{
+				return 1;
+			}
+
+			return 0;
+		});
+
 		header("Content-Type: application/json");
 
 		echo json_encode(array
 		(
 			"month" => $month,
 			"year" => $year,
-			"data" => $data,
+			"data" => $sortedData,
 			"types" => $types
 		));
 		exit;
