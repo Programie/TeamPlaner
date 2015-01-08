@@ -83,13 +83,15 @@ switch ($_GET["type"])
 
 		$holidays = array();
 
-		if (file_exists(__DIR__ . "/../includes/getHolidays.php"))
+		if ($config->isValueSet("holidaysMethod"))
 		{
-			require_once __DIR__ . "/../includes/getHolidays.php";
+			list($className, $methodName) = explode("#", $config->getValue("holidaysMethod"));
 
-			if (function_exists("getHolidays"))
+			$holidaysInstance = ExtensionClassFactory::getInstance($className);
+
+			if (method_exists($holidaysInstance, $methodName))
 			{
-				$holidays = getHolidays($year);
+				$holidays = $holidaysInstance->$methodName($year);
 			}
 		}
 

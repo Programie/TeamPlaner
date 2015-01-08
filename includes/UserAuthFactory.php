@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/DefaultUserAuth.php";
+require_once __DIR__ . "/ExtensionClassFactory.php";
 
 class UserAuthFactory
 {
@@ -18,21 +19,6 @@ class UserAuthFactory
 			return new DefaultUserAuth();
 		}
 
-		$filename = __DIR__ . "/../extensions/" . $name . ".php";
-		if (!file_exists($filename))
-		{
-			throw new Exception("No such file or directory: " . $filename);
-		}
-
-		require_once $filename;
-
-		$classname = str_replace("/", "\\", $name);
-
-		if (!class_exists($classname))
-		{
-			throw new Exception("Class not found: " . $classname);
-		}
-
-		return new $classname;
+		return ExtensionClassFactory::getInstance($name);
 	}
 }

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Programie/JsonConfig.git",
-                "reference": "6f6a5830fda63d9de702fe9ff28172722a6ca041"
+                "reference": "1ec99b1f9c16ae2455c4dbe73924a13976e3a9cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Programie/JsonConfig/zipball/6f6a5830fda63d9de702fe9ff28172722a6ca041",
-                "reference": "6f6a5830fda63d9de702fe9ff28172722a6ca041",
+                "url": "https://api.github.com/repos/Programie/JsonConfig/zipball/1ec99b1f9c16ae2455c4dbe73924a13976e3a9cc",
+                "reference": "1ec99b1f9c16ae2455c4dbe73924a13976e3a9cc",
                 "shasum": ""
             },
             "require-dev": {
@@ -40,7 +40,7 @@
                 }
             ],
             "description": "A simple PHP class for reading configuration values from JSON files",
-            "time": "2014-12-22 16:18:09"
+            "time": "2015-01-08 14:10:19"
         }
     ],
     "packages-dev": [],
