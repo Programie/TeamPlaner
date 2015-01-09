@@ -70,7 +70,7 @@ switch ($_GET["type"])
 			);
 		}
 
-		$query = $pdo->query("SELECT `id`, `username` FROM `users` ORDER BY `username` ASC");
+		$query = $pdo->query("SELECT `id`, `username`, `additionalInfo` FROM `users` ORDER BY `username` ASC");
 
 		$users = array();
 
@@ -143,12 +143,23 @@ switch ($_GET["type"])
 			$types[$type->name] = $type->title;
 		}
 
+		$userInfo = array();
+
+		$query = $pdo->query("
+			SELECT `id`, `username`, `additionalInfo`
+			FROM `users`
+		");
+
+		while ($row = $query->fetch())
+		{
+			$userInfo[$row->id] = $row;
+		}
+
 		$data = array();
 
 		$query = $pdo->prepare("
-			SELECT `date`, `type`, `username`
+			SELECT `date`, `type`, `userId`
 			FROM `entries`
-			LEFT JOIN `users` ON `users`.`id` = `userId`
 			WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
 		");
 
@@ -165,12 +176,12 @@ switch ($_GET["type"])
 				continue;
 			}
 
-			$data[$row->username][$row->date] = $row->type;
+			$data[$row->userId][$row->date] = $row->type;
 		}
 
 		$sortedData = array();
 
-		foreach ($data as $username => $dates)
+		foreach ($data as $userId => $dates)
 		{
 			$sortedUserData = array();
 
@@ -203,7 +214,8 @@ switch ($_GET["type"])
 
 			$sortedData[] = array
 			(
-				"username" => $username,
+				"username" => $userInfo[$userId]->username,
+				"additionalUserInfo" => $userInfo[$userId]->additionalInfo,
 				"entries" => $sortedUserData
 			);
 		}

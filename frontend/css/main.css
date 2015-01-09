@@ -8,6 +8,11 @@
 	background-color: grey !important;
 }
 
+.report-content-additional-info
+{
+	float: right;
+}
+
 #table-container
 {
 	padding-top: 70px;

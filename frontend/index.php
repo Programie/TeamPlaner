@@ -72,7 +72,11 @@ if (!$userAuthInstance->checkPermissions())
 						{{#months}}
 							<th></th>
 							{{#users}}
-								<th class="rotate-45"><div><span>{{username}}</span></div></th>
+								<th class="rotate-45" data-toggle="tooltip" data-placement="bottom" title="{{additionalInfo}}">
+									<div>
+										<span>{{username}}</span>
+									</div>
+								</th>
 							{{/users}}
 						{{/months}}
 					</tr>
@@ -92,13 +96,16 @@ if (!$userAuthInstance->checkPermissions())
 		<script type="text/html" id="report-content-template">
 			{{#.}}
 				<div class="panel panel-default">
-					<div class="panel-heading">{{username}}</div>
+					<div class="panel-heading">
+						{{username}}
+						{{#additionalUserInfo}}<div class="report-content-additional-info"><span class="label label-primary">{{.}}</span></div>{{/additionalUserInfo}}
+					</div>
 					<table class="table">
 						<thead>
 							<tr>
 								<th>Date</th>
 								<th>Week day</th>
-								<th>Type</th>
+								{{#hasMultipleTypes}}<th>Type</th>{{/hasMultipleTypes}}
 							</tr>
 						</thead>
 						<tbody>
@@ -106,7 +113,7 @@ if (!$userAuthInstance->checkPermissions())
 								<tr>
 									<td>{{date}}</td>
 									<td>{{weekday}}</td>
-									<td>{{type}}</td>
+									{{#hasMultipleTypes}}<td>{{type}}</td>{{/hasMultipleTypes}}
 								</tr>
 							{{/entries}}
 						</tbody>

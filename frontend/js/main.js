@@ -282,6 +282,11 @@ function readData(data)
 
 		typeSelection.append($("<option>").val(type.name).text(type.title));
 	}
+
+	$("[data-toggle='tooltip']").tooltip(
+	{
+		container : "body"
+	});
 }
 
 function readReportData(data)
@@ -304,6 +309,8 @@ function readReportData(data)
 			entryData.date = momentDate.format("L");
 		}
 	}
+
+	data.data.hasMultipleTypes = Object.keys(data.types).length > 1;
 
 	$("#report-content").html(Mustache.render($("#report-content-template").html(), data.data));
 }
