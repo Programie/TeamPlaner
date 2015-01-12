@@ -3,10 +3,10 @@
 	{
 		"defaultValue" : ""
 	},
-	"holidaysMethod" :
+	"reportClass" :
 	{
 	},
-	"reportClass" :
+	"holidaysMethod" :
 	{
 	},
 	"database.dsn" :

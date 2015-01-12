@@ -29,6 +29,7 @@ Here you can the default configuration:
 ```json
 {
 	"userAuth" : "",
+	"reportClass" : null,
 	"holidaysMethod" : null,
 	"database" :
 	{
