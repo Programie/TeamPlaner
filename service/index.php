@@ -131,84 +131,22 @@ switch ($_GET["type"])
 			$month = date("m");
 		}
 
-		$weekdays = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-
-		$types = array();
-
-		foreach ($config->getValue("types") as $type)
+		if (!$config->isValueSet("reportClass"))
 		{
-			if (!$type->showInReport)
-			{
-				continue;
-			}
-
-			$types[$type->name] = $type;
+			header("HTTP/1.1 500 Internal Server Error");
+			echo "Report class not defined!";
+			exit;
 		}
 
-		$data = array();
+		/**
+		 * @var iReport $reportInstance
+		 */
+		$reportInstance = ExtensionClassFactory::getInstance($config->getValue("reportClass"));
 
-		$query = $pdo->prepare("
-			SELECT `date`, `type`, `userId`
-			FROM `entries`
-			WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
-			ORDER BY `date` ASC
-		");
+		$reportInstance->setConfig($config);
+		$reportInstance->setPDO($pdo);
 
-		$query->execute(array
-		(
-			":year" => $year,
-			":month" => $month
-		));
-
-		while ($row = $query->fetch())
-		{
-			if (!isset($types[$row->type]))
-			{
-				continue;
-			}
-
-			$data[$row->userId][$row->date] = $row->type;
-		}
-
-		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=calendar-report_" . $year . "-" . $month . ".csv");
-
-		$file = fopen("php://output", "w");
-
-		$query = $pdo->query("SELECT `id`, `username`, `additionalInfo` FROM `users`");
-
-		while ($row = $query->fetch())
-		{
-			fputcsv($file, array("User", $row->username), ";");
-
-			if ($row->additionalInfo)
-			{
-				fputcsv($file, array($row->additionalInfo));
-			}
-
-			$fields = array("Date", "Week day");
-
-			if (count($types) > 1)
-			{
-				$fields[] = "Type";
-			}
-
-			fputcsv($file, $fields, ";");
-
-			foreach ($data[$row->id] as $date => $type)
-			{
-				$fields = array($date, $weekdays[date("w", strtotime($date))]);
-
-				if (count($types) > 1)
-				{
-					$fields[] = $types[$type]->title;
-				}
-
-				fputcsv($file, $fields, ";");
-			}
-		}
-
-		fclose($file);
+		$reportInstance->create($year, $month);
 		exit;
 	case "getReportData":
 		if (isset($_GET["year"]))
