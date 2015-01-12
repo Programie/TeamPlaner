@@ -126,9 +126,9 @@ if (!$userAuthInstance->checkPermissions())
 				</div>
 			{{/.}}
 			{{^.}}
-			<div class="alert alert-danger">
-				<i class="glyphicon glyphicon-exclamation-sign"></i> <strong>No report available!</strong>
-			</div>
+				<div class="alert alert-danger">
+					<i class="glyphicon glyphicon-exclamation-sign"></i> <strong>No report available!</strong>
+				</div>
 			{{/.}}
 		</script>
 	</head>
@@ -198,9 +198,9 @@ if (!$userAuthInstance->checkPermissions())
 						<?php
 						if ($config->isValueSet("reportClass"))
 						{
-						?>
-						<button type="button" class="btn btn-default" id="report-download">Download</button>
-						<?php
+							?>
+							<button type="button" class="btn btn-default" id="report-download">Download</button>
+							<?php
 						}
 						?>
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
