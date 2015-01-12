@@ -195,6 +195,7 @@ if (!$userAuthInstance->checkPermissions())
 					<div class="modal-body" id="report-content">
 					</div>
 					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="report-download">Download</button>
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 					</div>
 				</div>

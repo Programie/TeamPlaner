@@ -112,6 +112,104 @@ switch ($_GET["type"])
 			"holidays" => $holidays
 		));
 		exit;
+	case "getReport":
+		if (isset($_GET["year"]))
+		{
+			$year = $_GET["year"];
+		}
+		else
+		{
+			$year = date("Y");
+		}
+
+		if (isset($_GET["month"]))
+		{
+			$month = $_GET["month"];
+		}
+		else
+		{
+			$month = date("m");
+		}
+
+		$weekdays = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
+		$types = array();
+
+		foreach ($config->getValue("types") as $type)
+		{
+			if (!$type->showInReport)
+			{
+				continue;
+			}
+
+			$types[$type->name] = $type;
+		}
+
+		$data = array();
+
+		$query = $pdo->prepare("
+			SELECT `date`, `type`, `userId`
+			FROM `entries`
+			WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
+			ORDER BY `date` ASC
+		");
+
+		$query->execute(array
+		(
+			":year" => $year,
+			":month" => $month
+		));
+
+		while ($row = $query->fetch())
+		{
+			if (!isset($types[$row->type]))
+			{
+				continue;
+			}
+
+			$data[$row->userId][$row->date] = $row->type;
+		}
+
+		header("Content-Type: text/csv");
+		header("Content-Disposition: attachment; filename=calendar-report_" . $year . "-" . $month . ".csv");
+
+		$file = fopen("php://output", "w");
+
+		$query = $pdo->query("SELECT `id`, `username`, `additionalInfo` FROM `users`");
+
+		while ($row = $query->fetch())
+		{
+			fputcsv($file, array("User", $row->username), ";");
+
+			if ($row->additionalInfo)
+			{
+				fputcsv($file, array($row->additionalInfo));
+			}
+
+			$fields = array("Date", "Week day");
+
+			if (count($types) > 1)
+			{
+				$fields[] = "Type";
+			}
+
+			fputcsv($file, $fields, ";");
+
+			foreach ($data[$row->id] as $date => $type)
+			{
+				$fields = array($date, $weekdays[date("w", strtotime($date))]);
+
+				if (count($types) > 1)
+				{
+					$fields[] = $types[$type]->title;
+				}
+
+				fputcsv($file, $fields, ";");
+			}
+		}
+
+		fclose($file);
+		exit;
 	case "getReportData":
 		if (isset($_GET["year"]))
 		{

@@ -10,6 +10,11 @@ $(function()
 
 	var tableContainer = $("#table-container");
 
+	$("#report-download").on("click", function()
+	{
+		document.location = "service/?type=getReport&year=" + $("#report-year").data("value") + "&month=" + $("#report-month").data("value");
+	});
+
 	$("#selection-modal").on("hidden.bs.modal", function()
 	{
 		updateSelection();
@@ -291,8 +296,13 @@ function readData(data)
 
 function readReportData(data)
 {
-	$("#report-month").text(moment.months()[data.month - 1]);
-	$("#report-year").text(data.year);
+	var monthElement = $("#report-month");
+	monthElement.text(moment.months()[data.month - 1]);
+	monthElement.data("value", data.month);
+
+	var yearElement = $("#report-year");
+	yearElement.text(data.year);
+	yearElement.data("value", data.year);
 
 	for (var userIndex in data.data)
 	{
