@@ -12,7 +12,43 @@ $(function()
 
 	$("#report-download").on("click", function()
 	{
-		document.location = "service/?type=getReport&year=" + $("#report-year").data("value") + "&month=" + $("#report-month").data("value");
+		var queryParameters =
+		[
+			"type=getReport",
+			"year=" + $("#report-year").data("value")
+		];
+
+		var monthElement = $("#report-month");
+		if (monthElement.data("value"))
+		{
+			queryParameters.push("month=" + monthElement.data("value"));
+		}
+
+		document.location = "service/?" + queryParameters.join("&");
+	});
+
+	$("#generate-entries-button").on("click", function()
+	{
+		$("#generate-entries-modal").modal("show");
+	});
+
+	$("#reload-button").on("click", updateData);
+
+	$("#year-report-button").on("click", function()
+	{
+		$.ajax(
+		{
+			cache : false,
+			contentType : "application/json",
+			context : this,
+			success : function(data)
+			{
+				readReportData(data);
+
+				$("#report-modal").modal("show");
+			},
+			url : "service/?type=getReportData&year=" + $("#current-year").text()
+		});
 	});
 
 	$("#selection-modal").on("hidden.bs.modal", function()
@@ -297,8 +333,18 @@ function readData(data)
 function readReportData(data)
 {
 	var monthElement = $("#report-month");
-	monthElement.text(moment.months()[data.month - 1]);
-	monthElement.data("value", data.month);
+	if (data.month)
+	{
+		monthElement.text(moment.months()[data.month - 1]);
+		monthElement.data("value", data.month);
+		monthElement.show();
+	}
+	else
+	{
+		monthElement.text("");
+		monthElement.removeData("value");
+		monthElement.hide();
+	}
 
 	var yearElement = $("#report-year");
 	yearElement.text(data.year);

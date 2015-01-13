@@ -128,7 +128,7 @@ switch ($_GET["type"])
 		}
 		else
 		{
-			$month = date("m");
+			$month = null;
 		}
 
 		if (!$config->isValueSet("reportClass"))
@@ -164,7 +164,7 @@ switch ($_GET["type"])
 		}
 		else
 		{
-			$month = date("m");
+			$month = null;
 		}
 
 		$types = array();
@@ -193,17 +193,33 @@ switch ($_GET["type"])
 
 		$data = array();
 
-		$query = $pdo->prepare("
-			SELECT `date`, `type`, `userId`
-			FROM `entries`
-			WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
-		");
+		if ($month)
+		{
+			$query = $pdo->prepare("
+				SELECT `date`, `type`, `userId`
+				FROM `entries`
+				WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
+			");
 
-		$query->execute(array
-		(
-			":year" => $year,
-			":month" => $month
-		));
+			$query->execute(array
+			(
+				":year" => $year,
+				":month" => $month
+			));
+		}
+		else
+		{
+			$query = $pdo->prepare("
+				SELECT `date`, `type`, `userId`
+				FROM `entries`
+				WHERE YEAR(`date`) = :year
+			");
+
+			$query->execute(array
+			(
+				":year" => $year
+			));
+		}
 
 		while ($row = $query->fetch())
 		{

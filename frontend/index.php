@@ -148,6 +148,13 @@ if (!$userAuthInstance->checkPermissions())
 
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-cog"></i> Options</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#" id="year-report-button"><i class="glyphicon glyphicon-th-list"></i> Year report</a></li>
+							<li><a href="#" id="reload-button"><i class="glyphicon glyphicon-refresh"></i> Reload</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> <span id="header-username"></span> <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="?logout"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
@@ -199,7 +206,7 @@ if (!$userAuthInstance->checkPermissions())
 						if ($config->isValueSet("reportClass"))
 						{
 							?>
-							<button type="button" class="btn btn-default" id="report-download">Download</button>
+							<button type="button" class="btn btn-default" id="report-download"><i class="glyphicon glyphicon-download"></i> Download</button>
 							<?php
 						}
 						?>

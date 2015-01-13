@@ -16,7 +16,7 @@ interface iReport
 	 * This method should print the data (e.g. using "echo").
 	 *
 	 * @param int $year The year of the report
-	 * @param int $month The month of the report
+	 * @param int $month The month of the report (Is null for a year report)
 	 */
 	public function create($year, $month);
 }
