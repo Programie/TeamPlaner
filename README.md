@@ -11,62 +11,29 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
 ## Installation
 
    * Clone this repository: **git clone https://github.com/Programie/TeamPlaner.git**
-   * Create a **config.json** file inside of the **config** folder (See section **Configuration** for details)
+   * Execute **php bin/update-config.php** to create or update your configuration file
+   * Edit the **config.json** file inside of the **config** folder (See section **Configuration** for details)
    * Import **database.sql** into your MySQL database
+   * Download the dependencies (See note bellow)
    * Configure your webserver
-      * Point your document root to the frontend folder
-      * Create an alias **service** pointing to the service folder
+      * Point your document root to the **frontend** folder
+      * Create an alias **service** pointing to the **service** folder
    * Use it
+
+### Dependencies
+
+Team Planer is using dependency management tools for PHP (composer) and the frontend (bower).
+
+#### PHP dependencies
+
+   * [Get composer](http://getcomposer.org) and put the downloaded **composer.phar** into the root directory of this repository.
+   * Execute **composer.phar install**
+
+#### Frontend dependencies
+
+   * Install [Bower](http://bower.io) (requires Node.js)
+   * Change into the **frontend** folder and execute **bower install**
 
 ## Configuration
 
-The configuration is done in a simple JSON file **config.json** which is located in the config folder. On first installation you have to create that file yourself.
-
-### Structure
-
-Here you can the default configuration:
-
-```json
-{
-	"userAuth" : "",
-	"reportClass" : null,
-	"holidaysMethod" : null,
-	"database" :
-	{
-		"dsn" : "mysql:host=127.0.0.1;dbname=calendar",
-		"username" : "root",
-		"password" : ""
-	},
-	"types" :
-	[
-		{
-			"name" : "none",
-			"title" : "None",
-			"color" : "white",
-			"noSave" : true
-		},
-		{
-			"name" : "day",
-			"title" : "Day",
-			"color" : "lightgreen",
-			"showInReport" : true
-		},
-		{
-			"name" : "night",
-			"title" : "Night",
-			"color" : "indianred",
-			"showInReport" : true
-		},
-		{
-			"name" : "holiday",
-			"title" : "Holiday",
-			"color" : "orange"
-		}
-	],
-	"colors" :
-	{
-		"holiday" : "dodgerblue",
-		"weekend" : "lightskyblue"
-	}
-}
-```
+The configuration is done in a simple JSON file **config.json** which is located in the **config** folder. You can create or update it by executing **php bin/update-config.php**.
