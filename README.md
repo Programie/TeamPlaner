@@ -18,6 +18,7 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
    * Configure your webserver
       * Point your document root to the **frontend** folder
       * Create an alias **service** pointing to the **service** folder
+   * Create the users for your team (See section **User management** for details)
    * Use it
 
 ### Dependencies
