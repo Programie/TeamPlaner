@@ -251,17 +251,20 @@ function readData(data)
 
 			var color = "white";
 
-			if (isWeekend)
+			if (isWeekend && data.colors.weekend)
 			{
 				color = data.colors.weekend;
 			}
 
-			for (var holidayIndex in data.holidays)
+			if (data.colors.holiday)
 			{
-				if (data.holidays[holidayIndex] == isoDate)
+				for (var holidayIndex in data.holidays)
 				{
-					color = data.colors.holiday;
-					break;
+					if (data.holidays[holidayIndex] == isoDate)
+					{
+						color = data.colors.holiday;
+						break;
+					}
 				}
 			}
 
