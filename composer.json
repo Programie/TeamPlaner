@@ -11,6 +11,6 @@
 		}
 	],
 	"require": {
-		"programie/jsonconfig": "dev-master"
+		"programie/jsonconfig": "1.0"
 	}
 }
