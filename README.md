@@ -37,3 +37,20 @@ Team Planer is using dependency management tools for PHP (composer) and the fron
 ## Configuration
 
 The configuration is done in a simple JSON file **config.json** which is located in the **config** folder. You can create or update it by executing **php bin/update-config.php**.
+
+## User management
+
+Currently you have to manage users directly in the database.
+
+### Create a new user
+
+   * Connect to your database
+   * Create a new entry in the **users** table
+      * id: NULL or omit the field (Use next auto increment value)
+      * username: The username you want to use
+      * additionalInfo: Any additional information for the user (or NULL or omit the field)
+
+### Remove an existing user
+
+   * Connect to your database
+   * Delete the entry of the user you want to remove
