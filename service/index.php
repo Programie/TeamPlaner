@@ -106,8 +106,9 @@ switch ($_GET["type"])
 			"types" => $config->getValue("types"),
 			"colors" => array
 			(
-				"weekend" => $config->getValue("colors.weekend"),
-				"holiday" => $config->getValue("colors.holiday")
+				"holiday" => $config->getValue("colors.holiday"),
+				"today" => $config->getValue("colors.today"),
+				"weekend" => $config->getValue("colors.weekend")
 			),
 			"holidays" => $holidays
 		));

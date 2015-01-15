@@ -54,6 +54,10 @@
 	{
 		"defaultValue" : "dodgerblue"
 	},
+	"colors.today" :
+	{
+		"defaultValue" : "wheat"
+	},
 	"colors.weekend" :
 	{
 		"defaultValue" : "lightskyblue"

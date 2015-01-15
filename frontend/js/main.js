@@ -235,12 +235,15 @@ function readData(data)
 		for (var month in tableData.months)
 		{
 			var valid = true;
+			var nowDate = new Date();
 			var date = new Date(data.year, month, day);
 
 			if (date.getMonth() != month || date.getDate() != day)
 			{
 				valid = false;
 			}
+
+			var isToday = nowDate.getFullYear() == date.getFullYear() && nowDate.getMonth() == date.getMonth() && nowDate.getDate() == date.getDate();
 
 			var dateDay = date.getDay();
 			var isWeekend = dateDay == 6 || dateDay == 0;
@@ -265,7 +268,7 @@ function readData(data)
 			columns.push(
 			{
 				text : valid ? moment(date).format("dd, L") : "",
-				color : valid ? color : "white"
+				color : valid ? (isToday && data.colors.today ? data.colors.today : color) : "white"
 			});
 
 			var dayEntries = valid ? data.entries[moment(date).format("YYYY-MM-DD")] : null;
