@@ -28,7 +28,7 @@ The configuration is done in a simple JSON file **config.json** which is located
 
 ## User management
 
-Currently you have to manage users directly in the database. A easier user management is planed for a future release.
+Currently you have to manage users directly in the database. An easier user management is planed for one of the next releases.
 
 ### Create a new user
 
