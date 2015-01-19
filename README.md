@@ -7,6 +7,7 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
    * Webserver (e.g. Apache)
    * PHP 5.3 or newer
    * MySQL
+   * [bower](http://bower.io) (to download frontend JavaScript dependencies)
 
 ## Installation
 
@@ -14,26 +15,12 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
    * Execute **php bin/update-config.php** to create or update your configuration file
    * Edit the **config.json** file inside of the **config** folder (See section **Configuration** for details)
    * Import **database.sql** into your MySQL database
-   * Download the dependencies (See note bellow)
+   * Execute **bin/build.sh** to build the application
    * Configure your webserver
       * Point your document root to the **frontend** folder
       * Create an alias **service** pointing to the **service** folder
    * Create the users for your team (See section **User management** for details)
    * Use it
-
-### Dependencies
-
-Team Planer is using dependency management tools for PHP (composer) and the frontend (bower).
-
-#### PHP dependencies
-
-   * [Get composer](http://getcomposer.org) and put the downloaded **composer.phar** into the root directory of this repository.
-   * Execute **composer.phar install**
-
-#### Frontend dependencies
-
-   * Install [Bower](http://bower.io) (requires Node.js)
-   * Change into the **frontend** folder and execute **bower install**
 
 ## Configuration
 
@@ -41,7 +28,7 @@ The configuration is done in a simple JSON file **config.json** which is located
 
 ## User management
 
-Currently you have to manage users directly in the database.
+Currently you have to manage users directly in the database. A easier user management is planed for a future release.
 
 ### Create a new user
 
