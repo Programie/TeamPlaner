@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../includes/Config.php";
 require_once __DIR__ . "/../includes/DBConnection.php";
+require_once __DIR__ . "/../includes/ExtensionClassFactory.php";
 require_once __DIR__ . "/../includes/UserAuthFactory.php";
 
 $config = new Config();
