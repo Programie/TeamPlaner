@@ -57,6 +57,7 @@ if (!$userAuthInstance->checkPermissions())
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
 		<script src="bower_components/mustache/mustache.js" type="text/javascript"></script>
 		<script src="bower_components/moment/moment.js" type="text/javascript"></script>
+		<script src="bower_components/notifyjs/dist/notify-combined.min.js" type="text/javascript"></script>
 
 		<script src="js/main.js" type="text/javascript"></script>
 

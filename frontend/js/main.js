@@ -41,6 +41,10 @@ $(function()
 			cache : false,
 			contentType : "application/json",
 			context : this,
+			error : function(xhr, error, errorThrown)
+			{
+				$.notify(error + ": " + errorThrown, "error");
+			},
 			success : function(data)
 			{
 				readReportData(data);
@@ -77,6 +81,10 @@ $(function()
 			contentType : "application/json",
 			data : JSON.stringify(entries),
 			context : this,
+			error : function(xhr, error, errorThrown)
+			{
+				$.notify(error + ": " + errorThrown, "error");
+			},
 			success : function()
 			{
 				updateData();
@@ -95,6 +103,10 @@ $(function()
 			cache : false,
 			contentType : "application/json",
 			context : this,
+			error : function(xhr, error, errorThrown)
+			{
+				$.notify(error + ": " + errorThrown, "error");
+			},
 			success : function(data)
 			{
 				readReportData(data);
@@ -176,6 +188,10 @@ function updateData()
 		cache : false,
 		dataType : "json",
 		context : this,
+		error : function(xhr, error, errorThrown)
+		{
+			$.notify(error + ": " + errorThrown, "error");
+		},
 		headers :
 		{
 			Accept : "application/json"
