@@ -148,7 +148,7 @@ switch ($_GET["type"])
 		$reportInstance->setConfig($config);
 		$reportInstance->setPDO($pdo);
 
-		$reportInstance->create($year, $month);
+		$reportInstance->create("php://output", $year, $month);
 		exit;
 	case "getReportData":
 		if (isset($_GET["year"]))

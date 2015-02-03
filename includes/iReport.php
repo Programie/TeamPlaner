@@ -15,8 +15,9 @@ interface iReport
 	 * Called once the report should be created.
 	 * This method should print the data (e.g. using "echo").
 	 *
+	 * @param string $output The file to which the report should be saved
 	 * @param int $year The year of the report
 	 * @param int $month The month of the report (Is null for a year report)
 	 */
-	public function create($year, $month);
+	public function create($output, $year, $month);
 }
