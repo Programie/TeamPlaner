@@ -42,4 +42,10 @@ $reportInstance = ExtensionClassFactory::getInstance($config->getValue("reportCl
 $reportInstance->setConfig($config);
 $reportInstance->setPDO($pdo);
 
-$reportInstance->create($output, $year, $month);
+$reportInstance->setOutput($output);
+$reportInstance->setYear($year);
+$reportInstance->setMonth($month);
+
+$reportInstance->configure();
+
+$reportInstance->create();

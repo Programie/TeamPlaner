@@ -12,12 +12,49 @@ interface iReport
 	public function setPDO(PDO $pdo);
 
 	/**
-	 * Called once the report should be created.
-	 * This method should print the data (e.g. using "echo").
-	 *
-	 * @param string $output The file to which the report should be saved
-	 * @param int $year The year of the report
-	 * @param int $month The month of the report (Is null for a year report)
+	 * @param int $year Set the year of which the report should be generated
 	 */
-	public function create($output, $year, $month);
+	public function setYear($year);
+
+	/**
+	 * @return int The year of which the report should be generated
+	 */
+	public function getYear();
+
+	/**
+	 * @param int|null $month Set the month of which the report should be generated (null = all months of the year)
+	 */
+	public function setMonth($month);
+
+	/**
+	 * @return int|null The month of which the report should be generated (null = all months of the year)
+	 */
+	public function getMonth();
+
+	/**
+	 * @return string The content type of the generated report
+	 */
+	public function getOutputContentType();
+
+	/**
+	 * @return string The filename of the generated report (used as the filename in the download and mail attachment)
+	 */
+	public function getOutputFilename();
+
+	/**
+	 * @param string $output The path to the filename in which the report should be written (e.g. php://stdout, php://output or some real file path)
+	 */
+	public function setOutput($output);
+
+	/**
+	 * Configure the report (e.g. set output content type and output filename).
+	 * This method will be called before create().
+	 */
+	public function configure();
+
+	/**
+	 * Called once the report should be created.
+	 * Note: This method should write the data to the file specified in $output.
+	 */
+	public function create();
 }

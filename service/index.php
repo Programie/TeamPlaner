@@ -148,7 +148,16 @@ switch ($_GET["type"])
 		$reportInstance->setConfig($config);
 		$reportInstance->setPDO($pdo);
 
-		$reportInstance->create("php://output", $year, $month);
+		$reportInstance->setOutput("php://output");
+		$reportInstance->setYear($year);
+		$reportInstance->setMonth($month);
+
+		$reportInstance->configure();
+
+		header("Content-type: " . $reportInstance->getOutputContentType());
+		header("Content-Disposition: attachment; filename=" . $reportInstance->getOutputFilename());
+
+		$reportInstance->create();
 		exit;
 	case "getReportData":
 		if (isset($_GET["year"]))
