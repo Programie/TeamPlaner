@@ -11,6 +11,7 @@
 		}
 	],
 	"require": {
-		"programie/jsonconfig": "1.0"
+		"programie/jsonconfig": "1.0",
+		"swiftmailer/swiftmailer": "~5.3"
 	}
 }
