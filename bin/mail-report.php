@@ -76,13 +76,16 @@ if ($config->isValueSet("reportMail.smtp.password"))
 
 $mailer = Swift_Mailer::newInstance($transport);
 
+$attachment = Swift_Attachment::fromPath($tempFile);
+$attachment->setFilename($reportInstance->getOutputFilename());
+
 $message = Swift_Message::newInstance();
 
 $message->setSubject($config->getValue("reportMail.subject"));
 $message->setFrom($config->getValue("reportMail.from"));
 $message->setTo($recipient);
 $message->setBody($config->getValue("reportMail.body"));
-$message->attach(Swift_Attachment::fromPath($tempFile));
+$message->attach($attachment);
 
 $mailer->send($message);
 
