@@ -1,14 +1,14 @@
 CREATE TABLE `teams` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(100) NOT NULL DEFAULT '',
-	`title` varchar(200) NOT NULL DEFAULT '',
+	`name` varchar(100) NOT NULL,
+	`title` varchar(200) NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-	`username` varchar(100) NOT NULL DEFAULT '',
+	`username` varchar(100) NOT NULL,
 	`additionalInfo` longtext,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -29,7 +29,7 @@ CREATE TABLE `teammembers` (
 CREATE TABLE `entries` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`date` date NOT NULL,
-	`type` varchar(100) NOT NULL DEFAULT '',
+	`type` varchar(100) NOT NULL,
 	`memberId` int(11) unsigned NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `date_userId` (`date`,`memberId`),
