@@ -33,10 +33,20 @@ Currently you have to manage users directly in the database. An easier user mana
 ### Create a new user
 
    * Connect to your database
-   * Create a new entry in the **users** table
+   * Create a new entry in the **teams** table
+      * id: NULL or omit the field (Use next auto increment value)
+      * name: An unique name not containing any special characters (especially **NOT** a slash "/")
+      * title: The title for the team
+   * Create an entry for each user in the **users** table
       * id: NULL or omit the field (Use next auto increment value)
       * username: The username you want to use
       * additionalInfo: Any additional information for the user (or NULL or omit the field)
+   * Create an entry for each team member in the **teammembers** table
+      * id: NULL or omit the field (Use next auto increment value)
+      * teamId: id from the **teams** table
+      * userId: id from the **users** table
+      * startDate: NULL or a date in format "YYYY-MM-DD" on which the user joins in the team
+      * endDate: NULL or a date in format "YYYY-MM-DD" on which the user leaves the team
 
 ### Remove an existing user
 
