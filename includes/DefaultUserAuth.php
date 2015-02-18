@@ -38,6 +38,16 @@ class DefaultUserAuth implements iUserAuth
 	}
 
 	/**
+	 * Get a list of teams this user is member of.
+	 *
+	 * @return array An array with the names (not title!) of the teams
+	 */
+	public function getTeams()
+	{
+		return true;
+	}
+
+	/**
 	 * Get the name of the logged in user.
 	 *
 	 * @return string The name of the currently logged in user

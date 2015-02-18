@@ -3,6 +3,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../includes/Config.php";
 require_once __DIR__ . "/../includes/DBConnection.php";
 require_once __DIR__ . "/../includes/ExtensionClassFactory.php";
+require_once __DIR__ . "/../includes/TeamHelper.php";
 require_once __DIR__ . "/../includes/UserAuthFactory.php";
 
 $config = new Config();
@@ -43,15 +44,38 @@ switch ($_GET["type"])
 			$year = date("Y");
 		}
 
+		$teams = $userAuthInstance->getTeams();
+
+		$availableTeams = TeamHelper::getTeams($pdo, $teams);
+
+		if (isset($_GET["team"]))
+		{
+			$team = $_GET["team"];
+		}
+		else
+		{
+			$team = $availableTeams[0]->name;
+		}
+
+		$teamId = TeamHelper::getTeamIdIfAllowed($pdo, $team, $teams);
+		if ($teamId === null)
+		{
+			header("HTTP/1.1 403 Forbidden");
+			echo "You are not allowed to access this team!";
+			exit;
+		}
+
 		$query = $pdo->prepare("
-			SELECT `id`, `date`, `type`, `userId`
+			SELECT `entries`.`id`, `date`, `type`, `memberId`, `userId`
 			FROM `entries`
-			WHERE YEAR(`date`) = :year
+			LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
+			WHERE YEAR(`date`) = :year AND `teamId` = :teamId
 		");
 
 		$query->execute(array
 		(
-			":year" => $year
+			":year" => $year,
+			":teamId" => $teamId
 		));
 
 		$entries = array();
@@ -67,17 +91,30 @@ switch ($_GET["type"])
 			(
 				"id" => (int) $row->id,
 				"type" => $row->type,
+				"memberId" => (int) $row->memberId,
 				"userId" => (int) $row->userId
 			);
 		}
 
-		$query = $pdo->query("SELECT `id`, `username`, `additionalInfo` FROM `users` ORDER BY `username` ASC");
+		$query = $pdo->prepare("
+			SELECT `teammembers`.`id` AS `memberId`, `userId`, `username`, `additionalInfo`, `startDate`, `endDate`
+			FROM `teammembers`
+			LEFT JOIN `users` ON `users`.`id` = `teammembers`.`userId`
+			WHERE `teamId` = :teamId
+			ORDER BY `username` ASC
+		");
+
+		$query->execute(array
+		(
+			":teamId" => $teamId
+		));
 
 		$users = array();
 
 		while ($row = $query->fetch())
 		{
-			$row->id = (int) $row->id;
+			$row->memberId = (int) $row->memberId;
+			$row->userId = (int) $row->userId;
 
 			$users[] = $row;
 		}
@@ -111,7 +148,9 @@ switch ($_GET["type"])
 				"today" => $config->getValue("colors.today"),
 				"weekend" => $config->getValue("colors.weekend")
 			),
-			"holidays" => $holidays
+			"holidays" => $holidays,
+			"teams" => $availableTeams,
+			"currentTeam" => $team
 		));
 		exit;
 	case "getReport":
@@ -140,6 +179,14 @@ switch ($_GET["type"])
 			exit;
 		}
 
+		$teamId = TeamHelper::getTeamIdIfAllowed($pdo, $_GET["team"], $userAuthInstance->getTeams());
+		if ($teamId === null)
+		{
+			header("HTTP/1.1 403 Forbidden");
+			echo "You are not allowed to access this team!";
+			exit;
+		}
+
 		/**
 		 * @var iReport $reportInstance
 		 */
@@ -151,6 +198,7 @@ switch ($_GET["type"])
 		$reportInstance->setOutput("php://output");
 		$reportInstance->setYear($year);
 		$reportInstance->setMonth($month);
+		$reportInstance->setTeamId($teamId);
 
 		$reportInstance->configure();
 
@@ -176,6 +224,14 @@ switch ($_GET["type"])
 		else
 		{
 			$month = null;
+		}
+
+		$teamId = TeamHelper::getTeamIdIfAllowed($pdo, $_GET["team"], $userAuthInstance->getTeams());
+		if ($teamId === null)
+		{
+			header("HTTP/1.1 403 Forbidden");
+			echo "You are not allowed to access this team!";
+			exit;
 		}
 
 		$types = array();
@@ -209,13 +265,15 @@ switch ($_GET["type"])
 			$query = $pdo->prepare("
 				SELECT `date`, `type`, `userId`
 				FROM `entries`
-				WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month
+				LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
+				WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month AND `teamId` = :teamId
 			");
 
 			$query->execute(array
 			(
 				":year" => $year,
-				":month" => $month
+				":month" => $month,
+				":teamId" => $teamId
 			));
 		}
 		else
@@ -223,12 +281,14 @@ switch ($_GET["type"])
 			$query = $pdo->prepare("
 				SELECT `date`, `type`, `userId`
 				FROM `entries`
-				WHERE YEAR(`date`) = :year
+				LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
+				WHERE YEAR(`date`) = :year AND `teamId` = :teamId
 			");
 
 			$query->execute(array
 			(
-				":year" => $year
+				":year" => $year,
+				":teamId" => $teamId
 			));
 		}
 
@@ -324,6 +384,20 @@ switch ($_GET["type"])
 			exit;
 		}
 
+		$teamId = TeamHelper::getTeamIdIfAllowed($pdo, $_GET["team"], $userAuthInstance->getTeams());
+		if ($teamId === null)
+		{
+			header("HTTP/1.1 403 Forbidden");
+			echo "You are not allowed to access this team!";
+			exit;
+		}
+
+		$teamMemberQuery = $pdo->prepare("
+			SELECT `id`
+			FROM `teammembers`
+			WHERE `teamId` = :teamId AND `id` = :id
+		");
+
 		$deleteEntryQuery = $pdo->prepare("
 			DELETE FROM `entries`
 			WHERE `id` = :id
@@ -334,7 +408,7 @@ switch ($_GET["type"])
 			SET
 				`date` = :date,
 				`type` = :type,
-				`userId` = :userId
+				`memberId` = :memberId
 			WHERE `id` = :id
 		");
 
@@ -343,7 +417,7 @@ switch ($_GET["type"])
 			SET
 				`date` = :date,
 				`type` = :type,
-				`userId` = :userId
+				`memberId` = :memberId
 		");
 
 		$types = array();
@@ -358,10 +432,25 @@ switch ($_GET["type"])
 		 * - id: The ID of the entry (if already existing and should be updated)
 		 * - date: The date in format "YYYY-MM-DD" for the entry
 		 * - type: The new type for the entry
-		 * - userId: The ID of the user for which the entry should be set
+		 * - memberId: The ID of the team member for which the entry should be set
 		 */
 		foreach ($entries as $entry)
 		{
+			$teamMemberQuery->execute(array
+			(
+				":teamId" => $teamId,
+				":id" => $entry->memberId
+			));
+
+			if (!$teamMemberQuery->rowCount())
+			{
+				header("HTTP/1.1 403 Forbidden");
+				echo "You are not allowed to modify this team!";
+				exit;
+			}
+
+			// TODO: $entry might be an entry of another team the user does not have access to!
+
 			// Type does not exist or should not be saved
 			if (!isset($types[$entry->type]) or $types[$entry->type]->noSave)
 			{
@@ -385,7 +474,7 @@ switch ($_GET["type"])
 					":id" => $entry->id,
 					":date" => $entry->date,
 					":type" => $entry->type,
-					":userId" => $entry->userId
+					":memberId" => $entry->memberId
 				));
 				continue;
 			}
@@ -395,7 +484,7 @@ switch ($_GET["type"])
 			(
 				":date" => $entry->date,
 				":type" => $entry->type,
-				":userId" => $entry->userId
+				":memberId" => $entry->memberId
 			));
 		}
 		exit;

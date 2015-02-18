@@ -66,7 +66,7 @@ if (!$userAuthInstance->checkPermissions())
 				<thead>
 					<tr>
 						{{#months}}
-							<th class="month-header" colspan="{{columnsPerMonth}}" data-month="{{number}}" title="Click to show a report for this month">{{name}}</th>
+							<th class="month-header" colspan="{{columns}}" data-month="{{number}}" title="Click to show a report for this month">{{name}}</th>
 						{{/months}}
 					</tr>
 					<tr>
@@ -86,7 +86,7 @@ if (!$userAuthInstance->checkPermissions())
 					{{#rows}}
 						<tr>
 							{{#columns}}
-								<td style="background-color: {{color}};" {{#selectable}}class="selectable"{{/selectable}} data-date="{{date}}" data-userid="{{userId}}" data-entryid="{{entryId}}">{{text}}</td>
+								<td style="background-color: {{color}};" {{#selectable}}class="selectable"{{/selectable}} data-date="{{date}}" data-userid="{{userId}}" data-memberid="{{memberId}}" data-entryid="{{entryId}}">{{text}}</td>
 							{{/columns}}
 						</tr>
 					{{/rows}}
@@ -142,21 +142,25 @@ if (!$userAuthInstance->checkPermissions())
 				</div>
 
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="#" id="previous-year-link"><i class="glyphicon glyphicon-chevron-left"></i></a></li>
+					<li><a id="previous-year-link"><i class="glyphicon glyphicon-chevron-left"></i></a></li>
 					<li><span class="navbar-text" id="current-year"></span></li>
-					<li><a href="#" id="next-year-link"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+					<li><a id="next-year-link"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-cog"></i> Options</a>
+						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-book"></i> <span id="current-team"></span></a>
+						<ul class="dropdown-menu" role="menu" id="team-menu"></ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-cog"></i> Options</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#" id="year-report-button"><i class="glyphicon glyphicon-th-list"></i> Year report</a></li>
-							<li><a href="#" id="reload-button"><i class="glyphicon glyphicon-refresh"></i> Reload</a></li>
+							<li><a id="year-report-button"><i class="glyphicon glyphicon-th-list"></i> Year report</a></li>
+							<li><a id="reload-button"><i class="glyphicon glyphicon-refresh"></i> Reload</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> <span id="header-username"></span> <span class="caret"></span></a>
+						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> <span id="header-username"></span> <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="?logout"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
 						</ul>

@@ -15,6 +15,7 @@ $(function()
 		var queryParameters =
 		[
 			"type=getReport",
+			"team=" + $("#current-team").data("name"),
 			"year=" + $("#report-year").data("value")
 		];
 
@@ -51,7 +52,7 @@ $(function()
 
 				$("#report-modal").modal("show");
 			},
-			url : "service/?type=getReportData&year=" + $("#current-year").text()
+			url : "service/?type=getReportData&team=" + $("#current-team").data("name") + "&year=" + $("#current-year").text()
 		});
 	});
 
@@ -71,7 +72,7 @@ $(function()
 				id : $(this).data("entryid"),
 				date : moment(new Date($(this).data("date"))).format("YYYY-MM-DD"),
 				type : $("#selection-modal-type").val(),
-				userId : $(this).data("userid")
+				memberId : $(this).data("memberid")
 			});
 		});
 
@@ -92,7 +93,7 @@ $(function()
 				$("#selection-modal").modal("hide");
 			},
 			type : "POST",
-			url : "service/?type=setData"
+			url : "service/?type=setData&team=" + $("#current-team").data("name")
 		});
 	});
 
@@ -113,7 +114,7 @@ $(function()
 
 				$("#report-modal").modal("show");
 			},
-			url : "service/?type=getReportData&year=" + $("#current-year").text() + "&month=" + $(this).data("month")
+			url : "service/?type=getReportData&team=" + $("#current-team").data("name") + "&year=" + $("#current-year").text() + "&month=" + $(this).data("month")
 		});
 	});
 
@@ -124,27 +125,27 @@ $(function()
 		selectionStart =
 		{
 			date : new Date($(this).data("date")),
-			userId : $(this).data("userid")
+			memberId : $(this).data("memberid")
 		};
 
-		updateSelection($(this).data("userid"), selectionStart.date, new Date($(this).data("date")));
+		updateSelection($(this).data("memberid"), selectionStart.date, new Date($(this).data("date")));
 
 		return false;// Prevent showing text selection
 	});
 
 	tableContainer.on("mouseover", "td.selectable", function()
 	{
-		if (selectionStart && selectionStart.userId == $(this).data("userid"))
+		if (selectionStart && selectionStart.memberId == $(this).data("memberid"))
 		{
-			updateSelection($(this).data("userid"), selectionStart.date, new Date($(this).data("date")));
+			updateSelection($(this).data("memberid"), selectionStart.date, new Date($(this).data("date")));
 		}
 	});
 
 	tableContainer.on("mouseup", "td.selectable", function()
 	{
-		if (selectionStart && selectionStart.userId == $(this).data("userid"))
+		if (selectionStart && selectionStart.memberId == $(this).data("memberid"))
 		{
-			updateSelection($(this).data("userid"), selectionStart.date, new Date($(this).data("date")));
+			updateSelection($(this).data("memberid"), selectionStart.date, new Date($(this).data("date")));
 
 			var modal = $("#selection-modal");
 
@@ -177,10 +178,19 @@ $(function()
 
 function updateData()
 {
-	var year = document.location.hash.substring(1);
-	if (!year)
+	var hashString = document.location.hash.substring(1);
+	hashString = hashString.split("/");
+
+	var queryData = ["type=getData"];
+
+	if (hashString[0])
 	{
-		year = new Date().getFullYear();
+		queryData.push("team=" + hashString[0]);
+	}
+
+	if (hashString[1])
+	{
+		queryData.push("year=" + hashString[1]);
 	}
 
 	$.ajax(
@@ -197,7 +207,7 @@ function updateData()
 			Accept : "application/json"
 		},
 		success : readData,
-		url : "service/?type=getData&year=" + year
+		url : "service/?" + queryData.join("&")
 	});
 }
 
@@ -205,15 +215,55 @@ function readData(data)
 {
 	data.year = parseInt(data.year);
 
-	$("#previous-year-link").prop("href", "#" + (data.year - 1));
-	$("#next-year-link").prop("href", "#" + (data.year + 1));
+	var currentYearElement = $("#current-year");
+	var currentTeamElement = $("#current-team");
 
-	$("#current-year").text(data.year);
+	currentTeamElement.data("name", data.currentTeam);
+
+	var menuElement = $("#team-menu");
+	menuElement.empty();
+
+	for (var index in data.teams)
+	{
+		var teamData = data.teams[index];
+
+		var linkElement = $("<a>");
+		linkElement.attr("href", "#" + teamData.name + "/" + currentYearElement.text());
+		linkElement.addClass("team-entry");
+		linkElement.data("name", teamData.name);
+		linkElement.text(teamData.title);
+
+		var listEntry = $("<li>");
+		listEntry.append(linkElement);
+		menuElement.append(listEntry);
+
+		if (teamData.name == data.currentTeam)
+		{
+			currentTeamElement.text(teamData.title);
+		}
+	}
+
+	$("#previous-year-link").prop("href", "#" + data.currentTeam + "/" + (data.year - 1));
+	$("#next-year-link").prop("href", "#" + data.currentTeam + "/" + (data.year + 1));
+
+	currentYearElement.text(data.year);
 
 	users = {};
 	for (var userIndex in data.users)
 	{
-		users[data.users[userIndex].id] = data.users[userIndex];
+		var userData = data.users[userIndex];
+
+		if (userData.startDate)
+		{
+			userData.startDate = moment(userData.startDate);
+		}
+
+		if (userData.endDate)
+		{
+			userData.endDate = moment(userData.endDate);
+		}
+
+		users[userData.userId] = userData;
 	}
 
 	var types = {};
@@ -228,21 +278,38 @@ function readData(data)
 
 	for (var index in months)
 	{
+		var monthStart = moment(new Date(data.year, index, 1));
+		var monthEnd = monthStart.clone().endOf("month");
+
+		var monthUsers = [];
+
+		for (var userIndex in data.users)
+		{
+			var userData = data.users[userIndex];
+
+			// Check if the user should be visible in this month
+			if ((userData.startDate && userData.startDate.isAfter(monthEnd)) || (userData.endDate && userData.endDate.isBefore(monthStart)))
+			{
+				continue;
+			}
+
+			monthUsers.push(userData);
+		}
+
 		months[index] =
 		{
 			number : parseInt(index) + 1,
-			name : months[index]
+			name : months[index],
+			users : monthUsers,
+			columns : monthUsers.length + 1
 		};
 	}
 
 	var tableData =
 	{
 		months : months,
-		users : data.users,
 		rows : []
 	};
-
-	tableData.columnsPerMonth = tableData.users.length + 1;
 
 	for (var day = 1; day <= 31; day++)
 	{
@@ -250,6 +317,7 @@ function readData(data)
 
 		for (var month in tableData.months)
 		{
+			var monthData = tableData.months[month];
 			var valid = true;
 			var nowDate = new Date();
 			var date = new Date(data.year, month, day);
@@ -297,15 +365,16 @@ function readData(data)
 				dayEntries = [];
 			}
 
-			for (var userIndex in data.users)
+			for (var userIndex in monthData.users)
 			{
+				var userData = monthData.users[userIndex];
 				var userColor = color;
 
 				var entryId = 0;
 
 				for (var entryIndex in dayEntries)
 				{
-					if (dayEntries[entryIndex].userId == data.users[userIndex].id)
+					if (dayEntries[entryIndex].memberId == userData.memberId)
 					{
 						userColor = types[dayEntries[entryIndex].type].color;
 						entryId = dayEntries[entryIndex].id;
@@ -318,7 +387,8 @@ function readData(data)
 					selectable : valid,
 					color : valid ? userColor : "white",
 					date : date,
-					userId : data.users[userIndex].id,
+					userId : userData.userId,
+					memberId : userData.memberId,
 					entryId : entryId
 				});
 			}
@@ -393,13 +463,13 @@ function readReportData(data)
 	$("#report-content").html(Mustache.render($("#report-content-template").html(), data.data));
 }
 
-function updateSelection(userId, startDate, endDate)
+function updateSelection(memberId, startDate, endDate)
 {
 	var cells = $("#table-container").find("td.selectable");
 
 	var elements = cells.filter(function()
 	{
-		if ($(this).data("userid") != userId)
+		if ($(this).data("memberid") != memberId)
 		{
 			return false;
 		}

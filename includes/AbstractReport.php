@@ -21,6 +21,10 @@ abstract class AbstractReport implements iReport
 	 */
 	protected $month;
 	/**
+	 * @var int The ID of the team
+	 */
+	protected $teamId;
+	/**
 	 * @var string The path to the filename in which the report should be written (e.g. php://stdout, php://output or some real file path)
 	 */
 	protected $output;
@@ -79,6 +83,11 @@ abstract class AbstractReport implements iReport
 	public function getMonth()
 	{
 		return $this->month;
+	}
+
+	public function setTeamId($teamId)
+	{
+		$this->teamId = $teamId;
 	}
 
 	/**

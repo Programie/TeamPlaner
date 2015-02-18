@@ -32,6 +32,11 @@ interface iReport
 	public function getMonth();
 
 	/**
+	 * @param int $teamId Set the ID of the team of which the report should be generated
+	 */
+	public function setTeamId($teamId);
+
+	/**
 	 * @return string The content type of the generated report
 	 */
 	public function getOutputContentType();
