@@ -4,15 +4,16 @@ require_once __DIR__ . "/../includes/DBConnection.php";
 require_once __DIR__ . "/../includes/Config.php";
 require_once __DIR__ . "/../includes/ExtensionClassFactory.php";
 
-if (count($argv) < 3)
+if (count($argv) < 4)
 {
-	echo "Usage: " . $argv[0] . " <recipient> <year> [<month>]";
+	echo "Usage: " . $argv[0] . " <recipient> <team> <year> [<month>]";
 	exit;
 }
 
 $recipient = @$argv[1];
-$year = @$argv[2];
-$month = @$argv[3];
+$team = @$argv[2];
+$year = @$argv[3];
+$month = @$argv[4];
 
 if (!$month)
 {
@@ -29,6 +30,21 @@ if (!$config->isValueSet("reportClass"))
 
 $pdo = DBConnection::getConnection($config);
 
+$query = $pdo->prepare("SELECT `id` FROM `teams` WHERE `name` = :name");
+
+$query->execute(array
+(
+	":name" => $team
+));
+
+if (!$query->rowCount())
+{
+	echo "Team not found!";
+	exit;
+}
+
+$teamId = $query->fetch()->id;
+
 $tempFile = tempnam(sys_get_temp_dir(), "calendar-report");
 
 /**
@@ -42,6 +58,7 @@ $reportInstance->setPDO($pdo);
 $reportInstance->setOutput($tempFile);
 $reportInstance->setYear($year);
 $reportInstance->setMonth($month);
+$reportInstance->setTeamId($teamId);
 
 $reportInstance->configure();
 
