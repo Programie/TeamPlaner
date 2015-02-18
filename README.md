@@ -5,7 +5,7 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
 ## Requirements
 
    * Webserver (e.g. Apache)
-   * PHP 5.3 or newer
+   * PHP 5.4 or newer
    * MySQL
    * [bower](http://bower.io) (to download frontend JavaScript dependencies)
 

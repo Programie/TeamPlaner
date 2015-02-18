@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "05265109cf4268d3b0591203c49c6056",
+    "hash": "1d36144b0f1ffdf3a2dedd1234f7fa16",
     "packages": [
         {
             "name": "programie/jsonconfig",
@@ -101,6 +101,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "~5.4"
+    },
     "platform-dev": []
 }
