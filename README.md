@@ -51,4 +51,4 @@ Currently you have to manage users directly in the database. An easier user mana
 ### Remove an existing user
 
    * Connect to your database
-   * Delete the entry of the user you want to remove
+   * Delete the entry of the user you want to remove from the **users** table
