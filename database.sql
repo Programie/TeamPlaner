@@ -32,7 +32,7 @@ CREATE TABLE `entries` (
 	`type` varchar(100) NOT NULL,
 	`memberId` int(11) unsigned NOT NULL,
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `date_userId` (`date`,`memberId`),
+	UNIQUE KEY `date_memberId` (`date`,`memberId`),
 	KEY `memberId` (`memberId`),
 	CONSTRAINT `entries_ibfk_1` FOREIGN KEY (`memberId`) REFERENCES `teammembers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
