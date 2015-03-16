@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../includes/Config.php";
+require_once __DIR__ . "/../includes/Date.php";
 require_once __DIR__ . "/../includes/DBConnection.php";
 require_once __DIR__ . "/../includes/ExtensionClassFactory.php";
 require_once __DIR__ . "/../includes/TeamHelper.php";
@@ -246,16 +247,40 @@ switch ($_GET["type"])
 			$types[$type->name] = $type->title;
 		}
 
-		$userInfo = array();
+		$teamMembers = array();
 
-		$query = $pdo->query("
-			SELECT `id`, `username`, `additionalInfo`
-			FROM `users`
+		$query = $pdo->prepare("
+			SELECT `teammembers`.`id`, `username`, `additionalInfo`, `startDate`, `endDate`
+			FROM `teammembers`
+			LEFT JOIN `users` ON `users`.`id` = `teammembers`.`userId`
+			WHERE `teamId` = :teamId
 		");
+
+		$query->execute(array
+		(
+			":teamId" => $teamId
+		));
+
+		if ($month)
+		{
+			$rangeStart = new DateTime($year . "-" . $month . "-01");
+			$rangeEnd = clone $rangeStart;
+			$rangeEnd->modify("last day of this month");
+		}
+		else
+		{
+			$rangeStart = new DateTime($year . "-01-01");
+			$rangeEnd = new DateTime($year . "-12-31");
+		}
 
 		while ($row = $query->fetch())
 		{
-			$userInfo[$row->id] = $row;
+			if (!\Date::isRangeInRange($row->startDate ? new DateTime($row->startDate) : null, $row->endDate ? new DateTime($row->endDate) : null, $rangeStart, $rangeEnd))
+			{
+				continue;
+			}
+
+			$teamMembers[$row->id] = $row;
 		}
 
 		$data = array();
@@ -263,7 +288,7 @@ switch ($_GET["type"])
 		if ($month)
 		{
 			$query = $pdo->prepare("
-				SELECT `date`, `type`, `userId`
+				SELECT `date`, `type`, `memberId`
 				FROM `entries`
 				LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
 				WHERE YEAR(`date`) = :year AND MONTH(`date`) = :month AND `teamId` = :teamId
@@ -279,7 +304,7 @@ switch ($_GET["type"])
 		else
 		{
 			$query = $pdo->prepare("
-				SELECT `date`, `type`, `userId`
+				SELECT `date`, `type`, `memberId`
 				FROM `entries`
 				LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
 				WHERE YEAR(`date`) = :year AND `teamId` = :teamId
@@ -299,12 +324,17 @@ switch ($_GET["type"])
 				continue;
 			}
 
-			$data[$row->userId][$row->date] = $row->type;
+			if (!isset($teamMembers[$row->memberId]))
+			{
+				continue;
+			}
+
+			$data[$row->memberId][$row->date] = $row->type;
 		}
 
 		$sortedData = array();
 
-		foreach ($data as $userId => $dates)
+		foreach ($data as $memberId => $dates)
 		{
 			$sortedUserData = array();
 
@@ -337,8 +367,8 @@ switch ($_GET["type"])
 
 			$sortedData[] = array
 			(
-				"username" => $userInfo[$userId]->username,
-				"additionalUserInfo" => $userInfo[$userId]->additionalInfo,
+				"username" => $teamMembers[$memberId]->username,
+				"additionalUserInfo" => $teamMembers[$memberId]->additionalInfo,
 				"entries" => $sortedUserData
 			);
 		}
