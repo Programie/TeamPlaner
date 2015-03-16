@@ -8,6 +8,11 @@ function require()
 	which $1 > /dev/null 2>&1 || (echo "Command '$1' not found!"; exit 1)
 }
 
+function composer_install()
+{
+	${BASEPATH}/composer.phar --working-dir=$1 install --no-dev
+}
+
 require curl
 require php
 require bower
@@ -22,12 +27,12 @@ fi
 
 ${BASEPATH}/composer.phar self-update
 
-${BASEPATH}/composer.phar --working-dir=${BASEPATH} install
+composer_install ${BASEPATH}
 
 for EXTENSION in ${BASEPATH}/extensions/*; do
 	if [ -f ${EXTENSION}/composer.json ]; then
 		echo "Running composer for extension: `basename ${EXTENSION}`"
-		${BASEPATH}/composer.phar --working-dir=${EXTENSION} install
+		composer_install ${EXTENSION}
 	fi
 done
 
