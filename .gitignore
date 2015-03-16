@@ -10,6 +10,7 @@ bower_components
 
 # Mac OS X
 ._DS_Store
+.DS_Store
 .AppleDouble
 
 includes/getHolidays.php
