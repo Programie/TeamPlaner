@@ -1,4 +1,8 @@
 <?php
+namespace com\selfcoders\teamplaner\utils;
+
+use PDO;
+
 class TeamHelper
 {
 	public static function getTeams(PDO $pdo, $teams)

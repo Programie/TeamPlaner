@@ -1,4 +1,8 @@
 <?php
+namespace com\selfcoders\teamplaner\utils;
+
+use DateTime;
+
 class Date
 {
 	public static function isRangeInRange(DateTime $startDate = null, DateTime $endDate = null, DateTime $rangeStart, DateTime $rangeEnd)

@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . "/DefaultUserAuth.php";
-require_once __DIR__ . "/ExtensionClassFactory.php";
+namespace com\selfcoders\teamplaner\auth;
+
+use com\selfcoders\teamplaner\ExtensionClassFactory;
+use Exception;
 
 class UserAuthFactory
 {

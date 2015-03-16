@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . "/Config.php";
+namespace com\selfcoders\teamplaner;
+
+use PDO;
 
 class DBConnection
 {

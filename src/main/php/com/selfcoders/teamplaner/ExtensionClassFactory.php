@@ -1,4 +1,8 @@
 <?php
+namespace com\selfcoders\teamplaner;
+
+use Exception;
+
 class ExtensionClassFactory
 {
 	/**
@@ -12,7 +16,7 @@ class ExtensionClassFactory
 	 */
 	public static function getInstance($name)
 	{
-		$filename = __DIR__ . "/../extensions/" . $name . ".php";
+		$filename = __DIR__ . "/../../../../../../extensions/" . $name . ".php";
 		if (!file_exists($filename))
 		{
 			throw new Exception("No such file or directory: " . $filename);

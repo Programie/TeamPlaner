@@ -1,4 +1,6 @@
 <?php
+namespace com\selfcoders\teamplaner\auth;
+
 interface iUserAuth
 {
 	/**

@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/iReport.php";
+namespace com\selfcoders\teamplaner\report;
+
+use com\selfcoders\teamplaner\Config;
+use PDO;
 
 abstract class AbstractReport implements iReport
 {

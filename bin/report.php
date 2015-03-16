@@ -1,8 +1,10 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/../includes/DBConnection.php";
-require_once __DIR__ . "/../includes/Config.php";
-require_once __DIR__ . "/../includes/ExtensionClassFactory.php";
+use com\selfcoders\teamplaner\Config;
+use com\selfcoders\teamplaner\DBConnection;
+use com\selfcoders\teamplaner\ExtensionClassFactory;
+use com\selfcoders\teamplaner\report\iReport;
+
+require_once __DIR__ . "/../bootstrap.php";
 
 if (count($argv) < 3)
 {

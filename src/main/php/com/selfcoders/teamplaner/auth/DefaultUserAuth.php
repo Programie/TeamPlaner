@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/iUserAuth.php";
+namespace com\selfcoders\teamplaner\auth;
 
 class DefaultUserAuth implements iUserAuth
 {

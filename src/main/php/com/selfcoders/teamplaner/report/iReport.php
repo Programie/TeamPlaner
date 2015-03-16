@@ -1,4 +1,9 @@
 <?php
+namespace com\selfcoders\teamplaner\report;
+
+use com\selfcoders\teamplaner\Config;
+use PDO;
+
 interface iReport
 {
 	/**

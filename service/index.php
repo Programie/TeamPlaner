@@ -1,11 +1,13 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/../includes/Config.php";
-require_once __DIR__ . "/../includes/Date.php";
-require_once __DIR__ . "/../includes/DBConnection.php";
-require_once __DIR__ . "/../includes/ExtensionClassFactory.php";
-require_once __DIR__ . "/../includes/TeamHelper.php";
-require_once __DIR__ . "/../includes/UserAuthFactory.php";
+use com\selfcoders\teamplaner\auth\UserAuthFactory;
+use com\selfcoders\teamplaner\Config;
+use com\selfcoders\teamplaner\DBConnection;
+use com\selfcoders\teamplaner\ExtensionClassFactory;
+use com\selfcoders\teamplaner\report\iReport;
+use com\selfcoders\teamplaner\utils\Date;
+use com\selfcoders\teamplaner\utils\TeamHelper;
+
+require_once __DIR__ . "/../bootstrap.php";
 
 $config = new Config();
 
@@ -275,7 +277,7 @@ switch ($_GET["type"])
 
 		while ($row = $query->fetch())
 		{
-			if (!\Date::isRangeInRange($row->startDate ? new DateTime($row->startDate) : null, $row->endDate ? new DateTime($row->endDate) : null, $rangeStart, $rangeEnd))
+			if (!Date::isRangeInRange($row->startDate ? new DateTime($row->startDate) : null, $row->endDate ? new DateTime($row->endDate) : null, $rangeStart, $rangeEnd))
 			{
 				continue;
 			}

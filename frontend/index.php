@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
-require_once __DIR__ . "/../includes/Config.php";
-require_once __DIR__ . "/../includes/UserAuthFactory.php";
+use com\selfcoders\teamplaner\auth\UserAuthFactory;
+use com\selfcoders\teamplaner\Config;
+
+require_once __DIR__ . "/../bootstrap.php";
 
 $config = new Config();
 
