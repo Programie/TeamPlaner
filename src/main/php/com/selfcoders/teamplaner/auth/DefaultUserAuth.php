@@ -44,7 +44,7 @@ class DefaultUserAuth implements iUserAuth
 	 */
 	public function getTeams()
 	{
-		return true;
+		return null;
 	}
 
 	/**
