@@ -12,10 +12,10 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
 ## Installation
 
    * Clone this repository: **git clone https://github.com/Programie/TeamPlaner.git**
+   * Execute **bin/build.sh** to build the application
    * Execute **php bin/update-config.php** to create or update your configuration file
    * Edit the **config.json** file inside of the **config** folder (See section **Configuration** for details)
    * Import **database.sql** into your MySQL database
-   * Execute **bin/build.sh** to build the application
    * Configure your webserver
       * Point your document root to the **frontend** folder
       * Create an alias **service** pointing to the **service** folder
