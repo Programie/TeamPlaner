@@ -30,9 +30,12 @@ ${BASEPATH}/composer.phar self-update
 composer_install ${BASEPATH}
 
 for EXTENSION in ${BASEPATH}/extensions/*; do
+	echo "Running composer for extension: `basename ${EXTENSION}`"
+
 	if [ -f ${EXTENSION}/composer.json ]; then
-		echo "Running composer for extension: `basename ${EXTENSION}`"
 		composer_install ${EXTENSION}
+	else
+		echo "Composer not configured! Skipping..."
 	fi
 done
 
