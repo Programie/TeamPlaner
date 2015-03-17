@@ -62,6 +62,10 @@
 	{
 		"defaultValue" : "lightskyblue"
 	},
+	"ical.ttl" :
+	{
+		"defaultValue" : "PT1H"
+	},
 	"reportMail.smtp.host" :
 	{
 	},

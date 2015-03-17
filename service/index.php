@@ -1,6 +1,7 @@
 <?php
 use com\selfcoders\teamplaner\auth\UserAuthFactory;
 use com\selfcoders\teamplaner\Config;
+use com\selfcoders\teamplaner\service\ICalendarData;
 use com\selfcoders\teamplaner\service\MainData;
 use com\selfcoders\teamplaner\service\Report;
 
@@ -36,6 +37,10 @@ switch ($_GET["type"])
 	case "getData":
 		$service = new MainData($config, $userAuthInstance);
 		$service->getData(isset($_GET["year"]) ? $_GET["year"] : null, isset($_GET["team"]) ? $_GET["team"] : null);
+		exit;
+	case "getiCal":
+		$service = new ICalendarData($config, $userAuthInstance);
+		$service->getData(isset($_GET["team"]) ? $_GET["team"] : null, $_GET["member"]);
 		exit;
 	case "getReport":
 		$service = new Report($config, $userAuthInstance);
