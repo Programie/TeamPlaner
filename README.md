@@ -41,6 +41,7 @@ Currently you have to manage users directly in the database. An easier user mana
       * id: NULL or omit the field (Use next auto increment value)
       * username: The username you want to use
       * additionalInfo: Any additional information for the user (or NULL or omit the field)
+      * token: Any 32 character string which can be used for authorization (set to NULL or omit the field to disable token authorization)
    * Create an entry for each team member in the **teammembers** table
       * id: NULL or omit the field (Use next auto increment value)
       * teamId: id from the **teams** table
