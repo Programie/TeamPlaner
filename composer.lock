@@ -4,8 +4,61 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fd4b93178a363b88bb3fa4b9eade973c",
+    "hash": "dd624645c218d217447bfd773a0d4e00",
     "packages": [
+        {
+            "name": "eluceo/ical",
+            "version": "0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/markuspoerschke/iCal.git",
+                "reference": "0d79c35b9e5f7f1dcfb5315cc1e8507f74093083"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/0d79c35b9e5f7f1dcfb5315cc1e8507f74093083",
+                "reference": "0d79c35b9e5f7f1dcfb5315cc1e8507f74093083",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Eluceo\\iCal": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maciej Łebkowski",
+                    "email": "m.lebkowski@gmail.com",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Markus Poerschke",
+                    "email": "markus@eluceo.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The eluceo/iCal package offers a abstraction layer for creating iCalendars. You can easily create iCal files by using PHP object instead of typing your *.ics file by hand. The output will follow RFC 2445 as best as possible.",
+            "homepage": "https://github.com/markuspoerschke/iCal",
+            "keywords": [
+                "calendar",
+                "iCalendar",
+                "ical",
+                "ics",
+                "php calendar"
+            ],
+            "time": "2015-02-21 23:14:47"
+        },
         {
             "name": "programie/jsonconfig",
             "version": "1.0",
