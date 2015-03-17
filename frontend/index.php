@@ -19,7 +19,32 @@ if (isset($_GET["logout"]))
 	$userAuthInstance->logout();
 }
 
-$userAuthInstance->forceAuth();
+$token = isset($_GET["token"]) ? $_GET["token"] : null;
+if ($token !== null)
+{
+	$query = $pdo->prepare("
+		SELECT `id`, `username`
+		FROM `users`
+		WHERE `token` = :token
+	");
+
+	$query->execute(array
+	(
+		":token" => $token
+	));
+
+	if ($query->rowCount())
+	{
+		$row = $query->fetch();
+
+		$userAuthInstance->authorizeUserById($row->id, $row->username);
+	}
+}
+
+if (!$userAuthInstance->checkAuth())
+{
+	$userAuthInstance->forceAuth();
+}
 
 if (!$userAuthInstance->checkPermissions())
 {

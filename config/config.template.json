@@ -62,7 +62,7 @@
 	{
 		"defaultValue" : "lightskyblue"
 	},
-	"ical.ttl" :
+	"iCal.ttl" :
 	{
 		"defaultValue" : "PT1H"
 	},

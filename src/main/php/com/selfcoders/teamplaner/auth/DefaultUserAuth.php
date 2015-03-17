@@ -3,6 +3,8 @@ namespace com\selfcoders\teamplaner\auth;
 
 class DefaultUserAuth implements iUserAuth
 {
+	private $authorizeUserByIdUsername;
+
 	/**
 	 * Check whether the user is logged in.
 	 *
@@ -18,6 +20,18 @@ class DefaultUserAuth implements iUserAuth
 	 */
 	public function forceAuth()
 	{
+	}
+
+	/**
+	 * Authorize the user by the given user ID.
+	 * This is called once a user authorizes using a token.
+	 *
+	 * @param int $userId The ID of the user to authorize
+	 * @param string $username The name of the user
+	 */
+	public function authorizeUserById($userId, $username)
+	{
+		$this->authorizeUserByIdUsername = $username;
 	}
 
 	/**
@@ -54,6 +68,11 @@ class DefaultUserAuth implements iUserAuth
 	 */
 	public function getUsername()
 	{
+		if ($this->authorizeUserByIdUsername)
+		{
+			return $this->authorizeUserByIdUsername;
+		}
+
 		return "anonymous";
 	}
 }

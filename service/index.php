@@ -1,6 +1,7 @@
 <?php
 use com\selfcoders\teamplaner\auth\UserAuthFactory;
 use com\selfcoders\teamplaner\Config;
+use com\selfcoders\teamplaner\DBConnection;
 use com\selfcoders\teamplaner\service\ICalendarData;
 use com\selfcoders\teamplaner\service\MainData;
 use com\selfcoders\teamplaner\service\Report;
@@ -9,12 +10,36 @@ require_once __DIR__ . "/../bootstrap.php";
 
 $config = new Config();
 
+$pdo = DBConnection::getConnection($config);
+
 $userAuthInstance = UserAuthFactory::getProvider($config->getValue("userAuth"));
 if (!$userAuthInstance)
 {
 	header("HTTP/1.1 500 Internal Server Error");
 	echo "Unable to load User Auth provider!";
 	exit;
+}
+
+$token = isset($_GET["token"]) ? $_GET["token"] : null;
+if ($token !== null)
+{
+	$query = $pdo->prepare("
+		SELECT `id`, `username`
+		FROM `users`
+		WHERE `token` = :token
+	");
+
+	$query->execute(array
+	(
+		":token" => $token
+	));
+
+	if ($query->rowCount())
+	{
+		$row = $query->fetch();
+
+		$userAuthInstance->authorizeUserById($row->id, $row->username);
+	}
 }
 
 if (!$userAuthInstance->checkAuth())
@@ -40,7 +65,7 @@ switch ($_GET["type"])
 		exit;
 	case "getiCal":
 		$service = new ICalendarData($config, $userAuthInstance);
-		$service->getData(isset($_GET["team"]) ? $_GET["team"] : null, $_GET["member"]);
+		$service->getData();
 		exit;
 	case "getReport":
 		$service = new Report($config, $userAuthInstance);

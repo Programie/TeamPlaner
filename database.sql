@@ -10,7 +10,8 @@ CREATE TABLE `users` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`username` varchar(100) NOT NULL,
 	`additionalInfo` longtext,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `teammembers` (

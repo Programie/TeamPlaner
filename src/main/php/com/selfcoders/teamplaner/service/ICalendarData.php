@@ -1,47 +1,29 @@
 <?php
 namespace com\selfcoders\teamplaner\service;
 
-use com\selfcoders\teamplaner\utils\TeamHelper;
 use DateTime;
 use Eluceo\iCal\Component\Calendar;
 use Eluceo\iCal\Component\Event;
 
 class ICalendarData extends AbstractService
 {
-	public function getData($team, $memberId)
+	public function getData()
 	{
-		$teams = $this->userAuth->getTeams();
-
-		$availableTeams = TeamHelper::getTeams($this->pdo, $teams);
-
-		if (!$team)
-		{
-			$team = $availableTeams[0]->name;
-		}
-
-		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $teams);
-		if ($teamId === null)
-		{
-			header("HTTP/1.1 403 Forbidden");
-			echo "You are not allowed to access this team!";
-			exit;
-		}
-
 		$calendar = new Calendar("TeamPlaner");
 
-		$calendar->setPublishedTTL($this->config->getValue("ical.ttl"));
+		$calendar->setPublishedTTL($this->config->getValue("iCal.ttl"));
 
 		$query = $this->pdo->prepare("
 			SELECT `date`, `type`
 			FROM `entries`
 			LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
-			WHERE `teamId` = :teamId AND `memberId` = :memberId
+			LEFT JOIN `users` ON `users`.`id` = `teammembers`.`userId`
+			WHERE `username` = :username
 		");
 
 		$query->execute(array
 		(
-			":teamId" => $teamId,
-			":memberId" => $memberId
+			":username" => $this->userAuth->getUsername()
 		));
 
 		$types = array();

@@ -16,6 +16,15 @@ interface iUserAuth
 	public function forceAuth();
 
 	/**
+	 * Authorize the user by the given user ID.
+	 * This is called once a user authorizes using a token.
+	 *
+	 * @param int $userId The ID of the user to authorize
+	 * @param string $username The name of the user
+	 */
+	public function authorizeUserById($userId, $username);
+
+	/**
 	 * Logout the currently logged in user.
 	 */
 	public function logout();
