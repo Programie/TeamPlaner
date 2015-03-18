@@ -182,6 +182,7 @@ if (!$userAuthInstance->checkPermissions())
 						<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-cog"></i> Options</a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a id="year-report-button"><i class="glyphicon glyphicon-th-list"></i> Year report</a></li>
+							<li><a id="ical-button"><i class="glyphicon glyphicon-calendar"></i> iCal</a></li>
 							<li><a id="reload-button"><i class="glyphicon glyphicon-refresh"></i> Reload</a></li>
 						</ul>
 					</li>
@@ -241,6 +242,25 @@ if (!$userAuthInstance->checkPermissions())
 							<?php
 						}
 						?>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="ical-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title">iCal</h4>
+					</div>
+					<div class="modal-body">
+						<span class="help-block">Copy the following URL and paste it into your calendar application.</span>
+
+						<input type="text" class="form-control" id="ical-url"/>
+					</div>
+					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 					</div>
 				</div>

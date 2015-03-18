@@ -75,6 +75,10 @@ switch ($_GET["type"])
 		$service = new Report($config, $userAuthInstance);
 		$service->getReportData(isset($_GET["year"]) ? $_GET["year"] : null, isset($_GET["month"]) ? $_GET["month"] : null, $_GET["team"]);
 		exit;
+	case "getToken":
+		$service = new MainData($config, $userAuthInstance);
+		$service->getToken();
+		exit;
 	case "setData":
 		if ($_SERVER["REQUEST_METHOD"] != "POST")
 		{

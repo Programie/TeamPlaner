@@ -119,6 +119,53 @@ class MainData extends AbstractService
 		));
 	}
 
+	public function getToken()
+	{
+		$query = $this->pdo->prepare("
+			SELECT `token`
+			FROM `users`
+			WHERE `username` = :username
+		");
+
+		$query->execute(array
+		(
+			":username" => $this->userAuth->getUsername()
+		));
+
+		if (!$query->rowCount())
+		{
+			header("HTTP/1.1 404 Not Found");
+			echo "User not found!";
+			exit;
+		}
+
+		$token = $query->fetch()->token;
+
+		if ($token === null)
+		{
+			$token = md5(uniqid());
+
+			$query = $this->pdo->prepare("
+				UPDATE `users`
+				SET `token` = :token
+				WHERE `username` = :username
+			");
+
+			$query->execute(array
+			(
+				":token" => $token,
+				":username" => $this->userAuth->getUsername()
+			));
+		}
+
+		header("Content-Type: application/json");
+
+		echo json_encode(array
+		(
+			"token" => $token
+		));
+	}
+
 	public function setData($entries, $team)
 	{
 		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $this->userAuth->getTeams());

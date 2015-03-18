@@ -56,6 +56,27 @@ $(function()
 		});
 	});
 
+	$("#ical-button").on("click", function()
+	{
+		$.ajax(
+		{
+			cache : false,
+			contentType : "application/json",
+			context : this,
+			error : function(xhr, error, errorThrown)
+			{
+				$.notify(error + ": " + errorThrown, "error");
+			},
+			success : function(data)
+			{
+				$("#ical-url").val(document.location.href + "service/?type=getiCal&token=" + data.token);
+
+				$("#ical-modal").modal("show");
+			},
+			url : "service/?type=getToken"
+		});
+	});
+
 	$("#selection-modal").on("hidden.bs.modal", function()
 	{
 		updateSelection();
