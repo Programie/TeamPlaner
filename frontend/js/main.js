@@ -479,7 +479,7 @@ function readReportData(data)
 			var momentDate = moment(entryData.date);
 
 			entryData.weekday = momentDate.format("dddd");
-			entryData.type = data.types[entryData.type];
+			entryData.type = data.types[entryData.type].title;
 			entryData.date = momentDate.format("L");
 		}
 	}

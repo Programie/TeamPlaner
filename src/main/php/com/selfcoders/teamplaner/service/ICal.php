@@ -1,6 +1,7 @@
 <?php
 namespace com\selfcoders\teamplaner\service;
 
+use com\selfcoders\teamplaner\type\TypeCollection;
 use DateTime;
 use Eluceo\iCal\Component\Calendar;
 use Eluceo\iCal\Component\Event;
@@ -26,21 +27,22 @@ class ICal extends AbstractService
 			":username" => $this->userAuth->getUsername()
 		));
 
-		$types = array();
-
-		foreach ($this->config->getValue("types") as $type)
-		{
-			$types[$type->name] = $type->title;
-		}
+		$typeCollection = new TypeCollection($this->config->getValue("types"));
 
 		while ($row = $query->fetch())
 		{
+			$type = $typeCollection->getTypeByName($row->type);
+			if ($type === null)
+			{
+				continue;
+			}
+
 			$event = new Event();
 
 			$event->setDtStart(new DateTime($row->date));
 			$event->setDtEnd(new DateTime($row->date));
 			$event->setNoTime(true);
-			$event->setSummary($types[$row->type]);
+			$event->setSummary($type->title);
 
 			$calendar->addComponent($event);
 		}

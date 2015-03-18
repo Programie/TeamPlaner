@@ -4,6 +4,7 @@ namespace com\selfcoders\teamplaner\service;
 use com\selfcoders\teamplaner\ExtensionClassFactory;
 use com\selfcoders\teamplaner\Holiday;
 use com\selfcoders\teamplaner\service\exception\ForbiddenException;
+use com\selfcoders\teamplaner\type\TypeCollection;
 use com\selfcoders\teamplaner\utils\TeamHelper;
 
 class Entries extends AbstractService
@@ -63,29 +64,6 @@ class Entries extends AbstractService
 			);
 		}
 
-		$query = $this->pdo->prepare("
-			SELECT `teammembers`.`id` AS `memberId`, `userId`, `username`, `additionalInfo`, `startDate`, `endDate`
-			FROM `teammembers`
-			LEFT JOIN `users` ON `users`.`id` = `teammembers`.`userId`
-			WHERE `teamId` = :teamId
-			ORDER BY `username` ASC
-		");
-
-		$query->execute(array
-		(
-			":teamId" => $teamId
-		));
-
-		$users = array();
-
-		while ($row = $query->fetch())
-		{
-			$row->memberId = (int) $row->memberId;
-			$row->userId = (int) $row->userId;
-
-			$users[] = $row;
-		}
-
 		$holidays = array();
 
 		if ($this->config->isValueSet("holidaysMethod"))
@@ -110,13 +88,18 @@ class Entries extends AbstractService
 			$cleanedHolidays[$holiday->date->format("Y-m-d")] = $holiday->title;
 		}
 
+		// TODO: Do not call another service
+		$userInstance = new User($this->config, $this->userAuth);
+		$userInstance->parameters = $this->parameters;
+		$userInstance->data = $this->data;
+
 		return array
 		(
 			"year" => $year,
 			"username" => $this->userAuth->getUsername(),
 			"entries" => $entries,
-			"users" => $users,
-			"types" => $this->config->getValue("types"),
+			"users" => $userInstance->getUsersOfTeam(),
+			"types" => $this->getTypes(),
 			"colors" => array
 			(
 				"holiday" => $this->config->getValue("colors.holiday"),
@@ -127,6 +110,13 @@ class Entries extends AbstractService
 			"teams" => $availableTeams,
 			"currentTeam" => $team
 		);
+	}
+
+	public function getTypes()
+	{
+		$collection = new TypeCollection($this->config->getValue("types"));
+
+		return $collection->getTypes();
 	}
 
 	public function editMultiple()
@@ -165,12 +155,7 @@ class Entries extends AbstractService
 				`memberId` = :memberId
 		");
 
-		$types = array();
-
-		foreach ($this->config->getValue("types") as $type)
-		{
-			$types[$type->name] = $type;
-		}
+		$types = $this->getTypes();
 
 		/**
 		 * Each entry contains the following properties:

@@ -5,6 +5,7 @@ use com\selfcoders\teamplaner\ExtensionClassFactory;
 use com\selfcoders\teamplaner\report\iReport;
 use com\selfcoders\teamplaner\service\exception\ForbiddenException;
 use com\selfcoders\teamplaner\service\exception\ReportingNotConfiguredException;
+use com\selfcoders\teamplaner\type\TypeCollection;
 use com\selfcoders\teamplaner\utils\Date;
 use com\selfcoders\teamplaner\utils\TeamHelper;
 use DateTime;
@@ -67,17 +68,8 @@ class Report extends AbstractService
 			throw new ForbiddenException;
 		}
 
-		$types = array();
-
-		foreach ($this->config->getValue("types") as $type)
-		{
-			if (!isset($type->showInReport) or !$type->showInReport)
-			{
-				continue;
-			}
-
-			$types[$type->name] = $type->title;
-		}
+		$typeCollection = new TypeCollection($this->config->getValue("types"));
+		$types = $typeCollection->getReportTypes();
 
 		$teamMembers = array();
 
