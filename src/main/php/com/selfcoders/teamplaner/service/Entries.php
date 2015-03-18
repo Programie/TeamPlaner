@@ -2,12 +2,14 @@
 namespace com\selfcoders\teamplaner\service;
 
 use com\selfcoders\teamplaner\ExtensionClassFactory;
+use com\selfcoders\teamplaner\service\exception\ForbiddenException;
 use com\selfcoders\teamplaner\utils\TeamHelper;
 
-class MainData extends AbstractService
+class Entries extends AbstractService
 {
-	public function getData($year, $team)
+	public function getAll()
 	{
+		$year = $this->parameters->year;
 		if (!$year)
 		{
 			$year = date("Y");
@@ -17,6 +19,7 @@ class MainData extends AbstractService
 
 		$availableTeams = TeamHelper::getTeams($this->pdo, $teams);
 
+		$team = $this->parameters->team;
 		if (!$team)
 		{
 			$team = $availableTeams[0]->name;
@@ -25,9 +28,7 @@ class MainData extends AbstractService
 		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $teams);
 		if ($teamId === null)
 		{
-			header("HTTP/1.1 403 Forbidden");
-			echo "You are not allowed to access this team!";
-			exit;
+			throw new ForbiddenException;
 		}
 
 		$query = $this->pdo->prepare("
@@ -98,9 +99,7 @@ class MainData extends AbstractService
 			}
 		}
 
-		header("Content-Type: application/json");
-
-		echo json_encode(array
+		return array
 		(
 			"year" => $year,
 			"username" => $this->userAuth->getUsername(),
@@ -116,64 +115,15 @@ class MainData extends AbstractService
 			"holidays" => $holidays,
 			"teams" => $availableTeams,
 			"currentTeam" => $team
-		));
+		);
 	}
 
-	public function getToken()
+	public function editMultiple()
 	{
-		$query = $this->pdo->prepare("
-			SELECT `token`
-			FROM `users`
-			WHERE `username` = :username
-		");
-
-		$query->execute(array
-		(
-			":username" => $this->userAuth->getUsername()
-		));
-
-		if (!$query->rowCount())
-		{
-			header("HTTP/1.1 404 Not Found");
-			echo "User not found!";
-			exit;
-		}
-
-		$token = $query->fetch()->token;
-
-		if ($token === null)
-		{
-			$token = md5(uniqid());
-
-			$query = $this->pdo->prepare("
-				UPDATE `users`
-				SET `token` = :token
-				WHERE `username` = :username
-			");
-
-			$query->execute(array
-			(
-				":token" => $token,
-				":username" => $this->userAuth->getUsername()
-			));
-		}
-
-		header("Content-Type: application/json");
-
-		echo json_encode(array
-		(
-			"token" => $token
-		));
-	}
-
-	public function setData($entries, $team)
-	{
-		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $this->userAuth->getTeams());
+		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $this->parameters->team, $this->userAuth->getTeams());
 		if ($teamId === null)
 		{
-			header("HTTP/1.1 403 Forbidden");
-			echo "You are not allowed to access this team!";
-			exit;
+			throw new ForbiddenException;
 		}
 
 		$teamMemberQuery = $this->pdo->prepare("
@@ -218,7 +168,7 @@ class MainData extends AbstractService
 		 * - type: The new type for the entry
 		 * - memberId: The ID of the team member for which the entry should be set
 		 */
-		foreach ($entries as $entry)
+		foreach ($this->data as $entry)
 		{
 			$teamMemberQuery->execute(array
 			(
@@ -228,9 +178,7 @@ class MainData extends AbstractService
 
 			if (!$teamMemberQuery->rowCount())
 			{
-				header("HTTP/1.1 403 Forbidden");
-				echo "You are not allowed to modify this team!";
-				exit;
+				throw new ForbiddenException;
 			}
 
 			// TODO: $entry might be an entry of another team the user does not have access to!
@@ -271,5 +219,7 @@ class MainData extends AbstractService
 				":memberId" => $entry->memberId
 			));
 		}
+
+		return null;
 	}
 }

@@ -5,7 +5,7 @@ use DateTime;
 use Eluceo\iCal\Component\Calendar;
 use Eluceo\iCal\Component\Event;
 
-class ICalendarData extends AbstractService
+class ICal extends AbstractService
 {
 	public function getData()
 	{
@@ -46,7 +46,8 @@ class ICalendarData extends AbstractService
 		}
 
 		header("Content-Type: text/calendar; charset=utf-8");
-		header("Content-Disposition: attachment; filename='calendar.ics'");
 		echo $calendar->render();
+
+		return null;
 	}
 }

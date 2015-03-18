@@ -1,10 +1,10 @@
 <?php
 use com\selfcoders\teamplaner\auth\UserAuthFactory;
+use com\selfcoders\teamplaner\BackendHandler;
 use com\selfcoders\teamplaner\Config;
 use com\selfcoders\teamplaner\DBConnection;
-use com\selfcoders\teamplaner\service\ICalendarData;
-use com\selfcoders\teamplaner\service\MainData;
-use com\selfcoders\teamplaner\service\Report;
+use com\selfcoders\teamplaner\service\exception\EndpointNotFoundException;
+use com\selfcoders\teamplaner\service\exception\ServiceConfigurationException;
 
 require_once __DIR__ . "/../bootstrap.php";
 
@@ -56,50 +56,29 @@ if (!$userAuthInstance->checkPermissions())
 	exit;
 }
 
-// TODO: This should be done in some better way...
-switch ($_GET["type"])
+$handler = new BackendHandler($config, $userAuthInstance);
+
+try
 {
-	case "getData":
-		$service = new MainData($config, $userAuthInstance);
-		$service->getData(isset($_GET["year"]) ? $_GET["year"] : null, isset($_GET["team"]) ? $_GET["team"] : null);
-		exit;
-	case "getiCal":
-		$service = new ICalendarData($config, $userAuthInstance);
-		$service->getData();
-		exit;
-	case "getReport":
-		$service = new Report($config, $userAuthInstance);
-		$service->getReport(isset($_GET["year"]) ? $_GET["year"] : null, isset($_GET["month"]) ? $_GET["month"] : null, $_GET["team"]);
-		exit;
-	case "getReportData":
-		$service = new Report($config, $userAuthInstance);
-		$service->getReportData(isset($_GET["year"]) ? $_GET["year"] : null, isset($_GET["month"]) ? $_GET["month"] : null, $_GET["team"]);
-		exit;
-	case "getToken":
-		$service = new MainData($config, $userAuthInstance);
-		$service->getToken();
-		exit;
-	case "setData":
-		if ($_SERVER["REQUEST_METHOD"] != "POST")
-		{
-			header("HTTP/1.1 405 Method Not Allowed");
-			echo "Data must be sent using POST method!";
-			exit;
-		}
-
-		$entries = json_decode(file_get_contents("php://input"));
-		if (!$entries)
-		{
-			header("HTTP/1.1 400 Bad Request");
-			echo "Unable to decode posted JSON data!";
-			exit;
-		}
-
-		$service = new MainData($config, $userAuthInstance);
-		$service->setData($entries, $_GET["team"]);
-		exit;
-	default:
-		header("HTTP/1.1 404 Not Found");
-		echo "The requested resource was not found!";
-		exit;
+	$response = $handler->handleRequest($_SERVER["PATH_INFO"], $_SERVER["REQUEST_METHOD"], json_decode(file_get_contents("php://input")));
+	if ($response !== null)
+	{
+		header("Content-Type: application/json");
+		echo json_encode($response);
+	}
+}
+catch (EndpointNotFoundException $exception)
+{
+	header("HTTP/1.1 404 Not Found");
+	echo "The requested endpoint '" . $exception->getPath() . "' (" . $exception->getMethod() . ") does not exist!";
+}
+catch (ServiceConfigurationException $exception)
+{
+	header("HTTP/1.1 500 Internal Server Error");
+	echo "Error in endpoint configuration!";
+}
+catch (Exception $exception)
+{
+	header("HTTP/1.1 500 Internal Server Error");
+	echo "Error while executing method! (" . $exception->getMessage() . ")";
 }

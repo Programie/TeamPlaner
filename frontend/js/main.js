@@ -12,20 +12,20 @@ $(function()
 
 	$("#report-download").on("click", function()
 	{
-		var queryParameters =
+		var path =
 		[
-			"type=getReport",
-			"team=" + $("#current-team").data("name"),
-			"year=" + $("#report-year").data("value")
+			"service/report/download",
+			$("#current-team").data("name"),
+			$("#report-year").data("value")
 		];
 
 		var monthElement = $("#report-month");
 		if (monthElement.data("value"))
 		{
-			queryParameters.push("month=" + monthElement.data("value"));
+			path.push(monthElement.data("value"));
 		}
 
-		document.location = "service/?" + queryParameters.join("&");
+		document.location = path.join("/");
 	});
 
 	$("#generate-entries-button").on("click", function()
@@ -52,7 +52,7 @@ $(function()
 
 				$("#report-modal").modal("show");
 			},
-			url : "service/?type=getReportData&team=" + $("#current-team").data("name") + "&year=" + $("#current-year").text()
+			url : "service/report/data/" + $("#current-team").data("name") + "/" + $("#current-year").text()
 		});
 	});
 
@@ -69,11 +69,11 @@ $(function()
 			},
 			success : function(data)
 			{
-				$("#ical-url").val(document.location.href + "service/?type=getiCal&token=" + data.token);
+				$("#ical-url").val(document.location.origin + document.location.pathname + "service/ical?token=" + data.token);
 
 				$("#ical-modal").modal("show");
 			},
-			url : "service/?type=getToken"
+			url : "service/user/token"
 		});
 	});
 
@@ -113,8 +113,8 @@ $(function()
 
 				$("#selection-modal").modal("hide");
 			},
-			type : "POST",
-			url : "service/?type=setData&team=" + $("#current-team").data("name")
+			type : "PUT",
+			url : "service/entries/" + $("#current-team").data("name")
 		});
 	});
 
@@ -135,7 +135,7 @@ $(function()
 
 				$("#report-modal").modal("show");
 			},
-			url : "service/?type=getReportData&team=" + $("#current-team").data("name") + "&year=" + $("#current-year").text() + "&month=" + $(this).data("month")
+			url : "service/report/data/" + $("#current-team").data("name") + "/" + $("#current-year").text() + "/" + $(this).data("month")
 		});
 	});
 
@@ -202,16 +202,16 @@ function updateData()
 	var hashString = document.location.hash.substring(1);
 	hashString = hashString.split("/");
 
-	var queryData = ["type=getData"];
+	var path = ["service/entries"];
 
 	if (hashString[0])
 	{
-		queryData.push("team=" + hashString[0]);
+		path.push(hashString[0]);
 	}
 
 	if (hashString[1])
 	{
-		queryData.push("year=" + hashString[1]);
+		path.push(hashString[1]);
 	}
 
 	$.ajax(
@@ -228,7 +228,7 @@ function updateData()
 			Accept : "application/json"
 		},
 		success : readData,
-		url : "service/?" + queryData.join("&")
+		url : path.join("/")
 	});
 }
 

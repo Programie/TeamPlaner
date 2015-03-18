@@ -3,19 +3,23 @@ namespace com\selfcoders\teamplaner\service;
 
 use com\selfcoders\teamplaner\ExtensionClassFactory;
 use com\selfcoders\teamplaner\report\iReport;
+use com\selfcoders\teamplaner\service\exception\ForbiddenException;
+use com\selfcoders\teamplaner\service\exception\ReportingNotConfiguredException;
 use com\selfcoders\teamplaner\utils\Date;
 use com\selfcoders\teamplaner\utils\TeamHelper;
 use DateTime;
 
 class Report extends AbstractService
 {
-	public function getReport($year, $month, $team)
+	public function getDownload()
 	{
+		$year = $this->parameters->year;
 		if (!$year)
 		{
 			$year = date("Y");
 		}
 
+		$month = $this->parameters->month;
 		if (!$month)
 		{
 			$month = null;
@@ -23,17 +27,13 @@ class Report extends AbstractService
 
 		if (!$this->config->isValueSet("reportClass"))
 		{
-			header("HTTP/1.1 500 Internal Server Error");
-			echo "Report class not defined!";
-			exit;
+			throw new ReportingNotConfiguredException;
 		}
 
-		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $this->userAuth->getTeams());
+		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $this->parameters->team, $this->userAuth->getTeams());
 		if ($teamId === null)
 		{
-			header("HTTP/1.1 403 Forbidden");
-			echo "You are not allowed to access this team!";
-			exit;
+			throw new ForbiddenException;
 		}
 
 		/**
@@ -55,16 +55,16 @@ class Report extends AbstractService
 		header("Content-Disposition: attachment; filename=" . $reportInstance->getOutputFilename());
 
 		$reportInstance->create();
+
+		return null;
 	}
 
-	public function getReportData($year, $month, $team)
+	public function getData()
 	{
-		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $this->userAuth->getTeams());
+		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $this->parameters->team, $this->userAuth->getTeams());
 		if ($teamId === null)
 		{
-			header("HTTP/1.1 403 Forbidden");
-			echo "You are not allowed to access this team!";
-			exit;
+			throw new ForbiddenException;
 		}
 
 		$types = array();
@@ -93,6 +93,13 @@ class Report extends AbstractService
 			":teamId" => $teamId
 		));
 
+		$year = $this->parameters->year;
+		if (!$year)
+		{
+			$year = date("Y");
+		}
+
+		$month = $this->parameters->month;
 		if ($month)
 		{
 			$rangeStart = new DateTime($year . "-" . $month . "-01");
@@ -220,14 +227,12 @@ class Report extends AbstractService
 			return 0;
 		});
 
-		header("Content-Type: application/json");
-
-		echo json_encode(array
+		return array
 		(
 			"month" => $month,
 			"year" => $year,
 			"data" => $sortedData,
 			"types" => $types
-		));
+		);
 	}
 }

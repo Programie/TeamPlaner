@@ -10,6 +10,8 @@ abstract class AbstractService
 	protected $config;
 	protected $pdo;
 	protected $userAuth;
+	public $data;
+	public $parameters;
 
 	public function __construct(Config $config, iUserAuth $userAuth)
 	{
