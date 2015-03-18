@@ -68,9 +68,6 @@ class Report extends AbstractService
 			throw new ForbiddenException;
 		}
 
-		$typeCollection = new TypeCollection($this->config->getValue("types"));
-		$types = $typeCollection->getReportTypes();
-
 		$teamMembers = array();
 
 		$query = $this->pdo->prepare("
@@ -148,6 +145,9 @@ class Report extends AbstractService
 			));
 		}
 
+		$typeCollection = new TypeCollection($this->config->getValue("types"));
+		$types = $typeCollection->getReportTypes();
+
 		while ($row = $query->fetch())
 		{
 			if (!isset($types[$row->type]))
@@ -219,12 +219,6 @@ class Report extends AbstractService
 			return 0;
 		});
 
-		return array
-		(
-			"month" => $month,
-			"year" => $year,
-			"data" => $sortedData,
-			"types" => $types
-		);
+		return $sortedData;
 	}
 }

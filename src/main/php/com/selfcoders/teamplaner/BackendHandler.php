@@ -26,13 +26,22 @@ class BackendHandler
 		$router = new Router();
 
 		$router->map(HttpMethod::GET, "/user/token", new Target("User", "getToken"));
+		$router->map(HttpMethod::GET, "/user/name", new Target("User", "getUsername"));
+
+		$router->map(HttpMethod::GET, "/teams/[:team]/members", new Target("Team", "getMembersOfTeam"));
+		$router->map(HttpMethod::GET, "/teams", new Target("Team", "getTeams"));
+
+		$router->map(HttpMethod::GET, "/holidays/[i:year]", new Target("Holidays", "getList"));
 
 		$router->map(HttpMethod::GET, "/ical", new Target("ICal", "getData"));
 
 		$router->map(HttpMethod::GET, "/report/data/[:team]/[i:year]?/[i:month]?", new Target("Report", "getData"));
 		$router->map(HttpMethod::GET, "/report/download/[:team]/[i:year]?/[i:month]?", new Target("Report", "getDownload"));
 
-		$router->map(HttpMethod::GET, "/entries/[:team]?/[i:year]?", new Target("Entries", "getAll"));
+		$router->map(HttpMethod::GET, "/colors", new Target("Entries", "getColors"));
+		$router->map(HttpMethod::GET, "/types", new Target("Entries", "getTypes"));
+
+		$router->map(HttpMethod::GET, "/entries/[:team]/[i:year]", new Target("Entries", "getAll"));
 
 		$router->map(HttpMethod::PUT, "/entries/[:team]", new Target("Entries", "editMultiple"));
 

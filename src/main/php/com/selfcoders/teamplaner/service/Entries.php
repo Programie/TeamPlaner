@@ -1,8 +1,6 @@
 <?php
 namespace com\selfcoders\teamplaner\service;
 
-use com\selfcoders\teamplaner\ExtensionClassFactory;
-use com\selfcoders\teamplaner\Holiday;
 use com\selfcoders\teamplaner\service\exception\ForbiddenException;
 use com\selfcoders\teamplaner\type\TypeCollection;
 use com\selfcoders\teamplaner\utils\TeamHelper;
@@ -11,23 +9,7 @@ class Entries extends AbstractService
 {
 	public function getAll()
 	{
-		$year = $this->parameters->year;
-		if (!$year)
-		{
-			$year = date("Y");
-		}
-
-		$teams = $this->userAuth->getTeams();
-
-		$availableTeams = TeamHelper::getTeams($this->pdo, $teams);
-
-		$team = $this->parameters->team;
-		if (!$team)
-		{
-			$team = $availableTeams[0]->name;
-		}
-
-		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $team, $teams);
+		$teamId = TeamHelper::getTeamIdIfAllowed($this->pdo, $this->parameters->team, $this->userAuth->getTeams());
 		if ($teamId === null)
 		{
 			throw new ForbiddenException;
@@ -42,7 +24,7 @@ class Entries extends AbstractService
 
 		$query->execute(array
 		(
-			":year" => $year,
+			":year" => $this->parameters->year,
 			":teamId" => $teamId
 		));
 
@@ -64,51 +46,16 @@ class Entries extends AbstractService
 			);
 		}
 
-		$holidays = array();
+		return $entries;
+	}
 
-		if ($this->config->isValueSet("holidaysMethod"))
-		{
-			list($className, $methodName) = explode("#", $this->config->getValue("holidaysMethod"));
-
-			$holidaysInstance = ExtensionClassFactory::getInstance($className);
-
-			if (method_exists($holidaysInstance, $methodName))
-			{
-				$holidays = $holidaysInstance->$methodName($year);
-			}
-		}
-
-		$cleanedHolidays = array();
-
-		/**
-		 * @var $holiday Holiday
-		 */
-		foreach ($holidays as $holiday)
-		{
-			$cleanedHolidays[$holiday->date->format("Y-m-d")] = $holiday->title;
-		}
-
-		// TODO: Do not call another service
-		$userInstance = new User($this->config, $this->userAuth);
-		$userInstance->parameters = $this->parameters;
-		$userInstance->data = $this->data;
-
+	public function getColors()
+	{
 		return array
 		(
-			"year" => $year,
-			"username" => $this->userAuth->getUsername(),
-			"entries" => $entries,
-			"users" => $userInstance->getUsersOfTeam(),
-			"types" => $this->getTypes(),
-			"colors" => array
-			(
-				"holiday" => $this->config->getValue("colors.holiday"),
-				"today" => $this->config->getValue("colors.today"),
-				"weekend" => $this->config->getValue("colors.weekend")
-			),
-			"holidays" => $cleanedHolidays,
-			"teams" => $availableTeams,
-			"currentTeam" => $team
+			"holiday" => $this->config->getValue("colors.holiday"),
+			"today" => $this->config->getValue("colors.today"),
+			"weekend" => $this->config->getValue("colors.weekend")
 		);
 	}
 

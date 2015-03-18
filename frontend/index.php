@@ -85,6 +85,18 @@ if (!$userAuthInstance->checkPermissions())
 		<script src="bower_components/moment/moment.js" type="text/javascript"></script>
 		<script src="bower_components/notifyjs/dist/notify-combined.min.js" type="text/javascript"></script>
 
+		<script src="js/utils.js" type="text/javascript"></script>
+
+		<script src="js/Colors.js" type="text/javascript"></script>
+		<script src="js/Holidays.js" type="text/javascript"></script>
+		<script src="js/TeamMembers.js" type="text/javascript"></script>
+		<script src="js/Teams.js" type="text/javascript"></script>
+		<script src="js/Types.js" type="text/javascript"></script>
+
+		<script src="js/ical.js" type="text/javascript"></script>
+		<script src="js/report.js" type="text/javascript"></script>
+		<script src="js/selection.js" type="text/javascript"></script>
+
 		<script src="js/main.js" type="text/javascript"></script>
 
 		<script type="text/html" id="table-template">
@@ -98,13 +110,13 @@ if (!$userAuthInstance->checkPermissions())
 					<tr>
 						{{#months}}
 							<th></th>
-							{{#users}}
+							{{#members}}
 								<th class="rotate-45" data-toggle="tooltip" data-placement="bottom" title="{{additionalInfo}}">
 									<div>
 										<span>{{username}}</span>
 									</div>
 								</th>
-							{{/users}}
+							{{/members}}
 						{{/months}}
 					</tr>
 				</thead>
