@@ -16,7 +16,7 @@ class ExtensionClassFactory
 	 */
 	public static function getInstance($name)
 	{
-		$filename = __DIR__ . "/../../../../../../extensions/" . $name . ".php";
+		$filename = APP_ROOT . "/extensions/" . $name . ".php";
 		if (!file_exists($filename))
 		{
 			throw new Exception("No such file or directory: " . $filename);
@@ -24,13 +24,13 @@ class ExtensionClassFactory
 
 		require_once $filename;
 
-		$classname = str_replace("/", "\\", $name);
+		$class = str_replace("/", "\\", $name);
 
-		if (!class_exists($classname))
+		if (!class_exists($class))
 		{
-			throw new Exception("Class not found: " . $classname);
+			throw new Exception("Class not found: " . $class);
 		}
 
-		return new $classname;
+		return new $class;
 	}
 }
