@@ -2,6 +2,7 @@
 namespace com\selfcoders\teamplaner\service;
 
 use com\selfcoders\teamplaner\ExtensionClassFactory;
+use com\selfcoders\teamplaner\Holiday;
 use com\selfcoders\teamplaner\service\exception\ForbiddenException;
 use com\selfcoders\teamplaner\utils\TeamHelper;
 
@@ -99,6 +100,16 @@ class Entries extends AbstractService
 			}
 		}
 
+		$cleanedHolidays = array();
+
+		/**
+		 * @var $holiday Holiday
+		 */
+		foreach ($holidays as $holiday)
+		{
+			$cleanedHolidays[$holiday->date->format("Y-m-d")] = $holiday->title;
+		}
+
 		return array
 		(
 			"year" => $year,
@@ -112,7 +123,7 @@ class Entries extends AbstractService
 				"today" => $this->config->getValue("colors.today"),
 				"weekend" => $this->config->getValue("colors.weekend")
 			),
-			"holidays" => $holidays,
+			"holidays" => $cleanedHolidays,
 			"teams" => $availableTeams,
 			"currentTeam" => $team
 		);

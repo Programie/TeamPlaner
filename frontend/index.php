@@ -112,7 +112,7 @@ if (!$userAuthInstance->checkPermissions())
 					{{#rows}}
 						<tr>
 							{{#columns}}
-								<td style="background-color: {{color}};" {{#selectable}}class="selectable"{{/selectable}} data-date="{{date}}" data-userid="{{userId}}" data-memberid="{{memberId}}" data-entryid="{{entryId}}">{{text}}</td>
+								<td style="background-color: {{color}};" {{#selectable}}class="selectable"{{/selectable}} data-date="{{date}}" data-userid="{{userId}}" data-memberid="{{memberId}}" data-entryid="{{entryId}}" data-toggle="tooltip" data-placement="right" title="{{title}}">{{text}}</td>
 							{{/columns}}
 						</tr>
 					{{/rows}}

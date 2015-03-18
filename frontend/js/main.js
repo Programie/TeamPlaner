@@ -366,20 +366,20 @@ function readData(data)
 				color = data.colors.weekend;
 			}
 
+			var title = null;
+
 			if (data.colors.holiday)
 			{
-				for (var holidayIndex in data.holidays)
+				if (data.holidays.hasOwnProperty(isoDate))
 				{
-					if (data.holidays[holidayIndex] == isoDate)
-					{
-						color = data.colors.holiday;
-						break;
-					}
+					color = data.colors.holiday;
+					title = data.holidays[isoDate];
 				}
 			}
 
 			columns.push(
 			{
+				title : title,
 				text : valid ? moment(date).format("dd, L") : "",
 				color : valid ? (isToday && data.colors.today ? data.colors.today : color) : "white"
 			});
