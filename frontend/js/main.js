@@ -77,6 +77,11 @@ $(function()
 		});
 	});
 
+	$("#ical-url").on("click", function()
+	{
+		$(this).select();
+	});
+
 	$("#selection-modal").on("hidden.bs.modal", function()
 	{
 		updateSelection();

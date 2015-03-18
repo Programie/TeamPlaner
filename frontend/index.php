@@ -258,7 +258,7 @@ if (!$userAuthInstance->checkPermissions())
 					<div class="modal-body">
 						<span class="help-block">Copy the following URL and paste it into your calendar application.</span>
 
-						<input type="text" class="form-control" id="ical-url"/>
+						<input type="text" class="form-control" id="ical-url" readonly="readonly"/>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
