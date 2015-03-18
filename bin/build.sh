@@ -42,4 +42,5 @@ done
 # Build frontend (pushd and popd is required to allow running this script from everywhere!)
 pushd ${BASEPATH}/frontend > /dev/null
 bower install
+bower prune
 popd > /dev/null
