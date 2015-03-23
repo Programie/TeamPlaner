@@ -45,6 +45,8 @@ function updateTeamYear()
 	{
 		var menuElement = $("#team-menu");
 
+		menuElement.empty();
+
 		var foundValidTeam = false;
 		for (var index in Teams.list)
 		{
