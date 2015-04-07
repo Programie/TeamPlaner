@@ -39,7 +39,12 @@ function updateTeamYear()
 	hashString = hashString.split("/");
 
 	Teams.current = hashString[0];// 0 = team
-	var year = hashString[1];// 1 = year
+	var year = parseInt(hashString[1]);// 1 = year
+
+	if (!year)
+	{
+		year = new Date().getFullYear();
+	}
 
 	Teams.load(function()
 	{
@@ -75,13 +80,6 @@ function updateTeamYear()
 			Teams.current = firstTeam.name;
 			$("#current-team").data("name", firstTeam.name).text(firstTeam.title);
 		}
-
-		if (!year)
-		{
-			year = new Date().getFullYear();
-		}
-
-		year = parseInt(year);
 
 		$("#previous-year-link").prop("href", "#" + Teams.current + "/" + (year - 1));
 		$("#next-year-link").prop("href", "#" + Teams.current + "/" + (year + 1));
