@@ -5,7 +5,6 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
 ## Requirements
 
    * Webserver (e.g. Apache)
-   * mod_alias (if you are using Apache) or something similar
    * PHP 5.4 or newer
    * MySQL
    * [bower](http://bower.io) (to download frontend JavaScript dependencies)
@@ -17,9 +16,7 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
    * Execute **php bin/update-config.php** to create or update your configuration file
    * Edit the **config.json** file inside of the **config** folder (See section **Configuration** for details)
    * Import **database.sql** into your MySQL database
-   * Configure your webserver
-      * Point your document root to the **frontend** folder
-      * Create an alias for **service** pointing to **service/index.php** (e.g. **Alias /service /var/www/calendar/service/index.php**)
+   * Configure your webserver so your document root points to the **httpdocs** folder
    * Create the users for your team (See section **User management** for details)
    * Use it
 
