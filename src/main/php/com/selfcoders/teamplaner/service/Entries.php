@@ -2,6 +2,8 @@
 namespace com\selfcoders\teamplaner\service;
 
 use com\selfcoders\teamplaner\service\exception\ForbiddenException;
+use com\selfcoders\teamplaner\service\exception\InvalidIdException;
+use com\selfcoders\teamplaner\service\exception\NotFoundException;
 use com\selfcoders\teamplaner\type\TypeCollection;
 use com\selfcoders\teamplaner\utils\TeamHelper;
 
@@ -80,6 +82,13 @@ class Entries extends AbstractService
 			WHERE `teamId` = :teamId AND `id` = :id
 		");
 
+		$entryQuery = $this->pdo->prepare("
+			SELECT `teamId`
+			FROM `entries`
+			LEFT JOIN `teammembers` ON `teammembers`.`id` = `entries`.`memberId`
+			WHERE `entries`.`id` = :id
+		");
+
 		$deleteEntryQuery = $this->pdo->prepare("
 			DELETE FROM `entries`
 			WHERE `id` = :id
@@ -124,7 +133,23 @@ class Entries extends AbstractService
 				throw new ForbiddenException;
 			}
 
-			// TODO: $entry might be an entry of another team the user does not have access to!
+			if ($entry->id)
+			{
+				$entryQuery->execute(array
+				(
+					":id" => $entry->id
+				));
+
+				if (!$entryQuery->rowCount())
+				{
+					throw new NotFoundException;
+				}
+
+				if ($entryQuery->fetch()->teamId != $teamId)
+				{
+					throw new InvalidIdException;
+				}
+			}
 
 			// Type does not exist or should not be saved
 			if (!isset($types[$entry->type]) or $types[$entry->type]->noSave)
