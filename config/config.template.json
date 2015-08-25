@@ -11,7 +11,7 @@
 	},
 	"database.dsn" :
 	{
-		"defaultValue" : "mysql:host=127.0.0.1;dbname=calendar"
+		"defaultValue" : "mysql:host=127.0.0.1;dbname=teamplaner"
 	},
 	"database.username" :
 	{
