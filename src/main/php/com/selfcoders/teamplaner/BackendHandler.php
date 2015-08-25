@@ -34,6 +34,7 @@ class BackendHandler
 		$router->map(HttpMethod::GET, "/holidays/[i:year]", new Target("Holidays", "getList"));
 
 		$router->map(HttpMethod::GET, "/ical", new Target("ICal", "getData"));
+		$router->map(HttpMethod::GET, "/ical/[:team]", new Target("ICal", "getDataForTeam"));
 
 		$router->map(HttpMethod::GET, "/report/data/[:team]/[i:year]?/[i:month]?", new Target("Report", "getData"));
 		$router->map(HttpMethod::GET, "/report/download/[:team]/[i:year]?/[i:month]?", new Target("Report", "getDownload"));

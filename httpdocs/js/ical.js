@@ -3,22 +3,11 @@ $(function()
 	// User clicks the ical button in the navbar
 	$("#ical-button").on("click", function()
 	{
-		$.ajax(
+		loadDataFromBackend("user/token", "GET", function(data)
 		{
-			cache : false,
-			contentType : "application/json",
-			context : this,
-			error : function(xhr, error, errorThrown)
-			{
-				$.notify(error + ": " + errorThrown, "error");
-			},
-			success : function(data)
-			{
-				$("#ical-url").val(document.location.origin + document.location.pathname + "service/ical?token=" + data.token);
+			$("#ical-url").val(document.location.origin + document.location.pathname + "service/ical?token=" + data.token);
 
-				$("#ical-modal").modal("show");
-			},
-			url : "service/user/token"
+			$("#ical-modal").modal("show");
 		});
 	});
 
