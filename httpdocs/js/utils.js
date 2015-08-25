@@ -12,6 +12,6 @@ function loadDataFromBackend(path, method, callback, data)
 		},
 		success : callback,
 		type : method,
-		url : "service/" + path
+		url : "index.php/service/" + path
 	});
 }
