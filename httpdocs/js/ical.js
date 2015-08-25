@@ -5,7 +5,18 @@ $(function()
 	{
 		loadDataFromBackend("user/token", "GET", function(data)
 		{
-			$("#ical-url").val(document.location.origin + document.location.pathname + "service/ical?token=" + data.token);
+			var path;
+
+			if (document.location.pathname.substr(-10) == "/index.php")
+			{
+				path = document.location.pathname;
+			}
+			else
+			{
+				path = document.location.pathname + "index.php";
+			}
+
+			$("#ical-url").val(document.location.origin + path + "/service/ical?token=" + data.token);
 
 			$("#ical-modal").modal("show");
 		});
