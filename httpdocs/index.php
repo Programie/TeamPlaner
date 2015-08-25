@@ -2,6 +2,7 @@
 use com\selfcoders\teamplaner\auth\UserAuthFactory;
 use com\selfcoders\teamplaner\BackendHandler;
 use com\selfcoders\teamplaner\Config;
+use com\selfcoders\teamplaner\DBConnection;
 use com\selfcoders\teamplaner\service\exception\EndpointNotFoundException;
 use com\selfcoders\teamplaner\service\exception\ServiceConfigurationException;
 
@@ -20,6 +21,8 @@ if (!$userAuthInstance)
 $token = isset($_GET["token"]) ? $_GET["token"] : null;
 if ($token !== null)
 {
+	$pdo = DBConnection::getConnection($config);
+
 	$query = $pdo->prepare("
 		SELECT `id`, `username`
 		FROM `users`
