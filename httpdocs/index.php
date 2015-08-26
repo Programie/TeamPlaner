@@ -321,9 +321,17 @@ if (!$userAuthInstance->checkPermissions())
 						<h4 class="modal-title">iCal</h4>
 					</div>
 					<div class="modal-body">
-						<span class="help-block">Copy the following URL and paste it into your calendar application.</span>
+						<span class="help-block">Copy one of the following URLs and paste it into your calendar application.</span>
 
-						<input type="text" class="form-control" id="ical-url" readonly="readonly"/>
+						<div>
+							<label for="ical-url">Your entries</label>
+							<input type="text" class="form-control" id="ical-url" readonly="readonly"/>
+						</div>
+
+						<div>
+							<label for="ical-url-team">Team entries</label>
+							<input type="text" class="form-control" id="ical-url-team" readonly="readonly"/>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

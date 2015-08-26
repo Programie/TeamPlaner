@@ -17,6 +17,7 @@ $(function()
 			}
 
 			$("#ical-url").val(document.location.origin + path + "/service/ical?token=" + data.token);
+			$("#ical-url-team").val(document.location.origin + path + "/service/ical/" + $("#current-team").data("name") + "?token=" + data.token);
 
 			$("#ical-modal").modal("show");
 		});
