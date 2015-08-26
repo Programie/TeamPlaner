@@ -95,8 +95,7 @@ class ICal extends AbstractService
 			$event->setDtStart(new DateTime($row->date));
 			$event->setDtEnd(new DateTime($row->date));
 			$event->setNoTime(true);
-			$event->setSummary($row->username);
-			$event->setDescription($type->title);
+			$event->setSummary($row->username . " (" . $type->title . ")");
 
 			$calendar->addComponent($event);
 		}
