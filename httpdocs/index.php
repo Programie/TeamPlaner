@@ -18,11 +18,11 @@ if (!$userAuthInstance)
 	exit;
 }
 
+$pdo = DBConnection::getConnection($config);
+
 $token = isset($_GET["token"]) ? $_GET["token"] : null;
 if ($token !== null)
 {
-	$pdo = DBConnection::getConnection($config);
-
 	$query = $pdo->prepare("
 		SELECT `id`, `username`
 		FROM `users`
@@ -42,10 +42,41 @@ if ($token !== null)
 	}
 }
 
+$loggedIn = $userAuthInstance->checkAuth();
+
+if ($loggedIn)
+{
+	$username = $userAuthInstance->getUsername();
+
+	$query = $pdo->prepare("
+		SELECT `id`
+		FROM `users`
+		WHERE `username` = :username
+	");
+
+	$query->execute(array
+	(
+		":username" => $username
+	));
+
+	if (!$query->rowCount())
+	{
+		$query = $pdo->prepare("
+			INSERT INTO `users`
+			SET `username` = :username
+		");
+
+		$query->execute(array
+		(
+			":username" => $username
+		));
+	}
+}
+
 $path = @$_SERVER["PATH_INFO"];
 if (substr($path, 0, 9) == "/service/")
 {
-	if (!$userAuthInstance->checkAuth())
+	if (!$loggedIn)
 	{
 		header("HTTP/1.1 401 Unauthorized");
 		echo "You have to authenticate first!";
@@ -94,7 +125,7 @@ if (isset($_GET["logout"]))
 	$userAuthInstance->logout();
 }
 
-if (!$userAuthInstance->checkAuth())
+if (!$loggedIn)
 {
 	$userAuthInstance->forceAuth();
 }
