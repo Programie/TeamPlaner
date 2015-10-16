@@ -31,7 +31,7 @@ class Type
 		$this->name = $data->name;
 		$this->title = $data->title;
 		$this->color = $data->color;
-		$this->showInReport = (bool) $data->showInReport;
-		$this->noSave = (bool) $data->noSave;
+		$this->showInReport = isset($data->showInReport) ? ((bool) $data->showInReport) : false;
+		$this->noSave = isset($data->noSave) ? ((bool) $data->noSave) : false;
 	}
 }
