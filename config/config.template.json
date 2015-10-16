@@ -21,6 +21,10 @@
 	{
 		"defaultValue" : ""
 	},
+	"forceSsl" :
+	{
+		"defaultValue" : false
+	},
 	"types" :
 	{
 		"defaultValue" :

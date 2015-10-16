@@ -10,6 +10,12 @@ require_once __DIR__ . "/../bootstrap.php";
 
 $config = new Config();
 
+if (!isset($_SERVER["HTTPS"]) and $config->getValue("forceSsl"))
+{
+	header("Location: https://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
+	exit;
+}
+
 $userAuthInstance = UserAuthFactory::getProvider($config->getValue("userAuth"));
 if (!$userAuthInstance)
 {
