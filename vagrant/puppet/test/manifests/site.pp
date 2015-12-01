@@ -6,15 +6,19 @@ package {"vim":
   ensure  => "installed",
 }
 
+package {"nodejs-legacy":
+  ensure  => installed,
+}
+
+package {"npm":
+  ensure  => installed,
+}
+
 package {"php5-mysql":
   ensure  => "installed",
 }
 
 package {"php5-curl":
-  ensure  => "installed",
-}
-
-package {"apt-transport-https":
   ensure  => "installed",
 }
 
@@ -57,19 +61,23 @@ mysql::db {"teamplaner_db":
   ],
 }
 
-include composer
-
-composer::exec {"composer_install":
-  cmd => "install",
-  cwd => "/opt/teamplaner",
+class {"composer":
+  command_name => "composer",
+  target_dir   => "/usr/local/bin",
 }
 
-include nodejs
+exec {"composer_install":
+  path        => ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"],
+  command     => "composer install",
+  cwd         => "/opt/teamplaner",
+  environment => ["HOME=/home/vagrant"],
+  require     => Class["composer"],
+}
 
-package {"bower":
-  ensure    => present,
-  provider  => "npm",
-  require   => Class["nodejs"],
+exec {"npm_install_bower":
+  path    => ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"],
+  command => "npm install -g bower",
+  require => Package["nodejs-legacy", "npm"],
 }
 
 exec {"bower_install":
@@ -78,5 +86,5 @@ exec {"bower_install":
   user        => "vagrant",
   command     => "bower install --config.interactive=false",
   environment => ["HOME=/home/vagrant"],
-  require     => Package["bower"],
+  require     => Exec["npm_install_bower"],
 }
