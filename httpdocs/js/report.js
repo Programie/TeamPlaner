@@ -5,7 +5,7 @@ $(function()
 	{
 		var path =
 		[
-			"service/report/download",
+			"index.php/service/report/download",
 			$("#current-team").data("name"),
 			$("#report-year").data("value")
 		];
