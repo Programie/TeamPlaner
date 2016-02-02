@@ -32,7 +32,10 @@ if (!$config->isValueSet("reportClass"))
 
 $pdo = DBConnection::getConnection($config);
 
-$query = $pdo->prepare("SELECT `id` FROM `teams` WHERE `name` = :name");
+$query = $pdo->prepare("
+	SELECT `id`, `title`
+	FROM `teams`
+	WHERE `name` = :name");
 
 $query->execute(array
 (
@@ -45,7 +48,10 @@ if (!$query->rowCount())
 	exit;
 }
 
-$teamId = $query->fetch()->id;
+$row = $query->fetch();
+
+$teamId = $row->id;
+$teamTitle = $row->title;
 
 $tempFile = tempnam(sys_get_temp_dir(), "calendar-report");
 
@@ -100,7 +106,11 @@ $attachment->setFilename($reportInstance->getOutputFilename());
 
 $message = Swift_Message::newInstance();
 
-$message->setSubject($config->getValue("reportMail.subject"));
+$subject = $config->getValue("reportMail.subject");
+
+$subject = str_replace("%team%", $teamTitle, $subject);// Replace %team% placeholder in mail subject with actual team title
+
+$message->setSubject($subject);
 $message->setFrom($config->getValue("reportMail.from"));
 $message->setTo($recipient);
 $message->setBody($config->getValue("reportMail.body"));
