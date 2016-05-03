@@ -6,11 +6,19 @@ package {"vim":
   ensure => installed,
 }
 
+package {"git":
+  ensure => installed,
+}
+
 package {"nodejs-legacy":
   ensure => installed,
 }
 
 package {"npm":
+  ensure => installed,
+}
+
+package {"php5-cli":
   ensure => installed,
 }
 
