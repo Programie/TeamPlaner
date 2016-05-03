@@ -22,7 +22,7 @@ $(function()
 			});
 		});
 
-		loadDataFromBackend("entries/" + Teams.current, "PUT", function()
+		loadDataFromBackend("entries/" + Teams.getCurrent(), "PUT", function()
 		{
 			updateData();
 

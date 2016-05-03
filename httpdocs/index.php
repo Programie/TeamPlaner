@@ -174,6 +174,7 @@ if (!$userAuthInstance->checkPermissions())
 		<script src="bower_components/mustache/mustache.js" type="text/javascript"></script>
 		<script src="bower_components/moment/moment.js" type="text/javascript"></script>
 		<script src="bower_components/notifyjs/dist/notify-combined.min.js" type="text/javascript"></script>
+		<script src="bower_components/js-cookie/src/js.cookie.js" type="text/javascript"></script>
 
 		<script src="js/utils.js" type="text/javascript"></script>
 

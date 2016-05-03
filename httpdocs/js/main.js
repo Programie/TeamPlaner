@@ -38,7 +38,12 @@ function updateTeamYear()
 	var hashString = document.location.hash.substring(1);
 	hashString = hashString.split("/");
 
-	Teams.current = hashString[0];// 0 = team
+	var team = hashString[0];// 0 = team
+	if (team)
+	{
+		Teams.setCurrent(team);
+	}
+
 	var year = parseInt(hashString[1]);// 1 = year
 
 	if (!year)
@@ -67,7 +72,7 @@ function updateTeamYear()
 			listEntry.append(linkElement);
 			menuElement.append(listEntry);
 
-			if (teamData.name == Teams.current)
+			if (teamData.name == Teams.getCurrent())
 			{
 				$("#current-team").data("name", teamData.name).text(teamData.title);
 				foundValidTeam = true;
@@ -77,12 +82,12 @@ function updateTeamYear()
 		if (!foundValidTeam)
 		{
 			var firstTeam = Teams.list[0];
-			Teams.current = firstTeam.name;
+			Teams.setCurrent(firstTeam.name);
 			$("#current-team").data("name", firstTeam.name).text(firstTeam.title);
 		}
 
-		$("#previous-year-link").prop("href", "#" + Teams.current + "/" + (year - 1));
-		$("#next-year-link").prop("href", "#" + Teams.current + "/" + (year + 1));
+		$("#previous-year-link").prop("href", "#" + Teams.getCurrent() + "/" + (year - 1));
+		$("#next-year-link").prop("href", "#" + Teams.getCurrent() + "/" + (year + 1));
 
 		$("#current-year").text(year);
 
@@ -94,7 +99,7 @@ function updateData()
 {
 	var year = parseInt($("#current-year").text());
 
-	loadDataFromBackend("entries/" + Teams.current + "/" + year, "GET", function(data)
+	loadDataFromBackend("entries/" + Teams.getCurrent() + "/" + year, "GET", function(data)
 	{
 		TeamMembers.load(function()
 		{

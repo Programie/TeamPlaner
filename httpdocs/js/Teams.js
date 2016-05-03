@@ -24,5 +24,18 @@ Teams.load = function(callback)
 	}.bind(this));
 };
 
+Teams.setCurrent = function(team)
+{
+	Cookies.set("team", team,
+	{
+		expires: 365,
+		path: ""
+	});
+};
+
+Teams.getCurrent = function()
+{
+	Cookies.get("team");
+};
+
 Teams.list = null;
-Teams.current = null;

@@ -4,7 +4,7 @@ function TeamMembers()
 
 TeamMembers.load = function(callback)
 {
-	if (this.list !== null && Teams.current == this.team)
+	if (this.list !== null && Teams.getCurrent() == this.team)
 	{
 		if (callback)
 		{
@@ -13,9 +13,9 @@ TeamMembers.load = function(callback)
 		return;
 	}
 
-	loadDataFromBackend("teams/" + Teams.current + "/members", "GET", function(data)
+	loadDataFromBackend("teams/" + Teams.getCurrent() + "/members", "GET", function(data)
 	{
-		this.team = Teams.current;
+		this.team = Teams.getCurrent();
 		this.list = {};
 
 		for (var index in data)

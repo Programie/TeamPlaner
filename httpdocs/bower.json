@@ -21,6 +21,7 @@
     "jquery": "~2.1.2",
     "mustache": "~0.8.2",
     "moment": "~2.9.0",
-    "notifyjs": "~0.3.2"
+    "notifyjs": "~0.3.2",
+    "js-cookie": "^2.1.1"
   }
 }
