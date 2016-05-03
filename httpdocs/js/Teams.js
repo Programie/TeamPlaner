@@ -35,7 +35,7 @@ Teams.setCurrent = function(team)
 
 Teams.getCurrent = function()
 {
-	Cookies.get("team");
+	return Cookies.get("team");
 };
 
 Teams.list = null;
