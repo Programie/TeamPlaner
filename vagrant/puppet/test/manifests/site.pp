@@ -1,33 +1,33 @@
 package {"htop":
-  ensure  => "installed",
+  ensure => installed,
 }
 
 package {"vim":
-  ensure  => "installed",
+  ensure => installed,
 }
 
 package {"nodejs-legacy":
-  ensure  => installed,
+  ensure => installed,
 }
 
 package {"npm":
-  ensure  => installed,
+  ensure => installed,
 }
 
 package {"php5-mysql":
-  ensure  => "installed",
+  ensure => installed,
 }
 
 package {"php5-curl":
-  ensure  => "installed",
+  ensure => installed,
 }
 
 user {"www-data":
-  groups  => ["vagrant"],
+  groups => ["vagrant"],
 }
 
 file {"/opt/teamplaner/config/config.json":
-  source  => "/opt/teamplaner/vagrant/config.json",
+  source => "/opt/teamplaner/vagrant/config.json",
 }
 
 class { "apache":
@@ -37,9 +37,9 @@ class { "apache":
 }
 
 apache::vhost {"localhost":
-  port      => 80,
-  docroot   => "/opt/teamplaner/httpdocs",
-  override  => ["All"],
+  port     => 80,
+  docroot  => "/opt/teamplaner/httpdocs",
+  override => ["All"],
 }
 
 include apache::mod::php
@@ -50,12 +50,12 @@ class {"::mysql::server":
 }
 
 mysql::db {"teamplaner_db":
-  dbname    => "teamplaner",
-  user      => "teamplaner",
-  password  => "teamplaner",
-  host      => "localhost",
-  grant     => ["SELECT", "INSERT", "UPDATE", "DELETE"],
-  sql       => [
+  dbname   => "teamplaner",
+  user     => "teamplaner",
+  password => "teamplaner",
+  host     => "localhost",
+  grant    => ["SELECT", "INSERT", "UPDATE", "DELETE"],
+  sql      => [
     "/opt/teamplaner/database.sql",
     "/opt/teamplaner/sample_data.sql"
   ],
