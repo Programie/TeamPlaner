@@ -1,27 +1,27 @@
 {
-  "name": "Team Planer",
-  "version": "1.0.0",
-  "authors": [
-    "Programie <teamplaner@selfcoders.com>"
-  ],
-  "description": "A frontend for managing the Team Planer frontend",
-  "main": "index.php",
-  "license": "",
-  "homepage": "https://github.com/Programie/TeamPlaner",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "bootstrap": "~3.3.1",
-    "jquery": "~2.1.2",
-    "mustache": "~0.8.2",
-    "moment": "~2.9.0",
-    "notifyjs": "~0.3.2",
-    "js-cookie": "^2.1.1"
-  }
+    "name": "Team Planer",
+    "version": "1.0.0",
+    "authors": [
+        "Programie <teamplaner@selfcoders.com>"
+    ],
+    "description": "A frontend for managing the Team Planer frontend",
+    "main": "index.php",
+    "license": "",
+    "homepage": "https://github.com/Programie/TeamPlaner",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "~3.3.1",
+        "jquery": "~2.1.2",
+        "mustache": "~0.8.2",
+        "moment": "~2.9.0",
+        "notifyjs": "~0.3.2",
+        "js-cookie": "^2.1.1"
+    }
 }

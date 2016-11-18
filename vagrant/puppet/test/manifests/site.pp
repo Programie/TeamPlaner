@@ -1,40 +1,40 @@
-package {"htop":
+package { "htop":
   ensure => installed,
 }
 
-package {"vim":
+package { "vim":
   ensure => installed,
 }
 
-package {"git":
+package { "git":
   ensure => installed,
 }
 
-package {"nodejs-legacy":
+package { "nodejs-legacy":
   ensure => installed,
 }
 
-package {"npm":
+package { "npm":
   ensure => installed,
 }
 
-package {"php5-cli":
+package { "php5-cli":
   ensure => installed,
 }
 
-package {"php5-mysql":
+package { "php5-mysql":
   ensure => installed,
 }
 
-package {"php5-curl":
+package { "php5-curl":
   ensure => installed,
 }
 
-user {"www-data":
+user { "www-data":
   groups => ["vagrant"],
 }
 
-file {"/opt/teamplaner/config/config.json":
+file { "/opt/teamplaner/config/config.json":
   source => "/opt/teamplaner/vagrant/config.json",
 }
 
@@ -44,7 +44,7 @@ class { "apache":
   manage_user   => false,
 }
 
-apache::vhost {"localhost":
+apache::vhost { "localhost":
   port     => 80,
   docroot  => "/opt/teamplaner/httpdocs",
   override => ["All"],
@@ -53,11 +53,11 @@ apache::vhost {"localhost":
 include apache::mod::php
 include apache::mod::rewrite
 
-class {"::mysql::server":
+class { "::mysql::server":
   remove_default_accounts => true,
 }
 
-mysql::db {"teamplaner_db":
+mysql::db { "teamplaner_db":
   dbname   => "teamplaner",
   user     => "teamplaner",
   password => "teamplaner",
@@ -69,12 +69,12 @@ mysql::db {"teamplaner_db":
   ],
 }
 
-class {"composer":
+class { "composer":
   command_name => "composer",
   target_dir   => "/usr/local/bin",
 }
 
-exec {"composer_install":
+exec { "composer_install":
   path        => ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"],
   command     => "composer install",
   cwd         => "/opt/teamplaner",
@@ -82,13 +82,13 @@ exec {"composer_install":
   require     => Class["composer"],
 }
 
-exec {"npm_install_bower":
+exec { "npm_install_bower":
   path    => ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"],
   command => "npm install -g bower",
   require => Package["nodejs-legacy", "npm"],
 }
 
-exec {"bower_install":
+exec { "bower_install":
   path        => ["/bin", "/usr/bin", "/usr/local/bin"],
   cwd         => "/opt/teamplaner/httpdocs",
   user        => "vagrant",

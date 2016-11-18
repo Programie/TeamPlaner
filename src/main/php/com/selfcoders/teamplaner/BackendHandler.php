@@ -12,88 +12,84 @@ use ReflectionMethod;
 
 class BackendHandler
 {
-	private $config;
-	private $userAuth;
+    private $config;
+    private $userAuth;
 
-	public function __construct(Config $config, iUserAuth $userAuth)
-	{
-		$this->config = $config;
-		$this->userAuth = $userAuth;
-	}
+    public function __construct(Config $config, iUserAuth $userAuth)
+    {
+        $this->config = $config;
+        $this->userAuth = $userAuth;
+    }
 
-	public function handleRequest($path, $method, $data)
-	{
-		$router = new Router();
+    public function handleRequest($path, $method, $data)
+    {
+        $router = new Router();
 
-		$router->map(HttpMethod::GET, "/user/token", new Target("User", "getToken"));
-		$router->map(HttpMethod::GET, "/user/name", new Target("User", "getUsername"));
+        $router->map(HttpMethod::GET, "/user/token", new Target("User", "getToken"));
+        $router->map(HttpMethod::GET, "/user/name", new Target("User", "getUsername"));
 
-		$router->map(HttpMethod::GET, "/teams/[:team]/members", new Target("Team", "getMembersOfTeam"));
-		$router->map(HttpMethod::GET, "/teams", new Target("Team", "getTeams"));
+        $router->map(HttpMethod::GET, "/teams/[:team]/members", new Target("Team", "getMembersOfTeam"));
+        $router->map(HttpMethod::GET, "/teams", new Target("Team", "getTeams"));
 
-		$router->map(HttpMethod::GET, "/holidays/[i:year]", new Target("Holidays", "getList"));
+        $router->map(HttpMethod::GET, "/holidays/[i:year]", new Target("Holidays", "getList"));
 
-		$router->map(HttpMethod::GET, "/ical", new Target("ICal", "getData"));
-		$router->map(HttpMethod::GET, "/ical/[:team]", new Target("ICal", "getDataForTeam"));
+        $router->map(HttpMethod::GET, "/ical", new Target("ICal", "getData"));
+        $router->map(HttpMethod::GET, "/ical/[:team]", new Target("ICal", "getDataForTeam"));
 
-		$router->map(HttpMethod::GET, "/report/data/[:team]/[i:year]?/[i:month]?", new Target("Report", "getData"));
-		$router->map(HttpMethod::GET, "/report/download/[:team]/[i:year]?/[i:month]?", new Target("Report", "getDownload"));
+        $router->map(HttpMethod::GET, "/report/data/[:team]/[i:year]?/[i:month]?", new Target("Report", "getData"));
+        $router->map(HttpMethod::GET, "/report/download/[:team]/[i:year]?/[i:month]?", new Target("Report", "getDownload"));
 
-		$router->map(HttpMethod::GET, "/colors", new Target("Entries", "getColors"));
-		$router->map(HttpMethod::GET, "/types", new Target("Entries", "getTypes"));
+        $router->map(HttpMethod::GET, "/colors", new Target("Entries", "getColors"));
+        $router->map(HttpMethod::GET, "/types", new Target("Entries", "getTypes"));
 
-		$router->map(HttpMethod::GET, "/entries/[:team]/[i:year]", new Target("Entries", "getAll"));
+        $router->map(HttpMethod::GET, "/entries/[:team]/[i:year]", new Target("Entries", "getAll"));
 
-		$router->map(HttpMethod::PUT, "/entries/[:team]", new Target("Entries", "editMultiple"));
+        $router->map(HttpMethod::PUT, "/entries/[:team]", new Target("Entries", "editMultiple"));
 
-		// TODO: Split create (PUT) from update (POST)
-		//$router->map(HttpMethod::POST, "/entries/[:team]", new Target("Entries", "createMultiple"));
+        // TODO: Split create (PUT) from update (POST)
+        //$router->map(HttpMethod::POST, "/entries/[:team]", new Target("Entries", "createMultiple"));
 
-		// TODO: Manage single entries
-		//$router->map(HttpMethod::GET, "/entry/[i:id]", new Target("Entries", "get"));
-		//$router->map(HttpMethod::PUT, "/entry/[i:id]", new Target("Entries", "edit"));
-		//$router->map(HttpMethod::POST, "/entry", new Target("Entries", "create"));
-		//$router->map(HttpMethod::DELETE, "/entry/[i:id]", new Target("Entries", "delete"));
+        // TODO: Manage single entries
+        //$router->map(HttpMethod::GET, "/entry/[i:id]", new Target("Entries", "get"));
+        //$router->map(HttpMethod::PUT, "/entry/[i:id]", new Target("Entries", "edit"));
+        //$router->map(HttpMethod::POST, "/entry", new Target("Entries", "create"));
+        //$router->map(HttpMethod::DELETE, "/entry/[i:id]", new Target("Entries", "delete"));
 
-		$match = $router->match($path, $method);
-		if ($match === false)
-		{
-			throw new EndpointNotFoundException($path, $method);
-		}
+        $match = $router->match($path, $method);
+        if ($match === false) {
+            throw new EndpointNotFoundException($path, $method);
+        }
 
-		/**
-		 * @var $target Target
-		 */
-		$target = $match["target"];
+        /**
+         * @var $target Target
+         */
+        $target = $match["target"];
 
-		$classPath = "com\\selfcoders\\teamplaner\\service\\" . $target->class;
+        $classPath = "com\\selfcoders\\teamplaner\\service\\" . $target->class;
 
-		if (!class_exists($classPath))
-		{
-			throw new ServiceConfigurationException("Configured class does not exist: " . $target->class);
-		}
+        if (!class_exists($classPath)) {
+            throw new ServiceConfigurationException("Configured class does not exist: " . $target->class);
+        }
 
-		$reflection = new ReflectionClass($classPath);
+        $reflection = new ReflectionClass($classPath);
 
-		if ($reflection->isAbstract())
-		{
-			throw new ServiceConfigurationException("Configured class is abstract: " . $target->class);
-		}
+        if ($reflection->isAbstract()) {
+            throw new ServiceConfigurationException("Configured class is abstract: " . $target->class);
+        }
 
-		/**
-		 * @var $serviceClassInstance AbstractService
-		 */
-		$serviceClassInstance = $reflection->newInstance($this->config, $this->userAuth, $method);
+        /**
+         * @var $serviceClassInstance AbstractService
+         */
+        $serviceClassInstance = $reflection->newInstance($this->config, $this->userAuth, $method);
 
-		if (!method_exists($serviceClassInstance, $target->method))
-		{
-			throw new ServiceConfigurationException("Configured method does not exist in " . $target->class . ": " . $target->method);
-		}
+        if (!method_exists($serviceClassInstance, $target->method)) {
+            throw new ServiceConfigurationException("Configured method does not exist in " . $target->class . ": " . $target->method);
+        }
 
-		$serviceClassInstance->data = $data;
-		$serviceClassInstance->parameters = (object) $match["params"];
+        $serviceClassInstance->data = $data;
+        $serviceClassInstance->parameters = (object)$match["params"];
 
-		$reflectionMethod = new ReflectionMethod($serviceClassInstance, $target->method);
-		return $reflectionMethod->invoke($serviceClassInstance);
-	}
+        $reflectionMethod = new ReflectionMethod($serviceClassInstance, $target->method);
+        return $reflectionMethod->invoke($serviceClassInstance);
+    }
 }

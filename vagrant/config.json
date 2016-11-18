@@ -1,7 +1,6 @@
 {
-	"database" :
-	{
-		"username" : "teamplaner",
-		"password" : "teamplaner"
-	}
+    "database": {
+        "username": "teamplaner",
+        "password": "teamplaner"
+    }
 }

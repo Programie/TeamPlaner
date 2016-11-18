@@ -5,54 +5,52 @@ use com\selfcoders\teamplaner\service\exception\NotFoundException;
 
 class User extends AbstractService
 {
-	public function getToken()
-	{
-		$query = $this->pdo->prepare("
-			SELECT `token`
-			FROM `users`
-			WHERE `username` = :username
-		");
+    public function getToken()
+    {
+        $query = $this->pdo->prepare("
+            SELECT `token`
+            FROM `users`
+            WHERE `username` = :username
+        ");
 
-		$query->execute(array
-		(
-			":username" => $this->userAuth->getUsername()
-		));
+        $query->execute(array
+        (
+            ":username" => $this->userAuth->getUsername()
+        ));
 
-		if (!$query->rowCount())
-		{
-			throw new NotFoundException;
-		}
+        if (!$query->rowCount()) {
+            throw new NotFoundException;
+        }
 
-		$token = $query->fetch()->token;
+        $token = $query->fetch()->token;
 
-		if ($token === null)
-		{
-			$token = md5(uniqid());
+        if ($token === null) {
+            $token = md5(uniqid());
 
-			$query = $this->pdo->prepare("
-				UPDATE `users`
-				SET `token` = :token
-				WHERE `username` = :username
-			");
+            $query = $this->pdo->prepare("
+                UPDATE `users`
+                SET `token` = :token
+                WHERE `username` = :username
+            ");
 
-			$query->execute(array
-			(
-				":token" => $token,
-				":username" => $this->userAuth->getUsername()
-			));
-		}
+            $query->execute(array
+            (
+                ":token" => $token,
+                ":username" => $this->userAuth->getUsername()
+            ));
+        }
 
-		return array
-		(
-			"token" => $token
-		);
-	}
+        return array
+        (
+            "token" => $token
+        );
+    }
 
-	public function getUsername()
-	{
-		return array
-		(
-			"username" => $this->userAuth->getUsername()
-		);
-	}
+    public function getUsername()
+    {
+        return array
+        (
+            "username" => $this->userAuth->getUsername()
+        );
+    }
 }

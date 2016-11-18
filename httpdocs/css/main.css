@@ -1,24 +1,19 @@
-a
-{
-	cursor: pointer;
+a {
+    cursor: pointer;
 }
 
-.month-header
-{
-	cursor: pointer;
+.month-header {
+    cursor: pointer;
 }
 
-.selection-highlight
-{
-	background-color: grey !important;
+.selection-highlight {
+    background-color: grey !important;
 }
 
-.report-content-additional-info
-{
-	float: right;
+.report-content-additional-info {
+    float: right;
 }
 
-#table-container
-{
-	padding-top: 70px;
+#table-container {
+    padding-top: 70px;
 }

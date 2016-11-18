@@ -1,99 +1,78 @@
 {
-	"userAuth" :
-	{
-		"defaultValue" : ""
-	},
-	"reportClass" :
-	{
-	},
-	"holidaysMethod" :
-	{
-	},
-	"database.dsn" :
-	{
-		"defaultValue" : "mysql:host=127.0.0.1;dbname=teamplaner"
-	},
-	"database.username" :
-	{
-		"defaultValue" : "root"
-	},
-	"database.password" :
-	{
-		"defaultValue" : ""
-	},
-	"forceSsl" :
-	{
-		"defaultValue" : false
-	},
-	"types" :
-	{
-		"defaultValue" :
-		[
-			{
-				"name" : "none",
-				"title" : "None",
-				"color" : "white",
-				"noSave" : true
-			},
-			{
-				"name" : "day",
-				"title" : "Day",
-				"color" : "lightgreen",
-				"showInReport" : true
-			},
-			{
-				"name" : "night",
-				"title" : "Night",
-				"color" : "indianred",
-				"showInReport" : true
-			},
-			{
-				"name" : "holiday",
-				"title" : "Holiday",
-				"color" : "orange"
-			}
-		]
-	},
-	"colors.holiday" :
-	{
-		"defaultValue" : "dodgerblue"
-	},
-	"colors.today" :
-	{
-		"defaultValue" : "wheat"
-	},
-	"colors.weekend" :
-	{
-		"defaultValue" : "lightskyblue"
-	},
-	"iCal.ttl" :
-	{
-		"defaultValue" : "PT1H"
-	},
-	"reportMail.smtp.host" :
-	{
-	},
-	"reportMail.smtp.port" :
-	{
-	},
-	"reportMail.smtp.encryption" :
-	{
-	},
-	"reportMail.smtp.username" :
-	{
-	},
-	"reportMail.smtp.password" :
-	{
-	},
-	"reportMail.from" :
-	{
-	},
-	"reportMail.subject" :
-	{
-		"defaultValue" : "Calendar Report"
-	},
-	"reportMail.body" :
-	{
-		"defaultValue" : "This mail contains your calendar report."
-	}
+    "userAuth": {
+        "defaultValue": ""
+    },
+    "reportClass": {
+    },
+    "holidaysMethod": {
+    },
+    "database.dsn": {
+        "defaultValue": "mysql:host=127.0.0.1;dbname=teamplaner"
+    },
+    "database.username": {
+        "defaultValue": "root"
+    },
+    "database.password": {
+        "defaultValue": ""
+    },
+    "forceSsl": {
+        "defaultValue": false
+    },
+    "types": {
+        "defaultValue": [
+            {
+                "name": "none",
+                "title": "None",
+                "color": "white",
+                "noSave": true
+            },
+            {
+                "name": "day",
+                "title": "Day",
+                "color": "lightgreen",
+                "showInReport": true
+            },
+            {
+                "name": "night",
+                "title": "Night",
+                "color": "indianred",
+                "showInReport": true
+            },
+            {
+                "name": "holiday",
+                "title": "Holiday",
+                "color": "orange"
+            }
+        ]
+    },
+    "colors.holiday": {
+        "defaultValue": "dodgerblue"
+    },
+    "colors.today": {
+        "defaultValue": "wheat"
+    },
+    "colors.weekend": {
+        "defaultValue": "lightskyblue"
+    },
+    "iCal.ttl": {
+        "defaultValue": "PT1H"
+    },
+    "reportMail.smtp.host": {
+    },
+    "reportMail.smtp.port": {
+    },
+    "reportMail.smtp.encryption": {
+    },
+    "reportMail.smtp.username": {
+    },
+    "reportMail.smtp.password": {
+    },
+    "reportMail.from": {
+    },
+    "reportMail.subject": {
+        "defaultValue": "Calendar Report"
+    },
+    "reportMail.body": {
+        "defaultValue": "This mail contains your calendar report."
+    }
 }
