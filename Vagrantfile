@@ -6,7 +6,7 @@ $script = <<SHELL
 SHELL
 
 Vagrant.configure(2) do |config|
-	config.vm.box = "dhoppe/debian-8.2.0-amd64"
+	config.vm.box = "gutocarvalho/debian8x64"
 	config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
 	config.vm.synced_folder ".", "/opt/teamplaner"
 	config.vm.provision "shell",
