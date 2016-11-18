@@ -7,9 +7,23 @@ A simple calendar allowing to plan recurring events in teams (e.g. shift planing
    * Webserver (e.g. Apache)
    * PHP 5.4 or newer
    * MySQL
+
+If you directly clone this repository (instead of downloading one of the pre-built releases), you will need those tools as well:
+
+   * [Composer](https://getcomposer.org) (to download PHP dependencies)
    * [bower](http://bower.io) (to download frontend JavaScript dependencies)
 
-## Installation
+## Installation from the tar archive (recommended)
+
+   * If not already done, download the [latest release from GitHub](https://github.com/Programie/TeamPlaner/releases/latest).
+   * Execute **php bin/update-config.php** to create or update your configuration file
+   * Edit the **config.json** file inside of the **config** folder (See section **Configuration** for details)
+   * Import **database.sql** into your MySQL database
+   * Configure your webserver so your document root points to the **httpdocs** folder
+   * Create the users for your team (See section **User management** for details)
+   * Use it
+
+## Installation from the Git repository
 
    * Clone this repository: **git clone https://github.com/Programie/TeamPlaner.git**
    * Execute **bin/build.sh** to build the application
