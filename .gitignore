@@ -1,6 +1,9 @@
 # JetBrains IDE's (e.g. PhpStorm)
 .idea
 
+# Extensions
+extensions
+
 # Composer
 composer.phar
 vendor

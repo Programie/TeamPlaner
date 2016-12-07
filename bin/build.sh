@@ -29,15 +29,17 @@ ${BASEPATH}/composer.phar self-update
 
 composer_install ${BASEPATH}
 
-for EXTENSION in ${BASEPATH}/extensions/*; do
-    echo "Running composer for extension: `basename ${EXTENSION}`"
+if [ -d "${BASEPATH}/extensions" ]; then
+    for EXTENSION in ${BASEPATH}/extensions/*; do
+        echo "Running composer for extension: `basename ${EXTENSION}`"
 
-    if [ -f ${EXTENSION}/composer.json ]; then
-        composer_install ${EXTENSION}
-    else
-        echo "Composer not configured! Skipping..."
-    fi
-done
+        if [ -f ${EXTENSION}/composer.json ]; then
+            composer_install ${EXTENSION}
+        else
+            echo "Composer not configured! Skipping..."
+        fi
+    done
+fi
 
 # Build frontend (pushd and popd is required to allow running this script from everywhere!)
 pushd ${BASEPATH}/httpdocs > /dev/null

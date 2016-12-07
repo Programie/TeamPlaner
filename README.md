@@ -65,3 +65,15 @@ Currently you have to manage users directly in the database. An easier user mana
 
    * Connect to your database
    * Delete the entry of the user you want to remove from the **users** table
+
+## Extensions
+
+It is possible to extend some parts of Team Planer using extensions.
+
+Currently the following features are supported to be customized/implemented:
+
+   * Login/Authentication (e.g. to implement LDAP or something else)
+   * Display holidays (shows country specific holidays in the calendar)
+   * Reports (generates an report which can be sent automatically via mail)
+
+Extensions are located in the **extensions** folder in the root of this application which is not created by default.
