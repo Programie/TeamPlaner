@@ -2,7 +2,7 @@
     "name": "programie/teamplaner",
     "description": "A simple calendar allowing to plan recurring events in teams (e.g. shift planing)",
     "minimum-stability": "stable",
-    "license": "",
+    "license": "MIT",
     "authors": [
         {
             "name": "Michael Wieland",

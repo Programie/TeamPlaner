@@ -6,7 +6,7 @@
     ],
     "description": "A frontend for managing the Team Planer frontend",
     "main": "index.php",
-    "license": "",
+    "license": "MIT",
     "homepage": "https://github.com/Programie/TeamPlaner",
     "private": true,
     "ignore": [
