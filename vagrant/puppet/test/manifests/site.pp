@@ -90,7 +90,7 @@ exec { "npm_install_bower":
 
 exec { "bower_install":
   path        => ["/bin", "/usr/bin", "/usr/local/bin"],
-  cwd         => "/opt/teamplaner/httpdocs",
+  cwd         => "/opt/teamplaner",
   user        => "vagrant",
   command     => "bower install --config.interactive=false",
   environment => ["HOME=/home/vagrant"],
