@@ -13,9 +13,9 @@ If you directly clone this repository (instead of downloading one of the pre-bui
    * [Composer](https://getcomposer.org) (to download PHP dependencies)
    * [bower](http://bower.io) (to download frontend JavaScript dependencies)
 
-## Installation from the tar archive (recommended)
+## Installation from the pre-built release (recommended)
 
-   * If not already done, download the [latest release from GitHub](https://github.com/Programie/TeamPlaner/releases/latest).
+   * If not already done, download the [latest release](https://gitlab.com/Programie/TeamPlaner/-/jobs/artifacts/master/download?job=release).
    * Execute **php bin/update-config.php** to create or update your configuration file
    * Edit the **config.json** file inside of the **config** folder (See section **Configuration** for details)
    * Import **database.sql** into your MySQL database
