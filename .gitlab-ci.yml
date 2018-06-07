@@ -7,8 +7,7 @@ cache:
 
 before_script:
 - apt-get update -yqq
-- apt-get install -yqq git unzip zlib1g-dev
-- docker-php-ext-install zip
+- apt-get install -yqq git unzip zip
 - curl -sS https://getcomposer.org/installer | php
 - npm install -g bower
 
