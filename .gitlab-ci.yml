@@ -28,3 +28,5 @@ release:
     - database.sql
     - LICENSE
     - README.md
+  only:
+  - tags
