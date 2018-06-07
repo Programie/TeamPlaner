@@ -1,3 +1,5 @@
+image: tetraweb/php
+
 cache:
   paths:
   - vendor/
@@ -7,11 +9,13 @@ before_script:
 - apt-get install -yqq git unzip zlib1g-dev
 - docker-php-ext-install zip
 - curl -sS https://getcomposer.org/installer | php
+- npm install -g bower
 
 release:
-  image: php:7.2
   stage: deploy
-  script: php composer.phar install --no-dev
+  script:
+  - php composer.phar install --no-dev
+  - bower install
   artifacts:
     paths:
     - bin/*.php
