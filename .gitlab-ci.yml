@@ -15,7 +15,7 @@ release:
   stage: deploy
   script:
   - php composer.phar install --no-dev
-  - bower install
+  - bower install --allow-root
   artifacts:
     paths:
     - bin/*.php
