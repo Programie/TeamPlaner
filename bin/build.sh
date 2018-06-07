@@ -42,7 +42,7 @@ if [ -d "${BASEPATH}/extensions" ]; then
 fi
 
 # Build frontend (pushd and popd is required to allow running this script from everywhere!)
-pushd ${BASEPATH}/httpdocs > /dev/null
+pushd ${BASEPATH} > /dev/null
 bower install
 bower prune
 popd > /dev/null
