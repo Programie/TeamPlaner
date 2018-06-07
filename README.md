@@ -1,5 +1,7 @@
 # Team Planer
 
+[![pipeline status](https://gitlab.com/Programie/TeamPlaner/badges/master/pipeline.svg)](https://gitlab.com/Programie/TeamPlaner/commits/master)
+
 A simple calendar allowing to plan recurring events in teams (e.g. shift planing).
 
 ## Requirements
