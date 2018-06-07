@@ -6,35 +6,12 @@ before_script:
 - apt-get update -yqq
 - apt-get install -yqq git unzip zlib1g-dev
 - docker-php-ext-install zip
-- pecl install xdebug
-- docker-php-ext-enable xdebug
 - curl -sS https://getcomposer.org/installer | php
-- php composer.phar install
-
-test:7.0:
-  image: php:7.0
-  stage: test
-  script:
-  - vendor/bin/phpunit --coverage-text --colors=never
-
-test:7.1:
-  image: php:7.1
-  stage: test
-  script:
-  - vendor/bin/phpunit --coverage-text --colors=never
-
-test:7.2:
-  image: php:7.2
-  stage: test
-  script:
-  - vendor/bin/phpunit --coverage-text --colors=never
 
 release:
   image: php:7.2
   stage: deploy
   script: php composer.phar install --no-dev
-  dependencies:
-  - test:7.2
   artifacts:
     paths:
     - bin/*.php
