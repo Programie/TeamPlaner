@@ -144,7 +144,7 @@ function updateData() {
                         var isWeekend = dateDay == 6 || dateDay == 0;
                         var isoDate = moment(date).format("YYYY-MM-DD");
 
-                        var color = "white";
+                        var color = "";
 
                         if (isWeekend && Colors.list.weekend) {
                             color = Colors.list.weekend;
@@ -160,6 +160,7 @@ function updateData() {
                         }
 
                         columns.push({
+                            classname: "date-column",
                             title: title,
                             text: valid ? moment(date).format("dd, L") : "",
                             color: valid ? (isToday && Colors.list.today ? Colors.list.today : color) : "white"
@@ -186,7 +187,7 @@ function updateData() {
                             }
 
                             columns.push({
-                                selectable: valid,
+                                classname: valid ? "selectable" : "",
                                 color: valid ? userColor : "white",
                                 date: date,
                                 userId: memberData.userId,

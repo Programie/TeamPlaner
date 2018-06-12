@@ -6,6 +6,10 @@ a {
     cursor: pointer;
 }
 
+.date-column {
+    background-color: whitesmoke;
+}
+
 .selection-highlight {
     background-color: grey !important;
 }
