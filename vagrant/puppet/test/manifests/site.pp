@@ -1,33 +1,46 @@
-package { "htop":
-  ensure => installed,
+$packages = [
+  "apt-transport-https",
+  "ca-certificates",
+  "git",
+  "htop",
+  "lsb-release",
+  "vim",
+]
+
+package { $packages: }
+
+apt::source { "packages.sury.org_php":
+  location => "https://packages.sury.org/php",
+  release  => "stretch",
+  repos    => "main",
+  key      => {
+    id     => "DF3D585DB8F0EB658690A554AC0E47584A7A714D",
+    source => "https://packages.sury.org/php/apt.gpg",
+  },
+  require  => Package["apt-transport-https", "ca-certificates"],
 }
 
-package { "vim":
-  ensure => installed,
+apt::pin { "packages.sury.org_php":
+  priority   => 1000,
+  originator => "deb.sury.org",
+  require    => Apt::Source["packages.sury.org_php"],
 }
 
-package { "git":
-  ensure => installed,
-}
+$php_modules = [
+  "cli",
+  "curl",
+  "mysql",
+]
 
-package { "nodejs-legacy":
-  ensure => installed,
-}
-
-package { "npm":
-  ensure => installed,
-}
-
-package { "php5-cli":
-  ensure => installed,
-}
-
-package { "php5-mysql":
-  ensure => installed,
-}
-
-package { "php5-curl":
-  ensure => installed,
+$php_modules.each | $module | {
+  package { "php7.2-${module}":
+    require => [
+      Apt::Source["packages.sury.org_php"],
+      Apt::Pin["packages.sury.org_php"],
+      Class["apt::update"],
+    ],
+    notify  => Class["apache::service"],
+  }
 }
 
 user { "www-data":
@@ -50,7 +63,18 @@ apache::vhost { "localhost":
   override => ["All"],
 }
 
-include apache::mod::php
+package { "libapache2-mod-php7.2":
+  require => [
+    Class["apache"],
+    Apt::Source["packages.sury.org_php"],
+    Apt::Pin["packages.sury.org_php"],
+    Class["apt::update"],
+  ],
+}
+
+class { "apache::mod::php":
+  php_version => "7.2",
+}
 include apache::mod::rewrite
 
 class { "::mysql::server":
@@ -72,20 +96,25 @@ mysql::db { "teamplaner_db":
 class { "composer":
   command_name => "composer",
   target_dir   => "/usr/local/bin",
+  require      => Package["php7.2-cli"],
 }
 
 exec { "composer_install":
   path        => ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"],
   command     => "composer install",
   cwd         => "/opt/teamplaner",
+  user        => "vagrant",
   environment => ["HOME=/home/vagrant"],
   require     => Class["composer"],
 }
 
-exec { "npm_install_bower":
-  path    => ["/usr/local/sbin", "/usr/local/bin", "/usr/sbin", "/usr/bin", "/sbin", "/bin"],
-  command => "npm install -g bower",
-  require => Package["nodejs-legacy", "npm"],
+class { "nodejs":
+  repo_url_suffix => "9.x",
+}
+
+package { "bower":
+  provider => "npm",
+  require  => Class["nodejs"],
 }
 
 exec { "bower_install":
@@ -94,5 +123,5 @@ exec { "bower_install":
   user        => "vagrant",
   command     => "bower install --config.interactive=false",
   environment => ["HOME=/home/vagrant"],
-  require     => Exec["npm_install_bower"],
+  require     => Package["bower"],
 }
