@@ -1,6 +1,8 @@
 $(window).on("hashchange", updateTeamYear);
 
 $(function () {
+    moment.locale(window.navigator.language);
+
     // Fix height of table user headers
     var tableHeaders = $("th.table-header-user");
     tableHeaders.css("height", tableHeaders.width());

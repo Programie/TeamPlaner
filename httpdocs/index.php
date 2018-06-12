@@ -152,7 +152,7 @@ if (!$userAuthInstance->checkPermissions()) {
         <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="bower_components/mustache/mustache.js" type="text/javascript"></script>
-        <script src="bower_components/moment/moment.js" type="text/javascript"></script>
+        <script src="bower_components/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
         <script src="bower_components/notifyjs/dist/notify.js" type="text/javascript"></script>
         <script src="bower_components/js-cookie/src/js.cookie.js" type="text/javascript"></script>
 
