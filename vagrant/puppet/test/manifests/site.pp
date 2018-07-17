@@ -70,6 +70,7 @@ package { "libapache2-mod-php7.2":
     Apt::Pin["packages.sury.org_php"],
     Class["apt::update"],
   ],
+  notify  => Class["apache::service"],
 }
 
 class { "apache::mod::php":
