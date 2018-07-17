@@ -175,12 +175,12 @@ if (!$userAuthInstance->checkPermissions()) {
                 <thead>
                     <tr>
                         {{#months}}
-                            <th class="month-header" colspan="{{columns}}" data-month="{{number}}" title="Click to show a report for this month">{{name}}</th>
+                            <th class="month-header date-column" colspan="{{columns}}" data-month="{{number}}" title="Click to show a report for this month">{{name}}</th>
                         {{/months}}
                     </tr>
                     <tr>
                         {{#months}}
-                            <th></th>
+                            <th class="date-column"></th>
                             {{#members}}
                                 <th class="rotate-90" data-toggle="tooltip" data-placement="bottom" title="{{additionalInfo}}">
                                     <div>

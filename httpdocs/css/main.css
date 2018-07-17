@@ -6,7 +6,11 @@ a {
     cursor: pointer;
 }
 
-.date-column {
+.date-column:not(:first-child) {
+    border-left: 2px solid #aaa !important;
+}
+
+td.date-column {
     background-color: whitesmoke;
 }
 
