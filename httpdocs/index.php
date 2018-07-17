@@ -182,7 +182,7 @@ if (!$userAuthInstance->checkPermissions()) {
                         {{#months}}
                             <th></th>
                             {{#members}}
-                                <th class="rotate-45" data-toggle="tooltip" data-placement="bottom" title="{{additionalInfo}}">
+                                <th class="rotate-90" data-toggle="tooltip" data-placement="bottom" title="{{additionalInfo}}">
                                     <div>
                                         <span>{{username}}</span>
                                     </div>
