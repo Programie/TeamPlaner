@@ -4,6 +4,7 @@ a {
 
 .month-header {
     cursor: pointer;
+    text-align: center;
 }
 
 .date-column:not(:first-child) {
