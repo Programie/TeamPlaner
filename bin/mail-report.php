@@ -7,12 +7,12 @@ use com\selfcoders\teamplaner\report\iReport;
 require_once __DIR__ . "/../bootstrap.php";
 
 if (count($argv) < 4) {
-    echo "Usage: " . $argv[0] . " <recipient> <team> <year> [<month>]";
+    echo "Usage: " . $argv[0] . " <recipient> <teams> <year> [<month>]";
     exit;
 }
 
 $recipient = @$argv[1];
-$team = @$argv[2];
+$teams = @$argv[2];
 $year = @$argv[3];
 $month = @$argv[4];
 
@@ -29,44 +29,10 @@ if (!$config->isValueSet("reportClass")) {
 
 $pdo = DBConnection::getConnection($config);
 
-$query = $pdo->prepare("
+$teamsQuery = $pdo->prepare("
     SELECT `id`, `title`
     FROM `teams`
     WHERE `name` = :name");
-
-$query->execute(array
-(
-    ":name" => $team
-));
-
-if (!$query->rowCount()) {
-    echo "Team not found!";
-    exit;
-}
-
-$row = $query->fetch();
-
-$teamId = $row->id;
-$teamTitle = $row->title;
-
-$tempFile = tempnam(sys_get_temp_dir(), "calendar-report");
-
-/**
- * @var iReport $reportInstance
- */
-$reportInstance = ExtensionClassFactory::getInstance($config->getValue("reportClass"));
-
-$reportInstance->setConfig($config);
-$reportInstance->setPDO($pdo);
-
-$reportInstance->setOutput($tempFile);
-$reportInstance->setYear($year);
-$reportInstance->setMonth($month);
-$reportInstance->setTeamId($teamId);
-
-$reportInstance->configure();
-
-$reportInstance->create();
 
 $transport = Swift_SmtpTransport::newInstance();
 
@@ -92,21 +58,67 @@ if ($config->isValueSet("reportMail.smtp.password")) {
 
 $mailer = Swift_Mailer::newInstance($transport);
 
-$attachment = Swift_Attachment::fromPath($tempFile);
-$attachment->setFilename($reportInstance->getOutputFilename());
-
 $message = Swift_Message::newInstance();
 
-$subject = $config->getValue("reportMail.subject");
-
-$subject = str_replace("%team%", $teamTitle, $subject);// Replace %team% placeholder in mail subject with actual team title
-
-$message->setSubject($subject);
 $message->setFrom($config->getValue("reportMail.from"));
 $message->setTo($recipient);
 $message->setBody($config->getValue("reportMail.body"));
-$message->attach($attachment);
 
-$mailer->send($message);
+$teamTitles = [];
+$tempFiles = [];
 
-unlink($tempFile);
+foreach (explode(",", $teams) as $team) {
+    $teamsQuery->execute(array
+    (
+        ":name" => $team
+    ));
+
+    if (!$teamsQuery->rowCount()) {
+        printf("Team %s not found! skipping...\n", $team);
+    }
+
+    $teamRow = $teamsQuery->fetch();
+
+    $teamId = $teamRow->id;
+    $teamTitles[] = $teamRow->title;
+
+    $tempFile = tempnam(sys_get_temp_dir(), "calendar-report");
+    $tempFiles[] = $tempFile;
+
+    /**
+     * @var iReport $reportInstance
+     */
+    $reportInstance = ExtensionClassFactory::getInstance($config->getValue("reportClass"));
+
+    $reportInstance->setConfig($config);
+    $reportInstance->setPDO($pdo);
+
+    $reportInstance->setOutput($tempFile);
+    $reportInstance->setYear($year);
+    $reportInstance->setMonth($month);
+    $reportInstance->setTeamId($teamId);
+
+    $reportInstance->configure();
+
+    $reportInstance->create();
+
+    $attachment = Swift_Attachment::fromPath($tempFile);
+    $attachment->setFilename($reportInstance->getOutputFilename());
+    $message->attach($attachment);
+}
+
+$subject = $config->getValue("reportMail.subject");
+
+$subject = str_replace("%team%", implode(", ", $teamTitles), $subject);// Replace %team% placeholder in mail subject with actual titles of the teams
+
+$message->setSubject($subject);
+
+// At least one temp file exists if a report has been attached to the message
+if (!empty($tempFiles)) {
+    $mailer->send($message);
+}
+
+// Cleanup
+foreach ($tempFiles as $tempFile) {
+    unlink($tempFile);
+}
