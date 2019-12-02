@@ -18,6 +18,10 @@ class Type
      */
     public $color;
     /**
+     * @var string[]
+     */
+    public $style;
+    /**
      * @var bool
      */
     public $showInReport;
@@ -31,6 +35,7 @@ class Type
         $this->name = $data->name;
         $this->title = $data->title;
         $this->color = $data->color;
+        $this->style = $data->style;
         $this->showInReport = isset($data->showInReport) ? ((bool)$data->showInReport) : false;
         $this->noSave = isset($data->noSave) ? ((bool)$data->noSave) : false;
     }

@@ -163,7 +163,7 @@ function updateData() {
                             classname: "date-column",
                             title: title,
                             text: valid ? moment(date).format("dd, L") : "",
-                            color: valid ? (isToday && Colors.list.today ? Colors.list.today : color) : "white"
+                            style: "background-color: " + (valid ? (isToday && Colors.list.today ? Colors.list.today : color) : "white") + ";"
                         });
 
                         var dayEntries = valid ? data[moment(date).format("YYYY-MM-DD")] : null;
@@ -175,20 +175,30 @@ function updateData() {
                         for (var memberIndex in monthData.members) {
                             var memberData = monthData.members[memberIndex];
                             var userColor = color;
+                            var userStyle = null;
 
                             var entryId = 0;
 
                             for (var entryIndex in dayEntries) {
                                 if (dayEntries[entryIndex].memberId == memberData.memberId) {
                                     userColor = Types.list[dayEntries[entryIndex].type].color;
+                                    userStyle = Types.list[dayEntries[entryIndex].type].style;
                                     entryId = dayEntries[entryIndex].id;
                                     break;
                                 }
                             }
 
+                            if (userStyle === null || userStyle === undefined) {
+                                userStyle = ["background-color: " + userColor];
+                            }
+
+                            if (!valid) {
+                                userStyle = ["background-color: white"];
+                            }
+
                             columns.push({
                                 classname: valid ? "selectable" : "",
-                                color: valid ? userColor : "white",
+                                style: userStyle.join(";"),
                                 date: date,
                                 userId: memberData.userId,
                                 memberId: memberData.memberId,
