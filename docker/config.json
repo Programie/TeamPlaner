@@ -1,5 +1,6 @@
 {
     "database": {
+        "dsn": "mysql:host=mysql;dbname=teamplaner",
         "username": "teamplaner",
         "password": "teamplaner"
     }

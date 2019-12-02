@@ -80,12 +80,15 @@ Currently the following features are supported to be customized/implemented:
 
 Extensions are located in the **extensions** folder in the root of this application which is not created by default.
 
-## Testing in Vagrant VM
+## Testing with Docker
 
-Note: This was only tested with VirtualBox as provider.
-
-* Install Vagrant plugins (if not already installed):
-  * VirtualBox guest plugin: `vagrant plugin install vagrant-vbguest`
-  * Puppet install plugin: `vagrant plugin install vagrant-puppet-install`
-* Run `vagrant up` to setup the Vagrant VM.
-* The frontend will be available on the configured port on localhost ([http://localhost:8080](http://localhost:8080) by default)
+* Run `docker build -t registry.gitlab.com/programie/teamplaner .` inside the root of the git checkout
+* Start the containers using `docker-compose up`
+* Import sample data into the MySQL database:
+```
+docker exec -it teamplaner_mysql_1 mysql -u teamplaner -pteamplaner teamplaner
+INSERT INTO `users` (`username`) VALUES ('anonymous'), ('anotheruser');
+INSERT INTO `teams` (`name`, `title`) VALUES ('sample', 'Sample');
+INSERT INTO `teammembers` (`teamId`, `userId`) VALUES (1, 1), (1, 2);
+```
+* The frontend will be available on [http://localhost:8080](http://localhost:8080)

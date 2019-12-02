@@ -1,0 +1,17 @@
+# JetBrains IDE's (e.g. PhpStorm)
+.idea
+
+# Extensions
+extensions
+
+# Composer
+composer.phar
+vendor
+
+# Bower
+httpdocs/bower_components
+
+# Mac OS X
+._DS_Store
+.DS_Store
+.AppleDouble

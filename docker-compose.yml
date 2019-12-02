@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+    app:
+        image: registry.gitlab.com/programie/teamplaner
+        hostname: app
+        restart: unless-stopped
+        depends_on:
+            - mysql
+        networks:
+            - network
+        ports:
+            - '8080:80'
+        volumes:
+            - ./docker/config.json:/app/config/config.json:ro
+
+    mysql:
+        image: mariadb
+        hostname: mysql
+        restart: unless-stopped
+        networks:
+            - network
+        volumes:
+            - mysql:/var/lib/mysql
+            - ./database.sql:/docker-entrypoint-initdb.d/database.sql:ro
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+            MYSQL_DATABASE: teamplaner
+            MYSQL_USER: teamplaner
+            MYSQL_PASSWORD: teamplaner
+
+networks:
+    network:
+
+volumes:
+    mysql:
