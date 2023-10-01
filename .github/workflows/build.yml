@@ -15,3 +15,21 @@ jobs:
           node-version: '18.x'
       - run: npm install -g bower
       - run: bower install
+      - uses: actions/upload-artifact@v3
+        with:
+          path: |
+            bin/*.php
+            config
+            httpdocs
+            src
+            vendor
+            bootstrap.php
+            database.sql
+            LICENSE
+            README.md
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: ls -la
