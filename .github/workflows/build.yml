@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
+      - uses: baschny/php-composer-action@93b5aef92179c5ebba8824db8d34748301c6a70e
         with:
-          php_version: '7.4'
+          command: install
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
