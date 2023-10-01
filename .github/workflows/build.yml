@@ -1,0 +1,17 @@
+name: Build package
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+        with:
+          php_version: '7.4'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - run: npm install -g bower
+      - run: bower install
