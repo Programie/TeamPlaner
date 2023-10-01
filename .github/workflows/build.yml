@@ -35,4 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
-      - run: ls -la
+        with:
+          path: package
+      - run: ls -la package
