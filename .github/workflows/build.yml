@@ -1,14 +1,20 @@
 name: Build package
 
 on:
-  push:
   workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
+        description: 'Tag to checkout'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.tag }}
       - uses: baschny/php-composer-action@93b5aef92179c5ebba8824db8d34748301c6a70e
         with:
           command: install
@@ -29,12 +35,3 @@ jobs:
             database.sql
             LICENSE
             README.md
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          path: package
-      - run: ls -la package
