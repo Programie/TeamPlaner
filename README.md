@@ -80,7 +80,7 @@ Extensions are located in the `extensions` folder in the root of this applicatio
 
 ## Testing with Docker
 
-* Run `docker build -t registry.gitlab.com/programie/teamplaner .` inside the root of the git checkout
+* Run `docker build -t teamplaner .` inside the root of the git checkout
 * Start the containers using `docker-compose up`
 * Import sample data into the MySQL database:
 ```

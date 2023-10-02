@@ -2,7 +2,8 @@ version: '3.7'
 
 services:
     app:
-        image: registry.gitlab.com/programie/teamplaner
+        image: teamplaner
+        build: .
         hostname: app
         restart: unless-stopped
         depends_on:
