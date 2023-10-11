@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "90553b9dc747bf8b97526115472c6f55",
-    "content-hash": "ca68e764c12a7b04953f5c7266855f2a",
+    "content-hash": "66f4c7375ec6a6b51dfa43bcb452c003",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -60,7 +59,11 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-11-30 00:47:43"
+            "support": {
+                "issues": "https://github.com/dannyvankooten/AltoRouter/issues",
+                "source": "https://github.com/dannyvankooten/AltoRouter/tree/master"
+            },
+            "time": "2015-11-30T00:47:43+00:00"
         },
         {
             "name": "eluceo/ical",
@@ -94,14 +97,14 @@
             ],
             "authors": [
                 {
-                    "name": "Maciej Łebkowski",
-                    "email": "m.lebkowski@gmail.com",
-                    "role": "Contributor"
-                },
-                {
                     "name": "Markus Poerschke",
                     "email": "markus@eluceo.de",
                     "role": "Developer"
+                },
+                {
+                    "name": "Maciej Łebkowski",
+                    "email": "m.lebkowski@gmail.com",
+                    "role": "Contributor"
                 }
             ],
             "description": "The eluceo/iCal package offers a abstraction layer for creating iCalendars. You can easily create iCal files by using PHP object instead of typing your *.ics file by hand. The output will follow RFC 2445 as best as possible.",
@@ -113,7 +116,11 @@
                 "ics",
                 "php calendar"
             ],
-            "time": "2015-02-21 23:14:47"
+            "support": {
+                "issues": "https://github.com/markuspoerschke/iCal/issues",
+                "source": "https://github.com/markuspoerschke/iCal"
+            },
+            "time": "2015-02-21T23:14:47+00:00"
         },
         {
             "name": "programie/jsonconfig",
@@ -149,7 +156,12 @@
                 }
             ],
             "description": "A simple PHP class for reading configuration values from JSON files",
-            "time": "2015-01-15 10:57:44"
+            "support": {
+                "issues": "https://github.com/Programie/JsonConfig/issues",
+                "source": "https://github.com/Programie/JsonConfig/tree/1.0"
+            },
+            "abandoned": true,
+            "time": "2015-01-15T10:57:44+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -202,7 +214,12 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-07-08 11:51:25"
+            "support": {
+                "issues": "https://github.com/swiftmailer/swiftmailer/issues",
+                "source": "https://github.com/swiftmailer/swiftmailer/tree/v5.4.3"
+            },
+            "abandoned": "symfony/mailer",
+            "time": "2016-07-08T11:51:25+00:00"
         }
     ],
     "packages-dev": [],
@@ -212,7 +229,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4"
+        "php": ">=7.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
