@@ -80,13 +80,12 @@ Extensions are located in the `extensions` folder in the root of this applicatio
 
 ## Testing with Docker
 
-* Run `docker build -t teamplaner .` inside the root of the git checkout
-* Start the containers using `docker-compose up`
+* Build and start the containers using `docker compose up --build`
 * Import sample data into the MySQL database:
-```
-docker exec -it teamplaner_mysql_1 mysql -u teamplaner -pteamplaner teamplaner
+```bash
+docker compose exec -it mysql mariadb -u teamplaner -pteamplaner teamplaner
 INSERT INTO `users` (`username`) VALUES ('anonymous'), ('anotheruser');
 INSERT INTO `teams` (`name`, `title`) VALUES ('sample', 'Sample');
 INSERT INTO `teammembers` (`teamId`, `userId`) VALUES (1, 1), (1, 2);
 ```
-* The frontend will be available on [http://localhost:8080](http://localhost:8080)
+* The frontend will be available on http://localhost:8080.
