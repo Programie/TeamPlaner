@@ -5,12 +5,12 @@ use AltoRouter;
 
 class Router extends AltoRouter
 {
-    public function map($method, $route, Target $target)
+    public function map($method, $route, $target, $name = null)
     {
         if (is_array($method)) {
             $method = implode("|", $method);
         }
 
-        parent::map($method, $route, $target);
+        parent::map($method, $route, $target, $name);
     }
 }
