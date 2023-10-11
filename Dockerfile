@@ -19,7 +19,7 @@ FROM ghcr.io/programie/dockerimages/php
 
 ENV WEB_ROOT=/app/httpdocs
 
-RUN install-php 7.3 pdo-mysql && \
+RUN install-php 8.2 pdo-mysql && \
     a2enmod rewrite
 
 COPY --from=composer /app/vendor /app/vendor
