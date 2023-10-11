@@ -2,10 +2,13 @@
 
 A simple calendar allowing to plan recurring events in teams (e.g. shift planing).
 
+[![DockerHub](https://img.shields.io/badge/download-DockerHub-blue?logo=docker)](https://hub.docker.com/r/programie/teamplaner)
+[![GitHub release](https://img.shields.io/github/v/release/Programie/TeamPlaner)](https://github.com/Programie/TeamPlaner/releases/latest)
+
 ## Requirements
 
    * Webserver (e.g. Apache)
-   * PHP 5.4 or newer
+   * PHP 7.0 or newer
    * MySQL
 
 If you directly clone this repository (instead of downloading one of the pre-built releases), you will need those tools as well:
@@ -18,8 +21,16 @@ If you directly clone this repository (instead of downloading one of the pre-bui
    * If not already done, download the [latest release](https://github.com/Programie/TeamPlaner/releases/latest).
    * Execute `php bin/update-config.php` to create or update your configuration file
    * Edit the `config.json` file in the `config` folder (See section **Configuration** for details)
-   * Import `database.sql` into your MySQL database
+   * Import [database.sql](database.sql) into your MySQL database
    * Configure your webserver so your document root points to the `httpdocs` folder
+   * Create the users for your team (See section **User management** for details)
+   * Use it
+
+## Installation using Docker
+
+   * Use the Docker image `programie/teamplaner` from Docker Hub
+   * Create a `config.json` file and mount it into the container at `/app/config/config.json` (See section **Configuration** for details)
+   * Import [database.sql](database.sql) into your MySQL database
    * Create the users for your team (See section **User management** for details)
    * Use it
 
@@ -81,11 +92,5 @@ Extensions are located in the `extensions` folder in the root of this applicatio
 ## Testing with Docker
 
 * Build and start the containers using `docker compose up --build`
-* Import sample data into the MySQL database:
-```bash
-docker compose exec -it mysql mariadb -u teamplaner -pteamplaner teamplaner
-INSERT INTO `users` (`username`) VALUES ('anonymous'), ('anotheruser');
-INSERT INTO `teams` (`name`, `title`) VALUES ('sample', 'Sample');
-INSERT INTO `teammembers` (`teamId`, `userId`) VALUES (1, 1), (1, 2);
-```
+* Import sample data into the MySQL database: `docker compose exec -T mysql mariadb -u teamplaner -pteamplaner teamplaner < sample_data.sql`
 * The frontend will be available on http://localhost:8080.
