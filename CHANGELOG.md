@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0] - 2023-10-11
+
+* Updated Dockerfile to use PHP 8.2
+* Push Docker image to [Docker Hub](https://hub.docker.com/r/programie/teamplaner)
+* Require at least PHP 7.0
+
 ## [v1.3] - 2019-12-03
 
 * Added support for report mails for multiple teams in a single mail
