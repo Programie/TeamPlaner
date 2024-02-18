@@ -15,7 +15,7 @@ RUN npm install -g bower && \
     bower --allow-root install
 
 
-FROM ghcr.io/programie/dockerimages/php
+FROM ghcr.io/programie/php-docker
 
 ENV WEB_ROOT=/app/httpdocs
 
